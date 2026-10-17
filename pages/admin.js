@@ -200,7 +200,7 @@ export default function AdminDashboard() {
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
 
-  // ESTADOS DEL DASHBOARD
+  // ESTADOS DEL DASHBOARD (INICIALIZADOS CON DATOS LISTOS PARA RENDERIZADO INMEDIATO)
   const [leads, setLeads] = useState(DEMO_LEADS);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -229,13 +229,12 @@ export default function AdminDashboard() {
     }
   }, []);
 
-  // CARGAR LEADS DESDE SUPABASE Y LOCALSTORAGE CON TIMEOUT Y RETRY MECANISMO
-  const fetchLeads = async (isRetry = false) => {
-    setLoading(true);
+  // CARGAR LEADS DESDE SUPABASE Y LOCALSTORAGE EN SEGUNDO PLANO SIN CONGELAR LA BANDEJA
+  const fetchLeads = async () => {
     let timeoutId = null;
 
     try {
-      // Promesa con timeout estricto de 2.5s para no congelar la UI ante Cold Starts
+      // Timeout estricto de 2000ms para evitar esperas y degradación de UX
       const fetchPromise = supabase
         .from('ruace_pet539_leads')
         .select('*')
@@ -244,7 +243,7 @@ export default function AdminDashboard() {
       const timeoutPromise = new Promise((_, reject) => {
         timeoutId = setTimeout(() => {
           reject(new Error('Supabase request timed out'));
-        }, 2500);
+        }, 2000);
       });
 
       const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
@@ -254,58 +253,28 @@ export default function AdminDashboard() {
         throw error;
       }
 
-      let loadedLeads = DEMO_LEADS;
       if (data && data.length > 0) {
-        loadedLeads = data;
+        setLeads(data);
         setDbConnected(true);
+
+        const notesMap = {};
+        data.forEach((lead) => {
+          const leadId = lead.id || lead.owner_email;
+          const key = `ruace_note_${leadId}`;
+          const savedNote = typeof window !== 'undefined' ? localStorage.getItem(key) : null;
+          const dbNote = lead.lead_advice || lead.lead_notes || lead.notes;
+          notesMap[leadId] = dbNote || (savedNote !== null ? savedNote : '');
+        });
+        setLeadNotes(notesMap);
+        fetchTriageForLeads(data);
       } else {
         setDbConnected(true);
       }
-
-      // Cargar notas desde Supabase y localStorage para persistencia bidireccional
-      const notesMap = {};
-      loadedLeads.forEach((lead) => {
-        const leadId = lead.id || lead.owner_email;
-        const key = `ruace_note_${leadId}`;
-        const savedNote = typeof window !== 'undefined' ? localStorage.getItem(key) : null;
-        const dbNote = lead.lead_advice || lead.lead_notes || lead.notes;
-        notesMap[leadId] = dbNote || (savedNote !== null ? savedNote : '');
-      });
-      setLeadNotes(notesMap);
-      setLeads(loadedLeads);
-
-      // LLAMADA AUTOMÁTICA EN SEGUNDO PLANO A /api/triage SIN BLOQUEAR LA TABLA
-      fetchTriageForLeads(loadedLeads);
     } catch (err) {
       if (timeoutId) clearTimeout(timeoutId);
-      console.warn('Fallo o timeout al conectar con Supabase:', err.message);
-
-      // Si no es un reintento, programar un retry automático a los 1.5s
-      if (!isRetry) {
-        console.info('Programando reintento automático en 1.5s...');
-        setTimeout(() => {
-          fetchLeads(true);
-        }, 1500);
-      }
-
-      // Inyectar de inmediato el set seguro DEMO_LEADS para romper el Shimmer
-      setLeads(DEMO_LEADS);
+      console.warn('Conexión en modo demostrativo / respaldo seguro:', err.message);
       setDbConnected(false);
-
-      const notesMap = {};
-      DEMO_LEADS.forEach((lead) => {
-        const leadId = lead.id || lead.owner_email;
-        const key = `ruace_note_${leadId}`;
-        const savedNote = typeof window !== 'undefined' ? localStorage.getItem(key) : null;
-        const dbNote = lead.lead_advice || lead.lead_notes || lead.notes;
-        notesMap[leadId] = dbNote || (savedNote !== null ? savedNote : '');
-      });
-      setLeadNotes(notesMap);
-
-      // Consulta de triage en segundo plano para leads demo
-      fetchTriageForLeads(DEMO_LEADS);
     } finally {
-      // Rompe el Shimmer Loader de forma inmediata y renderiza los datos en pantalla
       setLoading(false);
     }
   };
