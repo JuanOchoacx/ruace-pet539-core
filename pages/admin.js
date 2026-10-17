@@ -747,7 +747,7 @@ export default function AdminDashboard() {
     return (
       <div className="min-h-screen bg-[#FFFBEB] text-slate-800 flex items-center justify-center p-4 font-sans selection:bg-[#FBBF24] selection:text-slate-900">
         <Head>
-          <title>Acceso Seguro | Panel RUACE PET539</title>
+          <title>Acceso Seguro | Panel RUACE PET593</title>
         </Head>
 
         <div className="max-w-md w-full bg-white border-2 border-[#1E40AF]/20 rounded-3xl p-8 shadow-2xl space-y-6">
@@ -756,7 +756,7 @@ export default function AdminDashboard() {
               🔒
             </div>
             <div>
-              <h2 className="text-2xl font-black text-[#1E40AF] tracking-tight">Acceso Institucional RUACE</h2>
+              <h2 className="text-2xl font-black text-[#1E40AF] tracking-tight">Acceso Institucional RUACE PET593</h2>
               <p className="text-xs text-slate-500 font-medium mt-1">Panel de Priorización Comercial y Gestión de Leads</p>
             </div>
           </div>
@@ -776,10 +776,12 @@ export default function AdminDashboard() {
               <input
                 type="text"
                 id="adminUsername"
+                name="usuario"
                 required
+                autoComplete="off"
                 value={usernameInput}
                 onChange={(e) => setUsernameInput(e.target.value)}
-                placeholder="Ingresa tu usuario (ej. ruace2026 / empleado593)..."
+                placeholder="Ingresa tu usuario..."
                 className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 text-sm text-slate-900 placeholder-slate-400 outline-none transition font-medium"
               />
             </div>
@@ -792,7 +794,9 @@ export default function AdminDashboard() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="adminPassword"
+                  name="clave"
                   required
+                  autoComplete="current-password"
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
                   placeholder="Ingresa tu clave..."
@@ -805,14 +809,6 @@ export default function AdminDashboard() {
                 >
                   {showPassword ? 'Ocultar' : 'Ver'}
                 </button>
-              </div>
-            </div>
-
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-1">
-              <p className="font-bold text-slate-700">💡 Credenciales autorizadas del sistema:</p>
-              <div className="flex flex-col gap-1 font-mono text-[10px]">
-                <div>• <span className="font-bold text-[#1E40AF]">Dueño (Admin):</span> <code className="bg-amber-50 px-1 py-0.5 rounded border border-[#FBBF24]">ruace2026</code> / <code className="bg-amber-50 px-1 py-0.5 rounded border border-[#FBBF24]">12345</code></div>
-                <div>• <span className="font-bold text-slate-800">Operador (Empleado):</span> <code className="bg-slate-200 px-1 py-0.5 rounded border border-slate-300">empleado593</code> / <code className="bg-slate-200 px-1 py-0.5 rounded border border-slate-300">11111</code></div>
               </div>
             </div>
 
