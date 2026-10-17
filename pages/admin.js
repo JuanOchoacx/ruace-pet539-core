@@ -670,46 +670,48 @@ export default function AdminDashboard() {
     }
   };
 
-  // MÉTRICAS KPI DEL VENDEDOR / ASESOR
+  // CAPA DE CÁLCULO DINÁMICO DE KPIS COMERCIALES Y MONITOREO DE OBJETIVOS (SUPABASE)
   const sellerKpis = useMemo(() => {
-    const total = processedLeads.length;
-    const contactedCount = processedLeads.filter((l) => l.lead_status === 'Contactado').length;
-    const pendingCount = processedLeads.filter((l) => l.lead_status === 'Por contactar').length;
-    const dogCount = processedLeads.filter((l) => {
+    // 1. Leads Totales: Conteo total de filas en la tabla importada de Supabase
+    const totalLeads = leads.length;
+
+    // 2. Leads Gestionados: Cantidad de registros con lead_status exactamente 'Contactado'
+    const managedLeads = leads.filter(
+      (l) => (l.lead_status || '').trim().toLowerCase() === 'contactado'
+    ).length;
+
+    // 3. Tasa de Eficiencia Comercial: Porcentaje ((Leads Gestionados / Leads Totales) * 100)
+    const efficiencyRate = totalLeads > 0 
+      ? Math.round((managedLeads / totalLeads) * 100) 
+      : 0;
+
+    // 4. Meta Diaria del Asesor: Meta fija de 10 leads diarios gestionados
+    const dailyGoal = 10;
+    const dailyProgress = Math.min(Math.round((managedLeads / dailyGoal) * 100), 100);
+
+    // Contadores para filtros segmentados
+    const pendingCount = totalLeads - managedLeads;
+    const dogCount = leads.filter((l) => {
       const type = (l.pet_type || '').toLowerCase();
       return type.includes('perro') || type.includes('canino');
     }).length;
-    const catCount = processedLeads.filter((l) => {
+    const catCount = leads.filter((l) => {
       const type = (l.pet_type || '').toLowerCase();
       return type.includes('gato') || type.includes('felino');
     }).length;
-    
-    // Meta semanal del vendedor: 10 contactos
-    const weeklyGoal = 10;
-    const goalPercentage = Math.min(Math.round((contactedCount / weeklyGoal) * 100), 100);
-
-    // Leads calientes (Score >= 80) atendidos
-    const hotLeads = processedLeads.filter((l) => l.lead_score >= 80);
-    const hotContacted = hotLeads.filter((l) => l.lead_status === 'Contactado').length;
-    const hotConversionRate = hotLeads.length > 0 ? Math.round((hotContacted / hotLeads.length) * 100) : 0;
-
-    // Score medio general
-    const avgScore = total > 0 ? Math.round(processedLeads.reduce((acc, l) => acc + l.lead_score, 0) / total) : 0;
 
     return {
-      total,
-      contactedCount,
+      total: totalLeads,
+      managedLeads,
+      efficiencyRate,
+      dailyGoal,
+      dailyProgress,
+      contactedCount: managedLeads,
       pendingCount,
       dogCount,
       catCount,
-      weeklyGoal,
-      goalPercentage,
-      hotCount: hotLeads.length,
-      hotContacted,
-      hotConversionRate,
-      avgScore,
     };
-  }, [processedLeads]);
+  }, [leads]);
 
   // SI NO ESTÁ AUTENTICADO: PANTALLA DE ACCESO CON PALETA OFICIAL PET593
   if (!isAuthenticated) {
@@ -897,129 +899,110 @@ export default function AdminDashboard() {
       {/* CONTENIDO PRINCIPAL */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
-        {/* SECCIÓN KPI DEL VENDEDOR: TARJETAS CON NÚMEROS GIGANTES EN NEGRITA (+15.000, +120) */}
-        {/* REGLA DE ROL: VISIBLE ÚNICAMENTE PARA 'admin' (DUEÑO). OCULTO PARA 'operator' */}
+        {/* SECCIÓN KPI DEL VENDEDOR: MONITOREO DINÁMICO DE OBJETIVOS (SÓLO ROL ADMIN) */}
         {userRole === 'admin' && (
           <section className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFFBEB] border border-[#FBBF24] text-[#1E40AF] text-xs font-black uppercase tracking-wider mb-2">
-                  🎯 Tablero de Objetivos Comerciales del Asesor (Vista Exclusiva Administrador)
+                  🎯 Tablero de Objetivos Comerciales (Control Dinámico en Tiempo Real)
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-[#1E40AF] tracking-tight">
-                  Métricas de Impacto y Conversión en Quito
+                  Control de Metas y Conversión del Asesor
                 </h1>
                 <p className="text-slate-600 text-xs sm:text-sm mt-0.5 font-normal">
-                  Monitoreo en tiempo real de metas comerciales, atención prioritaria de leads y alcance de la red.
+                  Cálculo automático de rendimiento basado en los registros importados de Supabase.
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="px-3 py-1 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold">
-                  Red Activa Quito
+                <span className="px-3 py-1 rounded-xl bg-blue-50 text-[#1E40AF] border border-blue-200 text-xs font-bold">
+                  Meta Diaria: {sellerKpis.dailyGoal} Leads
                 </span>
-                <span className="px-3 py-1 rounded-xl bg-[#FFFBEB] text-[#1E40AF] border border-[#FBBF24] text-xs font-bold">
-                  Meta 2026
+                <span className="px-3 py-1 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold">
+                  Sincronizado Supabase
                 </span>
               </div>
             </div>
 
-            {/* GRID DE NÚMEROS GIGANTES */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {/* 3 TARJETAS KPI CON FUENTES GIGANTES EN NEGRITA EMPLEANDO LA PALETA OFICIAL (#1E40AF) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               
-              {/* Tarjeta 1: +15,000 Mascotas Registradas */}
+              {/* Tarjeta 1: Leads Capturados */}
               <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-28 h-28 bg-[#1E40AF]/5 rounded-bl-full pointer-events-none group-hover:bg-[#FBBF24]/10 transition-colors"></div>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                    Mascotas Registradas
+                    Leads Capturados
                   </span>
-                  <span className="text-xs font-black bg-[#FFFBEB] text-[#1E40AF] px-2 py-0.5 rounded-full border border-amber-200">
-                    Total DMQ
+                  <span className="text-xs font-black bg-blue-50 text-[#1E40AF] px-2.5 py-0.5 rounded-full border border-blue-200">
+                    Total Base
                   </span>
                 </div>
                 <p className="text-4xl sm:text-5xl font-black text-[#1E40AF] tracking-tight font-mono">
-                  +15,000
+                  {sellerKpis.total}
                 </p>
                 <p className="text-xs text-slate-500 mt-2 font-medium">
-                  Perros y gatos con microchip ISO y PETCÉDULA en Quito y Ecuador.
+                  Total de prospectos registrados en Supabase disponibles para gestión.
                 </p>
               </div>
 
-              {/* Tarjeta 2: +120 Clínicas Aliadas en Quito */}
+              {/* Tarjeta 2: Leads Gestionados */}
               <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-28 h-28 bg-[#FBBF24]/10 rounded-bl-full pointer-events-none group-hover:bg-[#1E40AF]/10 transition-colors"></div>
+                <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-500/5 rounded-bl-full pointer-events-none group-hover:bg-[#1E40AF]/10 transition-colors"></div>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                    Clínicas Aliadas en Quito
+                    Leads Gestionados
                   </span>
-                  <span className="text-xs font-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
-                    Red Activa
+                  <span className="text-xs font-black bg-emerald-50 text-emerald-800 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                    {sellerKpis.managedLeads} / {sellerKpis.dailyGoal} Meta
                   </span>
                 </div>
-                <p className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight font-mono">
-                  +120
+                <p className="text-4xl sm:text-5xl font-black text-[#1E40AF] tracking-tight font-mono">
+                  {sellerKpis.managedLeads}
                 </p>
                 <p className="text-xs text-slate-500 mt-2 font-medium">
-                  Centros veterinarios homologados para colocación inmediata y validación.
+                  Prospectos contactados con feedback registrado por el asesor.
                 </p>
               </div>
 
-              {/* Tarjeta 3: 47.7% Tasa de Cierre Comercial */}
+              {/* Tarjeta 3: Tasa de Eficiencia */}
               <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-28 h-28 bg-amber-500/10 rounded-bl-full pointer-events-none group-hover:bg-amber-500/20 transition-colors"></div>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                    Tasa de Cierre Comercial
+                    Tasa de Eficiencia
                   </span>
-                  <span className="text-xs font-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
-                    Efectividad
+                  <span className="text-xs font-black bg-amber-50 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-300">
+                    Rendimiento
                   </span>
                 </div>
                 <p className="text-4xl sm:text-5xl font-black text-emerald-600 tracking-tight font-mono">
-                  47.7%
+                  {sellerKpis.efficiencyRate}%
                 </p>
                 <p className="text-xs text-slate-500 mt-2 font-medium">
-                  Conversión promedio del asesor en prospectos de viaje y alto riesgo.
-                </p>
-              </div>
-
-              {/* Tarjeta 4: Contactos del Asesor (Meta Semanal) */}
-              <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                    Meta Semanal del Asesor
-                  </span>
-                  <span className="text-xs font-black bg-[#FBBF24] text-slate-900 px-2.5 py-0.5 rounded-full shadow-sm">
-                    {sellerKpis.goalPercentage}%
-                  </span>
-                </div>
-                <div className="flex items-baseline gap-2">
-                  <p className="text-4xl sm:text-5xl font-black text-[#1E40AF] tracking-tight font-mono">
-                    {sellerKpis.contactedCount}
-                  </p>
-                  <span className="text-xl font-bold text-slate-400 font-mono">
-                    / {sellerKpis.weeklyGoal}
-                  </span>
-                </div>
-                <p className="text-xs text-slate-500 mt-2 font-medium">
-                  {sellerKpis.pendingCount} prospectos restantes en la cola actual.
+                  {sellerKpis.efficiencyRate === 0 
+                    ? 'Sin contactos registrados aún (0%).' 
+                    : `${sellerKpis.managedLeads} de ${sellerKpis.total} prospectos atendidos con éxito.`}
                 </p>
               </div>
 
             </div>
 
-            {/* BARRA DE PROGRESO DE OBJETIVO COMERCIAL */}
+            {/* BARRA DE PROGRESO VISUAL FRENTE A LA META DIARIA (10 LEADS) */}
             <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3">
-              <div className="flex items-center justify-between text-xs font-bold">
-                <span className="text-slate-700">Progreso hacia el objetivo comercial semanal ({sellerKpis.weeklyGoal} contactos):</span>
-                <span className={sellerKpis.goalPercentage >= 80 ? 'text-[#1E40AF]' : 'text-amber-700'}>
-                  {sellerKpis.goalPercentage}% completado {sellerKpis.goalPercentage >= 100 ? '🎉 ¡Meta Semanal Alcanzada!' : ''}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-bold gap-2">
+                <span className="text-slate-700">
+                  Cumplimiento frente a la Meta Diaria del Asesor ({sellerKpis.managedLeads} de {sellerKpis.dailyGoal} leads gestionados):
+                </span>
+                <span className={sellerKpis.dailyProgress >= 100 ? 'text-emerald-700 font-black' : 'text-[#1E40AF] font-black'}>
+                  {sellerKpis.dailyProgress}% completado {sellerKpis.dailyProgress >= 100 ? '🎉 ¡Meta Diaria Alcanzada!' : ''}
                 </span>
               </div>
-              <div className="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+              <div className="w-full h-4 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
                 <div
-                  className="h-full bg-gradient-to-r from-[#1E40AF] via-[#1E40AF] to-[#FBBF24] rounded-full transition-all duration-500"
-                  style={{ width: `${sellerKpis.goalPercentage}%` }}
+                  className="h-full bg-gradient-to-r from-blue-500 to-amber-500 rounded-full transition-all duration-500 shadow-xs"
+                  style={{ width: `${sellerKpis.dailyProgress}%` }}
                 ></div>
               </div>
             </div>
