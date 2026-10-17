@@ -196,158 +196,181 @@ export default function Home() {
       </header>
     </div>
 
-      {/* HERO EMOCIONAL ENFOCADO EN LOS HALLAZGOS DE APIFY (ABOVE THE FOLD - FULL-WIDTH HERO) */}
-      <section className="relative overflow-hidden bg-[#1E40AF] text-white py-16 lg:py-24">
-        {/* Glows y elementos decorativos de fondo */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#FBBF24]/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-blue-600/30 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none"></div>
+      {/* HERO ORGÁNICO ASIMÉTRICO (ESTILO HERO VOLUNTARIOS - FONDO PASTEL #E0F2FE & DOODLES) */}
+      <section className="relative overflow-hidden bg-[#E0F2FE] py-16 lg:py-24 border-b border-sky-200/70">
+        
+        {/* DOODLES Y ELEMENTOS VECTORIALES LINEALES (POSICIONAMIENTO ABSOLUTO) */}
+        {/* Doodle 1: Huella superior izquierda */}
+        <div className="absolute top-8 left-8 sm:left-16 text-[#1E40AF]/30 animate-pulse pointer-events-none">
+          <svg className="w-10 h-10 sm:w-14 sm:h-14 rotate-[-20deg]" fill="currentColor" viewBox="0 0 24 24">
+            <ellipse cx="12" cy="15" rx="4" ry="4.5" />
+            <circle cx="6.5" cy="9.5" r="2" />
+            <circle cx="10" cy="7" r="2" />
+            <circle cx="14" cy="7" r="2" />
+            <circle cx="17.5" cy="9.5" r="2" />
+          </svg>
+        </div>
+
+        {/* Doodle 2: Corazón lineal flotante cerca del kicker */}
+        <div className="absolute top-12 left-1/2 text-rose-400/50 pointer-events-none hidden md:block">
+          <svg className="w-7 h-7 rotate-[15deg]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </div>
+
+        {/* Doodle 3: Línea curva conectora / Guía visual con estrella */}
+        <div className="absolute top-28 right-16 sm:right-32 text-[#1E40AF]/35 pointer-events-none hidden sm:block">
+          <svg className="w-16 h-16 rotate-12" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeDasharray="3 3" d="M3 17c4-8 10-10 18-2" />
+            <circle cx="21" cy="15" r="2" fill="currentColor" />
+          </svg>
+        </div>
+
+        {/* Doodle 4: Destello / Chispa de protección inferior izquierda */}
+        <div className="absolute bottom-12 left-10 text-[#F59E0B]/70 pointer-events-none">
+          <svg className="w-8 h-8 rotate-45" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v20M2 12h20M5 5l14 14M5 19L19 5" />
+          </svg>
+        </div>
+
+        {/* Doodle 5: Huellita derecha flotante */}
+        <div className="absolute bottom-16 right-10 sm:right-20 text-[#1E40AF]/25 pointer-events-none hidden lg:block">
+          <svg className="w-12 h-12 rotate-[25deg]" fill="currentColor" viewBox="0 0 24 24">
+            <ellipse cx="12" cy="15" rx="4" ry="4.5" />
+            <circle cx="6.5" cy="9.5" r="2" />
+            <circle cx="10" cy="7" r="2" />
+            <circle cx="14" cy="7" r="2" />
+            <circle cx="17.5" cy="9.5" r="2" />
+          </svg>
+        </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
             
-            {/* LATERAL IZQUIERDO: TEXTOS CALIBRADOS CON EL SCRAPING DE APIFY */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+            {/* LATERAL IZQUIERDO: PLASTA DE COLOR SÓLIDA / FORMA GEOMÉTRICA ABSTRACTA QUE ENMARCA LA MASCOTA */}
+            <div className="lg:col-span-5 flex justify-center order-2 lg:order-1">
+              <div className="relative w-full max-w-sm sm:max-w-md">
+                
+                {/* FORMA GEOMÉTRICA ABSTRACTA / PLASTA DE COLOR SÓLIDA DE ACENTO */}
+                <div className="absolute -top-5 -left-5 sm:-top-8 sm:-left-8 w-64 sm:w-72 h-64 sm:h-72 bg-[#1E40AF] rounded-[2.5rem] rotate-[-7deg] shadow-xl pointer-events-none"></div>
+                <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-52 sm:w-60 h-52 sm:h-60 bg-[#FBBF24] rounded-full opacity-90 pointer-events-none"></div>
+
+                {/* CONTENEDOR PRINCIPAL: FOTOGRAFÍA CONCEPTUAL & TARJETA DE PROTECCIÓN VETERINARIA */}
+                <div className="relative bg-white rounded-3xl p-5 sm:p-6 shadow-2xl border-2 border-sky-100 overflow-hidden space-y-4">
+                  
+                  {/* Banner superior de la Cédula Animal */}
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+                      <span className="text-[11px] font-black uppercase tracking-wider text-[#1E40AF]">
+                        RUACE PET539 · REGISTRO ACTIVO
+                      </span>
+                    </div>
+                    <span className="bg-[#E0F2FE] text-[#1E40AF] text-[10px] font-black px-2.5 py-0.5 rounded-full border border-sky-300">
+                      ECUADOR
+                    </span>
+                  </div>
+
+                  {/* Fotografía de la mascota protegida y su tutor */}
+                  <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-gradient-to-tr from-sky-100 via-amber-50 to-blue-50 border border-slate-200 flex items-center justify-center group shadow-inner">
+                    {/* Ilustración de Conexión Emocional Segura */}
+                    <div className="text-center p-4 space-y-2">
+                      <div className="w-20 h-20 rounded-full bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center mx-auto shadow-lg group-hover:scale-105 transition-transform duration-300">
+                        <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                          <ellipse cx="12" cy="15" rx="4" ry="4.5" />
+                          <circle cx="6.5" cy="9.5" r="2" />
+                          <circle cx="10" cy="7" r="2" />
+                          <circle cx="14" cy="7" r="2" />
+                          <circle cx="17.5" cy="9.5" r="2" />
+                        </svg>
+                      </div>
+                      <p className="text-xs font-black text-slate-800">
+                        Conexión Inseparable Tutor & Mascota
+                      </p>
+                      <p className="text-[10px] text-slate-500 font-medium max-w-[220px] mx-auto">
+                        Identificado con microchip estandarizado ISO y PETCÉDULA física con código QR dinámico.
+                      </p>
+                    </div>
+
+                    {/* Badge flotante de microchip inviolable */}
+                    <div className="absolute bottom-2.5 left-2.5 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-xl shadow-md border border-slate-200/80 flex items-center gap-2">
+                      <span className="text-sm">🔒</span>
+                      <span className="text-[10px] font-bold text-slate-800">Chip ISO 11784/85</span>
+                    </div>
+                  </div>
+
+                  {/* Fila de Especificaciones Clave de la Identidad */}
+                  <div className="grid grid-cols-2 gap-2 text-left pt-1">
+                    <div className="bg-[#E0F2FE]/60 rounded-xl p-2.5 border border-sky-200">
+                      <p className="text-[10px] text-sky-800 font-bold uppercase">Lectura Móvil</p>
+                      <p className="text-xs font-black text-[#1E40AF]">QR 24/7 sin App</p>
+                    </div>
+                    <div className="bg-amber-50 rounded-xl p-2.5 border border-amber-200">
+                      <p className="text-[10px] text-amber-800 font-bold uppercase">Mantenimiento</p>
+                      <p className="text-xs font-black text-slate-900">0$ Mensualidades</p>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            {/* LATERAL DERECHO: CONTENIDOS CALIBRADOS CON EL SCRAPING DE APIFY (SECCIÓN 1) */}
+            <div className="lg:col-span-7 space-y-6 text-center lg:text-left order-1 lg:order-2">
               
-              {/* Badge Oficial de Respaldo Nacional */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-900/80 border border-[#FBBF24]/70 text-[#FBBF24] text-xs sm:text-sm font-bold shadow-sm backdrop-blur-sm">
-                <span className="flex h-2.5 w-2.5 rounded-full bg-[#FBBF24] animate-pulse"></span>
-                Identificación Veterinaria Oficial a Nivel Nacional en Ecuador
+              {/* KICKER SUPERIOR: AUTORIDAD INMEDIATA FRENTE AL VACÍO INSTITUCIONAL */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#1E40AF]/30 text-[#1E40AF] text-xs sm:text-sm font-black shadow-sm tracking-wider uppercase">
+                <span className="flex h-2.5 w-2.5 rounded-full bg-[#1E40AF] animate-ping"></span>
+                CENSO NACIONAL DE IDENTIFICACIÓN MASCOTA
               </div>
 
-              {/* TÍTULO DE IMPACTO: RESUELVE EL DOLOR DE PÉRDIDA DEFINITIVA */}
-              <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+              {/* TÍTULO PRINCIPAL: DOLOR DE PÉRDIDA EN TIPOGRAFÍA AZUL PROFUNDO DESTACADA */}
+              <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black text-[#1E40AF] tracking-tight leading-tight">
                 Dale a tu peludito una identidad indestructible y asegura su regreso a casa.
               </h1>
 
-              {/* SUBTÍTULO DE ALIVIO: RESUELVE EL MIEDO A MENSUALIDADES Y FALTA DE LECTURA INTERNACIONAL */}
-              <p className="text-base sm:text-lg text-blue-100 font-normal leading-relaxed max-w-2xl">
-                El microchip permanente y su <strong className="text-[#FBBF24] font-bold">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Sin mensualidades ocultas. Homologado bajo la norma internacional ISO 11784/85 para lectura inmediata en Ecuador y el mundo entero.
+              {/* PÁRRAFO DESCRIPTIVO: DOLOR DE COSTOS OCULTOS Y BUROCRACIA */}
+              <p className="text-base sm:text-lg text-slate-700 font-medium leading-relaxed max-w-2xl">
+                El microchip permanente y su <strong className="text-[#1E40AF] font-black">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Sin mensualidades ocultas. Homologado bajo la norma internacional ISO 11784/85 para lectura inmediata en Ecuador y procesos Pet Travel.
               </p>
 
-              {/* BOTONES DE ACCIÓN: CTAs BASADOS EN INTENCIÓN DE COMPRA */}
+              {/* BOTÓN DE ACCIÓN PRINCIPAL (TWO-STEP OPT-IN CON ESTILO REDONDEADO Y SMOOTH SCROLL) */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <a
                   href="#registro"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-2xl bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black text-sm sm:text-base shadow-xl shadow-[#FBBF24]/20 transition-all hover:scale-[1.02] active:scale-[0.98] border border-amber-300 gap-2 cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full bg-[#1E40AF] hover:bg-blue-900 text-white font-black text-sm sm:text-base shadow-xl shadow-[#1E40AF]/25 transition-all hover:scale-105 active:scale-95 border-2 border-[#1E40AF] gap-2.5 cursor-pointer group"
                 >
-                  <span>Registrar Mi Mascota con Código Único</span>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span>Registrar Mi Mascota</span>
+                  <svg className="w-5 h-5 text-[#FBBF24] group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
                 </a>
 
                 <a
                   href="#registro"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm sm:text-base backdrop-blur-md border border-white/20 transition-all hover:scale-[1.02] active:scale-[0.98] gap-2 cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-full bg-white hover:bg-slate-50 text-[#1E40AF] font-bold text-sm sm:text-base shadow-md shadow-sky-900/5 border-2 border-[#1E40AF]/20 transition-all hover:scale-105 active:scale-95 gap-2 cursor-pointer"
                 >
-                  <svg className="w-5 h-5 text-[#FBBF24]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-[#1E40AF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span>Solicitar Asesoría de Viaje Certificada</span>
+                  <span>Asesoría Pet Travel</span>
                 </a>
               </div>
 
-              {/* MICRO-GARANTÍAS INMEDIATAS (HALLAZGOS APIFY) */}
-              <div className="pt-4 border-t border-blue-500/30 flex flex-wrap items-center justify-center lg:justify-start gap-5 text-xs text-blue-200 font-semibold">
+              {/* ACREDITACIONES DIRECTAS DEL SCRAPING */}
+              <div className="pt-4 border-t border-sky-300/80 flex flex-wrap items-center justify-center lg:justify-start gap-5 text-xs text-slate-600 font-bold">
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="text-[#FBBF24]">✓</span> Implante indoloro y seguro
+                  <span className="text-[#1E40AF]">✓</span> Sin mensualidades ni tarifas sorpresa
                 </span>
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="text-[#FBBF24]">✓</span> Sin tarifas de renovación mensual
+                  <span className="text-[#1E40AF]">✓</span> Lectura universal con cualquier celular
                 </span>
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="text-[#FBBF24]">✓</span> Compatible IATA & Agrocalidad
+                  <span className="text-[#1E40AF]">✓</span> Homologado para viajar con Agrocalidad
                 </span>
               </div>
 
-            </div>
-
-            {/* LATERAL DERECHO: IMAGEN CONCEPTUAL DE LA CONEXIÓN EMOCIONAL Y SEGURA */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-md">
-                
-                {/* Resplandor decorativo */}
-                <div className="absolute -inset-1.5 bg-gradient-to-r from-[#FBBF24] to-blue-400 rounded-3xl blur-lg opacity-40"></div>
-                
-                {/* Tarjeta Visual de Conexión Emocional & Expediente Digital */}
-                <div className="relative bg-gradient-to-b from-blue-900/90 to-blue-950/90 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-6 sm:p-7 shadow-2xl space-y-5">
-                  
-                  {/* Cabecera de la Tarjeta Conceptual */}
-                  <div className="flex items-center justify-between pb-4 border-b border-white/10">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-[#FBBF24] text-slate-950 flex items-center justify-center font-black text-xl shadow-md">
-                        🐾
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-black uppercase tracking-wider text-[#FBBF24] block">
-                          Identidad Oficial RUACE
-                        </span>
-                        <h4 className="text-base font-black text-white">
-                          PETCÉDULA Inteligente
-                        </h4>
-                      </div>
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black border border-emerald-400/30 uppercase tracking-wide">
-                      Activo 24/7
-                    </span>
-                  </div>
-
-                  {/* Representación Visual: Vínculo Protector Tutor - Mascota */}
-                  <div className="space-y-3.5 bg-white/5 rounded-2xl p-4 border border-white/10">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-blue-200 font-medium">Estándar Global:</span>
-                      <span className="font-mono font-bold text-[#FBBF24]">ISO 11784/85 (15 dígitos)</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-blue-200 font-medium">Lectura Inmediata:</span>
-                      <span className="font-semibold text-white">Microchip Subdérmico + QR Móvil</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-blue-200 font-medium">Plan Económico:</span>
-                      <span className="font-bold text-emerald-400">0 Mensualidades · De Por Vida</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-blue-200 font-medium">Cobertura:</span>
-                      <span className="font-semibold text-white">Nacional (Ecuador) & Viajes Globales</span>
-                    </div>
-                  </div>
-
-                  {/* Micro-Tarjeta del Tutor y Mascota protegida */}
-                  <div className="bg-[#1E40AF]/60 rounded-2xl p-4 border border-blue-400/30 flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-blue-800 text-[#FBBF24] flex items-center justify-center shrink-0 border border-blue-400/40">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-xs font-black text-white leading-tight">
-                        Tranquilidad y Vínculo Inquebrantable
-                      </p>
-                      <p className="text-[11px] text-blue-200 mt-0.5 leading-snug">
-                        Si tu peludo se desorienta, cualquier veterinaria o persona con smartphone te contacta al instante.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Métricas Rápidas de Autoridad */}
-                  <div className="grid grid-cols-3 gap-2 pt-1 text-center">
-                    <div className="bg-white/5 rounded-xl p-2 border border-white/10">
-                      <p className="text-lg font-black text-[#FBBF24]">+15.000</p>
-                      <p className="text-[9px] text-blue-200 uppercase font-bold">Registros</p>
-                    </div>
-                    <div className="bg-white/5 rounded-xl p-2 border border-white/10">
-                      <p className="text-lg font-black text-white">100%</p>
-                      <p className="text-[9px] text-blue-200 uppercase font-bold">Oficial ISO</p>
-                    </div>
-                    <div className="bg-white/5 rounded-xl p-2 border border-white/10">
-                      <p className="text-lg font-black text-emerald-400">0$</p>
-                      <p className="text-[9px] text-blue-200 uppercase font-bold">Mensual</p>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
             </div>
 
           </div>
