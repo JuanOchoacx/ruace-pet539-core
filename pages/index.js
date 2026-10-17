@@ -255,7 +255,7 @@ export default function Home() {
                 <div className="absolute -top-5 -left-5 sm:-top-8 sm:-left-8 w-64 sm:w-72 h-64 sm:h-72 bg-[#1E40AF] rounded-[2.5rem] rotate-[-7deg] shadow-xl pointer-events-none"></div>
                 <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-52 sm:w-60 h-52 sm:h-60 bg-[#FBBF24] rounded-full opacity-90 pointer-events-none"></div>
 
-                {/* CONTENEDOR PRINCIPAL: FOTOGRAFÍA CONCEPTUAL & TARJETA DE PROTECCIÓN VETERINARIA */}
+                {/* CONTENEDOR PRINCIPAL: VIDEO DINÁMICO & TARJETA DE PROTECCIÓN VETERINARIA */}
                 <div className="relative bg-white rounded-3xl p-5 sm:p-6 shadow-2xl border-2 border-sky-100 overflow-hidden space-y-4">
                   
                   {/* Banner superior de la Cédula Animal */}
@@ -271,31 +271,46 @@ export default function Home() {
                     </span>
                   </div>
 
-                  {/* Fotografía de la mascota protegida y su tutor */}
-                  <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-gradient-to-tr from-sky-100 via-amber-50 to-blue-50 border border-slate-200 flex items-center justify-center group shadow-inner">
-                    {/* Ilustración de Conexión Emocional Segura */}
-                    <div className="text-center p-4 space-y-2">
-                      <div className="w-20 h-20 rounded-full bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center mx-auto shadow-lg group-hover:scale-105 transition-transform duration-300">
-                        <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
-                          <ellipse cx="12" cy="15" rx="4" ry="4.5" />
-                          <circle cx="6.5" cy="9.5" r="2" />
-                          <circle cx="10" cy="7" r="2" />
-                          <circle cx="14" cy="7" r="2" />
-                          <circle cx="17.5" cy="9.5" r="2" />
-                        </svg>
-                      </div>
-                      <p className="text-xs font-black text-slate-800">
-                        Conexión Inseparable Tutor & Mascota
-                      </p>
-                      <p className="text-[10px] text-slate-500 font-medium max-w-[220px] mx-auto">
-                        Identificado con microchip estandarizado ISO y PETCÉDULA física con código QR dinámico.
-                      </p>
+                  {/* CONTENEDOR DE VIDEO DINÁMICO EN LA NUBE (LIBRE DE DERECHOS DE AUTOR) */}
+                  <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-slate-900 border border-slate-200 shadow-md group">
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    >
+                      <source
+                        src="https://cdn.jsdelivr.net/gh/luiantav/dog-island@main/videos/dog1.mp4"
+                        type="video/mp4"
+                      />
+                      <source
+                        src="https://cdn.jsdelivr.net/gh/luiantav/dog-island@main/videos/dog2.mp4"
+                        type="video/mp4"
+                      />
+                      Tu navegador no soporta la reproducción de video HTML5.
+                    </video>
+
+                    {/* Overlay sutil para realzar los badges flotantes */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none"></div>
+
+                    {/* Badge flotante superior: Vínculo Seguro */}
+                    <div className="absolute top-2.5 right-2.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/20 flex items-center gap-1.5 text-white">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                      <span className="text-[10px] font-bold">En Vivo · Vínculo Activo</span>
                     </div>
 
-                    {/* Badge flotante de microchip inviolable */}
-                    <div className="absolute bottom-2.5 left-2.5 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-xl shadow-md border border-slate-200/80 flex items-center gap-2">
+                    {/* Badge flotante inferior de microchip inviolable */}
+                    <div className="absolute bottom-2.5 left-2.5 bg-white/95 backdrop-blur-md px-3 py-1 rounded-xl shadow-lg border border-slate-200/90 flex items-center gap-2">
                       <span className="text-sm">🔒</span>
-                      <span className="text-[10px] font-bold text-slate-800">Chip ISO 11784/85</span>
+                      <span className="text-[10px] font-black text-slate-800">Chip ISO 11784/85</span>
+                    </div>
+
+                    {/* Badge flotante inferior derecho: Escaneo QR */}
+                    <div className="absolute bottom-2.5 right-2.5 bg-[#FBBF24] px-2.5 py-1 rounded-xl shadow-lg border border-amber-400 flex items-center gap-1 text-slate-950">
+                      <span className="text-xs">📲</span>
+                      <span className="text-[10px] font-black">Escaneo QR</span>
                     </div>
                   </div>
 
