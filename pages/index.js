@@ -139,55 +139,55 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* WRAPPER STICKY TOP: BANNER + NAVBAR */}
+      {/* WRAPPER STICKY TOP: BANNER + NAVBAR (FONDO NARANJA VIBRANTE ESTILO PERRITOS GUAYAQUIL) */}
       <div className="sticky top-0 z-50">
-        {/* TOP BAR BANNER (REFERENCIA 3 - PET STATION) - FONDO AMARILLO ACENTO Y TEXTO NEGRO */}
-        <div className="bg-[#FBBF24] text-slate-900 text-xs sm:text-sm py-2 px-4 text-center font-black shadow-sm flex items-center justify-center gap-2 border-b border-amber-400">
+        {/* TOP BAR BANNER */}
+        <div className="bg-[#E68A00] text-white text-xs sm:text-sm py-2 px-4 text-center font-black shadow-xs flex items-center justify-center gap-2 border-b border-amber-600/30">
           <span className="text-base inline-block">✈️</span>
           <span>¿Viajas pronto con tu peludito? Obtén hoy tu consulta de asesoría Pet Travel sin costo con tu registro en todo el país.</span>
           <a
             href="#registro"
-            className="ml-2 inline-flex items-center gap-1 bg-[#1E40AF] hover:bg-blue-900 text-white font-extrabold text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full transition-colors shadow-xs"
+            className="ml-2 inline-flex items-center gap-1 bg-[#14213D] hover:bg-slate-900 text-white font-extrabold text-[11px] sm:text-xs px-3 py-0.5 rounded-full transition-colors shadow-xs"
           >
             <span>Pedir Asesoría</span>
             <span>→</span>
           </a>
         </div>
 
-        {/* NAVBAR */}
-        <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all shadow-sm">
+        {/* NAVBAR INTEGRADO EN NARANJA SÓLIDO */}
+        <header className="bg-[#FF9A00] border-b border-amber-500/50 transition-all shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#1E40AF] flex items-center justify-center text-[#FBBF24] shadow-md shadow-[#1E40AF]/20">
+            <div className="w-12 h-12 rounded-2xl bg-[#14213D] flex items-center justify-center text-white shadow-md shadow-black/10">
               <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-black text-2xl tracking-tight text-[#1E40AF]">RUACE</span>
-                <span className="bg-[#FFFBEB] text-[#1E40AF] text-xs px-2.5 py-0.5 rounded-full font-extrabold uppercase tracking-wider border border-[#FBBF24]">
+                <span className="font-black text-2xl tracking-tight text-white">RUACE</span>
+                <span className="bg-[#14213D] text-[#FF9A00] text-xs px-2.5 py-0.5 rounded-full font-extrabold uppercase tracking-wider border border-white/20">
                   PET539
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-medium">Registro Animal & Cédulas Oficiales Ecuador</p>
+              <p className="text-xs text-amber-100 font-medium">Registro Animal & Cédulas Oficiales Ecuador</p>
             </div>
           </div>
 
-          <nav className="hidden lg:flex items-center space-x-6 text-sm font-bold text-slate-700">
-            <a href="#pasos" className="hover:text-[#1E40AF] transition-colors">¿Cómo Funciona?</a>
-            <a href="#beneficios" className="hover:text-[#1E40AF] transition-colors">Beneficios</a>
-            <a href="#por-que" className="hover:text-[#1E40AF] transition-colors">¿Por Qué Asegurar?</a>
-            <a href="#historias" className="hover:text-[#1E40AF] transition-colors">Historias Felices</a>
-            <a href="#compromiso" className="hover:text-[#1E40AF] transition-colors">Compromiso</a>
-            <a href="#faq" className="hover:text-[#1E40AF] transition-colors">FAQ</a>
-            <a href="#registro" className="hover:text-[#1E40AF] transition-colors">Registro</a>
+          <nav className="hidden lg:flex items-center space-x-6 text-sm font-extrabold text-white">
+            <a href="#pasos" className="hover:text-[#14213D] transition-colors">¿Cómo Funciona?</a>
+            <a href="#beneficios" className="hover:text-[#14213D] transition-colors">Beneficios</a>
+            <a href="#por-que" className="hover:text-[#14213D] transition-colors">¿Por Qué Asegurar?</a>
+            <a href="#historias" className="hover:text-[#14213D] transition-colors">Historias Felices</a>
+            <a href="#compromiso" className="hover:text-[#14213D] transition-colors">Compromiso</a>
+            <a href="#faq" className="hover:text-[#14213D] transition-colors">FAQ</a>
+            <a href="#registro" className="hover:text-[#14213D] transition-colors">Registro</a>
           </nav>
 
           <div className="flex items-center gap-3">
             <a
               href="#registro"
-              className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-black text-sm text-slate-900 bg-[#FBBF24] hover:bg-[#F59E0B] shadow-md shadow-[#FBBF24]/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center justify-center px-6 py-2.5 rounded-full font-black text-sm text-[#FF9A00] bg-[#14213D] hover:bg-slate-900 shadow-lg shadow-black/15 transition-all hover:scale-105 active:scale-95"
             >
               Registrar Mascota
             </a>
@@ -196,93 +196,48 @@ export default function Home() {
       </header>
     </div>
 
-      {/* HERO ORGÁNICO ASIMÉTRICO (ESTILO HERO VOLUNTARIOS - FONDO PASTEL #E0F2FE & DOODLES) */}
-      <section className="relative overflow-hidden bg-[#E0F2FE] py-16 lg:py-24 border-b border-sky-200/70">
+      {/* HERO SECTION ESTILO PERRITOS GUAYAQUIL (FONDO SÓLIDO NARANJA VIBRANTE #FF9A00) */}
+      <section className="relative overflow-hidden bg-[#FF9A00] pt-10 pb-16 lg:pt-14 lg:pb-24 border-b border-amber-600/30">
         
-        {/* DOODLES Y ELEMENTOS VECTORIALES LINEALES (POSICIONAMIENTO ABSOLUTO) */}
-        {/* Doodle 1: Huella superior izquierda */}
-        <div className="absolute top-8 left-8 sm:left-16 text-[#1E40AF]/30 animate-pulse pointer-events-none">
-          <svg className="w-10 h-10 sm:w-14 sm:h-14 rotate-[-20deg]" fill="currentColor" viewBox="0 0 24 24">
-            <ellipse cx="12" cy="15" rx="4" ry="4.5" />
-            <circle cx="6.5" cy="9.5" r="2" />
-            <circle cx="10" cy="7" r="2" />
-            <circle cx="14" cy="7" r="2" />
-            <circle cx="17.5" cy="9.5" r="2" />
-          </svg>
-        </div>
-
-        {/* Doodle 2: Corazón lineal flotante cerca del kicker */}
-        <div className="absolute top-12 left-1/2 text-rose-400/50 pointer-events-none hidden md:block">
-          <svg className="w-7 h-7 rotate-[15deg]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-          </svg>
-        </div>
-
-        {/* Doodle 3: Línea curva conectora / Guía visual con estrella */}
-        <div className="absolute top-28 right-16 sm:right-32 text-[#1E40AF]/35 pointer-events-none hidden sm:block">
-          <svg className="w-16 h-16 rotate-12" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeDasharray="3 3" d="M3 17c4-8 10-10 18-2" />
-            <circle cx="21" cy="15" r="2" fill="currentColor" />
-          </svg>
-        </div>
-
-        {/* Doodle 4: Destello / Chispa de protección inferior izquierda */}
-        <div className="absolute bottom-12 left-10 text-[#F59E0B]/70 pointer-events-none">
-          <svg className="w-8 h-8 rotate-45" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v20M2 12h20M5 5l14 14M5 19L19 5" />
-          </svg>
-        </div>
-
-        {/* Doodle 5: Huellita derecha flotante */}
-        <div className="absolute bottom-16 right-10 sm:right-20 text-[#1E40AF]/25 pointer-events-none hidden lg:block">
-          <svg className="w-12 h-12 rotate-[25deg]" fill="currentColor" viewBox="0 0 24 24">
-            <ellipse cx="12" cy="15" rx="4" ry="4.5" />
-            <circle cx="6.5" cy="9.5" r="2" />
-            <circle cx="10" cy="7" r="2" />
-            <circle cx="14" cy="7" r="2" />
-            <circle cx="17.5" cy="9.5" r="2" />
-          </svg>
-        </div>
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-12 lg:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-12">
             
-            {/* BLOQUE DE CONTENIDOS (lg:col-span-6): KICKER, COPY DE IMPACTO Y CTAs CON SMOOTH SCROLL */}
-            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
+            {/* BLOQUE DE CONTENIDOS EN CONTRASTE BLANCO PURO (lg:col-span-6) */}
+            <div className="lg:col-span-6 space-y-6 text-center lg:text-left text-white">
               
-              {/* KICKER SUPERIOR: AUTORIDAD INMEDIATA FRENTE AL VACÍO INSTITUCIONAL */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#1E40AF]/30 text-[#1E40AF] text-xs sm:text-sm font-black shadow-sm tracking-wider uppercase">
-                <span className="flex h-2.5 w-2.5 rounded-full bg-[#1E40AF] animate-ping"></span>
+              {/* KICKER SUPERIOR */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white text-xs sm:text-sm font-black shadow-sm tracking-wider uppercase">
+                <span className="flex h-2.5 w-2.5 rounded-full bg-white animate-ping"></span>
                 CENSO NACIONAL DE IDENTIFICACIÓN MASCOTA
               </div>
 
-              {/* TÍTULO PRINCIPAL: DOLOR DE PÉRDIDA EN TIPOGRAFÍA AZUL PROFUNDO DESTACADA */}
-              <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black text-[#1E40AF] tracking-tight leading-tight">
+              {/* TÍTULO PRINCIPAL EN BLANCO PURO */}
+              <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black text-white tracking-tight leading-tight drop-shadow-xs">
                 Dale a tu peludito una identidad indestructible y asegura su regreso a casa.
               </h1>
 
-              {/* PÁRRAFO DESCRIPTIVO: DOLOR DE COSTOS OCULTOS Y BUROCRACIA */}
-              <p className="text-base sm:text-lg text-slate-700 font-medium leading-relaxed max-w-xl">
-                El microchip permanente y su <strong className="text-[#1E40AF] font-black">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Sin mensualidades ocultas. Homologado bajo la norma internacional ISO 11784/85 para lectura inmediata en Ecuador y procesos Pet Travel.
+              {/* SUBTÍTULO ANALÍTICO (FASE 1 APIFY) */}
+              <p className="text-base sm:text-lg text-amber-50 font-medium leading-relaxed max-w-xl">
+                El microchip permanente y su <strong className="text-white font-black underline decoration-white/40">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Sin mensualidades ocultas. Homologado bajo la norma internacional ISO 11784/85 para lectura inmediata en Ecuador y procesos Pet Travel.
               </p>
 
-              {/* BOTONES DE ACCIÓN PRINCIPALES (TWO-STEP OPT-IN CON ESTILO REDONDEADO Y SMOOTH SCROLL) */}
+              {/* BOTONES DE ACCIÓN (CTAs CON SMOOTH SCROLL) */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <a
                   href="#registro"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full bg-[#1E40AF] hover:bg-blue-900 text-white font-black text-sm sm:text-base shadow-xl shadow-[#1E40AF]/25 transition-all hover:scale-105 active:scale-95 border-2 border-[#1E40AF] gap-2.5 cursor-pointer group"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full bg-[#14213D] hover:bg-slate-900 text-white font-black text-sm sm:text-base shadow-xl shadow-black/20 transition-all hover:scale-105 active:scale-95 gap-2.5 cursor-pointer group"
                 >
                   <span>Registrar Mi Mascota</span>
-                  <svg className="w-5 h-5 text-[#FBBF24] group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-[#FF9A00] group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
                 </a>
 
                 <a
                   href="#registro"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-full bg-white hover:bg-slate-50 text-[#1E40AF] font-bold text-sm sm:text-base shadow-md shadow-sky-900/5 border-2 border-[#1E40AF]/20 transition-all hover:scale-105 active:scale-95 gap-2 cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-full bg-white hover:bg-amber-50 text-[#14213D] font-extrabold text-sm sm:text-base shadow-lg shadow-black/10 transition-all hover:scale-105 active:scale-95 gap-2 cursor-pointer"
                 >
-                  <svg className="w-5 h-5 text-[#1E40AF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-[#FF9A00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>Asesoría Pet Travel</span>
@@ -290,83 +245,39 @@ export default function Home() {
               </div>
 
               {/* ACREDITACIONES DIRECTAS DEL SCRAPING */}
-              <div className="pt-4 border-t border-sky-300/80 flex flex-wrap items-center justify-center lg:justify-start gap-5 text-xs text-slate-600 font-bold">
+              <div className="pt-4 border-t border-white/20 flex flex-wrap items-center justify-center lg:justify-start gap-5 text-xs text-amber-100 font-bold">
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="text-[#1E40AF]">✓</span> Sin mensualidades ni tarifas sorpresa
+                  <span className="text-white font-black">✓</span> Sin mensualidades ni tarifas sorpresa
                 </span>
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="text-[#1E40AF]">✓</span> Lectura universal con cualquier celular
+                  <span className="text-white font-black">✓</span> Lectura universal con cualquier celular
                 </span>
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="text-[#1E40AF]">✓</span> Homologado para viajar con Agrocalidad
+                  <span className="text-white font-black">✓</span> Homologado para viajar con Agrocalidad
                 </span>
               </div>
 
             </div>
 
-            {/* BLOQUE VISUAL DOMINANTE (lg:col-span-6): IMAGEN WEBP OPTIMIZADA TUTOR-MASCOTA CON MÁSCARA FLUIDA */}
-            <div className="lg:col-span-6 flex justify-center relative">
-              <div className="relative w-full max-w-lg lg:max-w-none h-[420px] sm:h-[500px] lg:h-[560px] flex items-center justify-center">
-                
-                {/* Orbe decorativo difuminado en amarillo acento #FBBF24 */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-[#FBBF24]/20 rounded-full blur-3xl pointer-events-none"></div>
+            {/* BLOQUE VISUAL DOMINANTE (lg:col-span-6): IMAGEN TRANSPARENTE REAL INTEGRADA DIRECTO EN EL LIENZO NARANJA */}
+            <div className="lg:col-span-6 flex justify-center items-end relative min-h-[460px] sm:min-h-[540px] lg:min-h-[580px]">
+              
+              {/* Resplandor cálido difuminado en el fondo */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-[480px] h-80 sm:h-[480px] bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                {/* CONTENEDOR DE LA IMAGEN WEBP CON MÁSCARA DE DEGRADADO Y BORDES ORGÁNICOS */}
-                <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white/80 [mask-image:radial-gradient(ellipse_at_center,black_75%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_75%,transparent_100%)]">
-                  <picture>
-                    <source
-                      srcSet="https://images.pexels.com/photos/5257630/pexels-photo-5257630.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                      type="image/webp"
-                    />
-                    <img
-                      src="https://images.pexels.com/photos/5257630/pexels-photo-5257630.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                      alt="Conexión y protección inseparable entre tutor y mascota RUACE PET539"
-                      priority="true"
-                      loading="eager"
-                      fetchPriority="high"
-                      decoding="async"
-                      className="w-full h-full object-cover object-center transform transition-transform duration-700 hover:scale-105"
-                    />
-                  </picture>
-
-                  {/* Gradiente protector de contraste suave en bordes */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1E40AF]/30 via-transparent to-transparent pointer-events-none"></div>
-                </div>
-
-                {/* DOODLES Y BADGES FLOTANTES DE AUTORIDAD VETERINARIA */}
-                {/* 1. Badge superior: Identificación Oficial Activa */}
-                <div className="absolute top-4 left-4 z-20 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-xl border border-sky-100 flex items-center gap-2 rotate-[-3deg]">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                  <div className="text-left">
-                    <p className="text-[11px] font-black text-[#1E40AF] uppercase tracking-wider leading-none">
-                      RUACE PET539
-                    </p>
-                    <p className="text-[9px] text-slate-500 font-bold leading-none mt-0.5">
-                      Registro Nacional Activo
-                    </p>
-                  </div>
-                </div>
-
-                {/* 2. Badge inferior izquierdo: Norma ISO 11784/85 */}
-                <div className="absolute bottom-6 left-4 z-20 bg-[#1E40AF] text-white px-4 py-2.5 rounded-2xl shadow-2xl border-2 border-white/90 flex items-center gap-2.5 rotate-[2deg]">
-                  <span className="text-base">🔒</span>
-                  <div className="text-left">
-                    <p className="text-xs font-black text-[#FBBF24] leading-none uppercase tracking-wide">
-                      Norma ISO 11784/85
-                    </p>
-                    <p className="text-[10px] text-blue-100 font-medium leading-none mt-1">
-                      Chip Subdérmico Oficial de 15 Dígitos
-                    </p>
-                  </div>
-                </div>
-
-                {/* 3. Badge inferior derecho: PETCÉDULA QR */}
-                <div className="absolute bottom-8 right-4 z-20 bg-[#FBBF24] text-slate-950 px-3.5 py-2 rounded-2xl shadow-2xl border-2 border-slate-900 flex items-center gap-1.5 rotate-[-4deg]">
-                  <span className="text-sm">📲</span>
-                  <span className="text-xs font-black tracking-tight">PETCÉDULA QR 24/7</span>
-                </div>
-
+              {/* IMAGEN TRANSPARENTE DE LA MASCOTA ASENTADA DIRECTAMENTE SOBRE EL FONDO NARANJA (SIN RECUADROS NI TARJETAS) */}
+              <div className="relative w-full h-full flex items-end justify-center">
+                <img
+                  src="https://perritosguayaquil.com/wp-content/uploads/2025/06/Perritos-Guayaquil-Hero-Section-02.webp"
+                  alt="Mascota protegida RUACE PET539 estilo Perritos Guayaquil"
+                  priority="true"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  className="relative z-10 w-full max-h-[520px] sm:max-h-[580px] lg:max-h-[620px] object-contain object-bottom filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.25)] transform transition-transform duration-700 hover:scale-[1.02]"
+                />
               </div>
+
             </div>
 
           </div>
