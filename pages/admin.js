@@ -205,7 +205,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterTemperature, setFilterTemperature] = useState('ALL');
-  const [segmentFilter, setSegmentFilter] = useState('ALL'); // 'ALL' | 'PENDING' | 'CONTACTED' | 'DOGS' | 'CATS'
+  const [segmentFilter, setSegmentFilter] = useState('ALL'); // 'ALL' | 'PENDING' | 'CONTACTED' | 'DOGS' | 'CATS' | 'OTHERS'
   const [updatingId, setUpdatingId] = useState(null);
   const [savingNoteId, setSavingNoteId] = useState(null);
   const [dbConnected, setDbConnected] = useState(false);
@@ -387,6 +387,10 @@ export default function AdminDashboard() {
         const type = (lead.pet_type || '').toLowerCase().trim();
         // Filtra de inmediato por pet_type === 'Gato'
         matchesSegment = type === 'gato' || type.includes('gato') || type.includes('felino');
+      } else if (segmentFilter === 'OTHERS') {
+        const type = (lead.pet_type || '').toLowerCase().trim();
+        // Filtra de inmediato por especies alternativas (otro / otros / no perro ni gato)
+        matchesSegment = type === 'otro' || type.includes('otro') || (!type.includes('perro') && !type.includes('canino') && !type.includes('gato') && !type.includes('felino') && type !== '');
       }
 
       return matchesSearch && matchesTemp && matchesSegment;
@@ -701,6 +705,10 @@ export default function AdminDashboard() {
       const type = (l.pet_type || '').toLowerCase();
       return type.includes('gato') || type.includes('felino');
     }).length;
+    const otherCount = leads.filter((l) => {
+      const type = (l.pet_type || '').toLowerCase().trim();
+      return type === 'otro' || type.includes('otro') || (!type.includes('perro') && !type.includes('canino') && !type.includes('gato') && !type.includes('felino') && type !== '');
+    }).length;
 
     return {
       total: totalLeads,
@@ -712,6 +720,7 @@ export default function AdminDashboard() {
       pendingCount,
       dogCount,
       catCount,
+      otherCount,
     };
   }, [leads]);
 
@@ -1132,6 +1141,21 @@ export default function AdminDashboard() {
                 <span>Gatos</span>
                 <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'CATS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
                   {sellerKpis.catCount}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setSegmentFilter('OTHERS')}
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                  segmentFilter === 'OTHERS'
+                    ? 'bg-[#1E40AF] text-white shadow-md font-black'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                }`}
+              >
+                <span>Otros</span>
+                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'OTHERS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                  {sellerKpis.otherCount}
                 </span>
               </button>
             </div>
