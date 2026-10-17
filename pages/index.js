@@ -74,41 +74,54 @@ export default function Home() {
   const activatePixelsSafe = () => {
     if (typeof window === 'undefined') return;
 
-    // Meta Pixel 2026 (Inicialización segura sin datos de contacto)
-    if (!window.fbq) {
-      /* eslint-disable */
-      !(function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)})(window,
-      document,'script','https://connect.facebook.net/en_US/fbevents.js');
-      /* eslint-enable */
-      try {
-        window.fbq('init', '100000000000000'); // Meta ID con PII bloqueado
-        window.fbq('track', 'PageView');
-      } catch (e) {
-        console.warn('Meta Pixel initialized in safe-mode');
-      }
-    }
+    try {
+      // Inyección dinámica y segura de Meta Pixel
+      if (!window.fbq) {
+        window.fbq = function () {
+          window.fbq.callMethod
+            ? window.fbq.callMethod.apply(window.fbq, arguments)
+            : window.fbq.queue.push(arguments);
+        };
+        window.fbq.push = window.fbq;
+        window.fbq.loaded = true;
+        window.fbq.version = '2.0';
+        window.fbq.queue = [];
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+        document.head.appendChild(script);
 
-    // TikTok Pixel 2026 (Inicialización segura sin datos de contacto)
-    if (!window.ttq) {
-      /* eslint-disable */
-      !(function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=[
-      "page","track","identify","instances","debug","on","off","once","ready","alias",
-      "group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){
-      t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)
-      ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)
-      ttq.setAndDefer(e,ttq.methods[n]);return e};ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";
-      ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i;var s=d.createElement("script");s.type="text/javascript",s.async=!0,s.src=i+"?sdkid="+e+"&lib="+t;
-      var c=d.getElementsByTagName("script")[0];c.parentNode.insertBefore(s,c)};
-      /* eslint-enable */
-      try {
-        window.ttq.load('C000000000000000000'); // TikTok ID con PII bloqueado
-        window.ttq.page();
-      } catch (e) {
-        console.warn('TikTok Pixel initialized in safe-mode');
+        window.fbq('init', '100000000000000');
+        window.fbq('track', 'PageView');
       }
+
+      // Inyección dinámica y segura de TikTok Pixel
+      if (!window.ttq) {
+        window.ttq = window.ttq || [];
+        window.ttq.methods = [
+          'page', 'track', 'identify', 'instances', 'debug', 'on', 'off', 'once', 'ready', 'alias',
+          'group', 'enableCookie', 'disableCookie'
+        ];
+        window.ttq.setAndDefer = function (t, e) {
+          t[e] = function () {
+            t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+          };
+        };
+        for (let i = 0; i < window.ttq.methods.length; i++) {
+          window.ttq.setAndDefer(window.ttq, window.ttq.methods[i]);
+        }
+        window.ttq.load = function (e) {
+          const script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.async = true;
+          script.src = 'https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=' + e + '&lib=ttq';
+          document.head.appendChild(script);
+        };
+        window.ttq.load('C000000000000000000');
+        window.ttq.page();
+      }
+    } catch (e) {
+      console.warn('Pixels initialized in safe mode without PII');
     }
   };
 
