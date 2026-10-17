@@ -248,12 +248,15 @@ export default function AdminDashboard() {
         setDbConnected(true);
       }
 
-      // Cargar notas desde localStorage para complementar
+      // Cargar notas desde Supabase y localStorage para persistencia bidireccional
       const notesMap = {};
       loadedLeads.forEach((lead) => {
-        const key = `ruace_note_${lead.id || lead.owner_email}`;
+        const leadId = lead.id || lead.owner_email;
+        const key = `ruace_note_${leadId}`;
         const savedNote = typeof window !== 'undefined' ? localStorage.getItem(key) : null;
-        notesMap[lead.id || lead.owner_email] = savedNote !== null ? savedNote : (lead.notes || '');
+        // Priorizar valor persistido en Supabase (lead_advice, lead_notes o notes)
+        const dbNote = lead.lead_advice || lead.lead_notes || lead.notes;
+        notesMap[leadId] = dbNote || (savedNote !== null ? savedNote : '');
       });
       setLeadNotes(notesMap);
       setLeads(loadedLeads);
@@ -267,9 +270,11 @@ export default function AdminDashboard() {
       
       const notesMap = {};
       DEMO_LEADS.forEach((lead) => {
-        const key = `ruace_note_${lead.id || lead.owner_email}`;
+        const leadId = lead.id || lead.owner_email;
+        const key = `ruace_note_${leadId}`;
         const savedNote = typeof window !== 'undefined' ? localStorage.getItem(key) : null;
-        notesMap[lead.id || lead.owner_email] = savedNote !== null ? savedNote : (lead.notes || '');
+        const dbNote = lead.lead_advice || lead.lead_notes || lead.notes;
+        notesMap[leadId] = dbNote || (savedNote !== null ? savedNote : '');
       });
       setLeadNotes(notesMap);
 
@@ -381,7 +386,7 @@ export default function AdminDashboard() {
   // MARCAR COMO CONTACTADO Y PERSISTIR NOTA/FEEDBACK ASÍNCRONAMENTE EN SUPABASE
   const handleMarkAsContacted = async (lead) => {
     const leadKey = lead.id || lead.owner_email;
-    const currentNote = leadNotes[leadKey] !== undefined ? leadNotes[leadKey] : (lead.notes || lead.lead_advice || '');
+    const currentNote = leadNotes[leadKey] !== undefined ? leadNotes[leadKey] : (lead.lead_advice || lead.lead_notes || lead.notes || '');
     setUpdatingId(leadKey);
 
     // Persistencia local en navegador para respaldo inmediato
@@ -394,8 +399,8 @@ export default function AdminDashboard() {
       if (lead.id && !String(lead.id).startsWith('demo-')) {
         const updatePayload = {
           lead_status: 'Contactado',
-          notes: currentNote,
           lead_advice: currentNote,
+          notes: currentNote,
         };
 
         const { error } = await supabase
@@ -404,17 +409,24 @@ export default function AdminDashboard() {
           .eq('id', lead.id);
 
         if (error) {
-          console.warn('Reintentando update en Supabase con campos individuales:', error.message);
-          // Fallback resiliente si alguna columna no existiera en la definición de la tabla
+          console.warn('Reintentando mutación estricta .update({ lead_status, lead_advice }):', error.message);
+          // Mutación exacta hacia Supabase: .update({ lead_status: 'Contactado', lead_advice: currentNote })
           const { error: retryError } = await supabase
             .from('ruace_pet539_leads')
-            .update({ lead_status: 'Contactado', notes: currentNote })
+            .update({
+              lead_status: 'Contactado',
+              lead_advice: currentNote,
+            })
             .eq('id', lead.id);
 
           if (retryError) {
+            console.warn('Reintento con columna alternativa notes:', retryError.message);
             await supabase
               .from('ruace_pet539_leads')
-              .update({ lead_status: 'Contactado', lead_advice: currentNote })
+              .update({
+                lead_status: 'Contactado',
+                notes: currentNote,
+              })
               .eq('id', lead.id);
           }
         }
@@ -428,8 +440,9 @@ export default function AdminDashboard() {
             ? {
                 ...item,
                 lead_status: 'Contactado',
+                lead_advice: currentNote,
                 notes: currentNote,
-                lead_advice: currentNote || item.lead_advice,
+                lead_notes: currentNote,
               }
             : item;
         })
@@ -437,7 +450,7 @@ export default function AdminDashboard() {
 
       setNotification({
         type: 'success',
-        text: `✓ Lead de ${lead.owner_name} marcado como "Contactado" y guardado en Supabase.`,
+        text: `✓ Lead de ${lead.owner_name} marcado como "Contactado" y feedback guardado en Supabase.`,
       });
     } catch (err) {
       console.warn('Error al actualizar en Supabase, aplicando actualización en memoria:', err.message);
@@ -449,8 +462,9 @@ export default function AdminDashboard() {
             ? {
                 ...item,
                 lead_status: 'Contactado',
+                lead_advice: currentNote,
                 notes: currentNote,
-                lead_advice: currentNote || item.lead_advice,
+                lead_notes: currentNote,
               }
             : item;
         })
@@ -515,7 +529,7 @@ export default function AdminDashboard() {
   // GUARDAR NOTAS / FEEDBACK POR LEAD
   const handleSaveNote = async (lead) => {
     const leadKey = lead.id || lead.owner_email;
-    const currentNote = leadNotes[leadKey] || '';
+    const currentNote = leadNotes[leadKey] !== undefined ? leadNotes[leadKey] : (lead.lead_advice || lead.lead_notes || lead.notes || '');
     setSavingNoteId(leadKey);
 
     try {
@@ -528,13 +542,28 @@ export default function AdminDashboard() {
       if (lead.id && !String(lead.id).startsWith('demo-')) {
         await supabase
           .from('ruace_pet539_leads')
-          .update({ notes: currentNote, lead_advice: currentNote })
+          .update({ lead_advice: currentNote, notes: currentNote })
           .eq('id', lead.id);
       }
 
+      // Actualizar estado local inmediatamente
+      setLeads((prev) =>
+        prev.map((item) => {
+          const isMatch = (item.id && item.id === lead.id) || item.owner_email === lead.owner_email;
+          return isMatch
+            ? {
+                ...item,
+                lead_advice: currentNote,
+                notes: currentNote,
+                lead_notes: currentNote,
+              }
+            : item;
+        })
+      );
+
       setNotification({
         type: 'success',
-        text: `Nota guardada para ${lead.owner_name}.`,
+        text: `Nota guardada para ${lead.owner_name} en base de datos.`,
       });
     } catch (err) {
       console.warn('Nota persistida en navegador:', err.message);
@@ -1167,7 +1196,7 @@ export default function AdminDashboard() {
                     const isContacted = lead.lead_status === 'Contactado';
                     const cleanPhone = (lead.owner_phone || '').replace(/[^0-9]/g, '');
                     const leadKey = lead.id || lead.owner_email;
-                    const noteValue = leadNotes[leadKey] !== undefined ? leadNotes[leadKey] : (lead.notes || '');
+                    const noteValue = leadNotes[leadKey] !== undefined ? leadNotes[leadKey] : (lead.lead_advice || lead.lead_notes || lead.notes || '');
 
                     return (
                       <tr
