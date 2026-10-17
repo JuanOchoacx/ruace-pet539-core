@@ -207,8 +207,10 @@ export default function AdminDashboard() {
   const [dbConnected, setDbConnected] = useState(false);
   const [notification, setNotification] = useState(null);
 
-  // NOTAS LOCALES
+  // NOTAS LOCALES Y CONSEJOS PREDICTIVOS CLAUDE IA
   const [leadNotes, setLeadNotes] = useState({});
+  const [liveAiAdvice, setLiveAiAdvice] = useState({});
+  const [loadingAiLead, setLoadingAiLead] = useState(null);
 
   // VERIFICAR AUTENTICACIÓN EN SESIÓN
   useEffect(() => {
@@ -409,6 +411,47 @@ export default function AdminDashboard() {
     } finally {
       setSavingNoteId(null);
       setTimeout(() => setNotification(null), 3000);
+    }
+  };
+
+  // GENERAR CONSEJO PREDICTIVO CON MOTOR ANTHROPIC CLAUDE (/api/predictive-advice)
+  const fetchPredictiveAdvice = async (lead) => {
+    const leadKey = lead.id || lead.owner_email;
+    setLoadingAiLead(leadKey);
+
+    try {
+      const response = await fetch('/api/predictive-advice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          owner_name: lead.owner_name,
+          pet_name: lead.pet_name,
+          pet_type: lead.pet_type,
+          current_status: lead.current_status,
+          pet_travel_intent: lead.pet_travel_intent,
+        }),
+      });
+
+      const data = await response.json();
+      if (data && data.advice) {
+        setLiveAiAdvice((prev) => ({
+          ...prev,
+          [leadKey]: data.advice,
+        }));
+        setNotification({
+          type: 'success',
+          text: `Consejo táctico generado por Claude 3.5 Sonnet para ${lead.pet_name}.`,
+        });
+      }
+    } catch (err) {
+      console.error('Error al conectar con el motor predictivo:', err);
+      setNotification({
+        type: 'error',
+        text: 'No se pudo conectar con el motor predictivo. Usando recomendación heurística local.',
+      });
+    } finally {
+      setLoadingAiLead(null);
+      setTimeout(() => setNotification(null), 3500);
     }
   };
 
@@ -927,13 +970,36 @@ export default function AdminDashboard() {
                         {/* CONSEJO DE CIERRE POR IA */}
                         <td className="py-4 px-4 align-top">
                           <div className="bg-[#FFFBEB] p-3.5 rounded-2xl border border-amber-200 text-xs text-slate-700 leading-relaxed shadow-sm">
-                            <div className="flex items-center gap-1.5 mb-1 text-[11px] font-black text-[#1E40AF] uppercase tracking-wider">
-                              <svg className="w-3.5 h-3.5 text-[#1E40AF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                              </svg>
-                              Recomendación IA
+                            <div className="flex items-center justify-between gap-1 mb-1.5">
+                              <div className="flex items-center gap-1.5 text-[11px] font-black text-[#1E40AF] uppercase tracking-wider">
+                                <svg className="w-3.5 h-3.5 text-[#1E40AF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                <span>Recomendación IA</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => fetchPredictiveAdvice(lead)}
+                                disabled={loadingAiLead === leadKey}
+                                className="text-[10px] font-bold text-[#1E40AF] hover:text-blue-900 bg-white hover:bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200 transition-colors inline-flex items-center gap-1 shadow-xs disabled:opacity-50"
+                                title="Generar recomendación personalizada en tiempo real con Claude 3.5 Sonnet"
+                              >
+                                {loadingAiLead === leadKey ? (
+                                  <>
+                                    <span className="animate-spin text-[10px]">⚙️</span>
+                                    <span>IA...</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span>✨</span>
+                                    <span>Claude IA</span>
+                                  </>
+                                )}
+                              </button>
                             </div>
-                            <p className="text-slate-700 text-[11px] leading-relaxed font-medium">{lead.ai_counsel}</p>
+                            <p className="text-slate-700 text-[11px] leading-relaxed font-medium">
+                              {liveAiAdvice[leadKey] || lead.ai_counsel}
+                            </p>
                           </div>
                         </td>
 
