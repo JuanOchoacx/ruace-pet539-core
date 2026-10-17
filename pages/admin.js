@@ -102,7 +102,7 @@ export const generateAICounsel = (lead, score) => {
     if (status.includes('chip') || status.includes('cédula')) {
       tip = `💡 Asesoría Sugerida: ${petName} ya tiene microchip, pero carece de perfil activo y cédula física. Proponle regularizar el registro RUACE con acceso a historial veterinario 24/7.`;
     } else {
-      tip = `📋 Asesoría Médica: Envía el catálogo de beneficios de la Red RUACE Quito. Menciona que el procedimiento de implantación es indoloro y avalado por médicos veterinarios.`;
+      tip = `📋 Asesoría Médica: Envía el portafolio oficial de beneficios de la Red RUACE Quito. Menciona que el procedimiento de implantación es indoloro y avalado por médicos veterinarios.`;
     }
   } else {
     tip = `🌱 Educación y Seguimiento: Comparte por correo o mensaje informativo la normativa de tenencia responsable de Quito y testimonios de mascotas recuperadas gracias al sistema RUACE.`;
