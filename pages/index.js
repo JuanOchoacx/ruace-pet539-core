@@ -196,18 +196,18 @@ export default function Home() {
       </header>
     </div>
 
-      {/* HERO SECTION */}
-      <section className="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28 bg-[#FFFBEB]">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FBBF24]/10 rounded-full blur-3xl pointer-events-none"></div>
+      {/* HERO SECTION ASIMÉTRICO (ESTILO MOTION - SPLIT SECTION) */}
+      <section id="registro" className="relative overflow-hidden pt-10 pb-20 lg:pt-16 lg:pb-24 bg-[#FFFBEB]">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FBBF24]/15 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#1E40AF]/5 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
             
-            {/* Texto Hero */}
+            {/* COLUMNA IZQUIERDA: TITULAR PERSUASIVO + 3 MINI-TARJETAS DE BENEFICIOS */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#FBBF24] text-[#1E40AF] text-xs sm:text-sm font-bold shadow-sm">
-                <span className="flex h-2.5 w-2.5 rounded-full bg-[#1E40AF]"></span>
+                <span className="flex h-2.5 w-2.5 rounded-full bg-[#1E40AF] animate-pulse"></span>
                 Identificación Veterinaria Oficial en el Distrito Metropolitano de Quito
               </div>
 
@@ -219,121 +219,359 @@ export default function Home() {
                 El microchip permanente y su <strong className="text-[#1E40AF] font-bold">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Protegido en Quito y el mundo entero.
               </p>
 
-              {/* Botones de acción rápida */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <a
-                  href="#registro"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-black text-slate-900 bg-[#FBBF24] hover:bg-[#F59E0B] shadow-xl shadow-[#FBBF24]/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  <svg className="w-5 h-5 mr-2.5 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Iniciar Registro Oficial
-                </a>
-                <a
-                  href="#pasos"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-xl text-base font-bold text-[#1E40AF] bg-white hover:bg-slate-50 border-2 border-[#1E40AF] shadow-sm transition-all"
-                >
-                  ¿Cómo Funciona el Proceso?
-                </a>
+              {/* 3 BENEFICIOS EN MINI-TARJETAS INTERACTIVAS CON SOMBRAS SUAVES (MOTION STYLE) */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                {/* Mini Tarjeta 1 */}
+                <div className="group bg-white p-4 sm:p-5 rounded-2xl border-2 border-slate-200/80 hover:border-[#1E40AF] shadow-sm hover:shadow-md transition-all duration-300 text-left flex flex-col justify-between">
+                  <div>
+                    <div className="w-10 h-10 rounded-xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center mb-3 shadow-sm group-hover:scale-105 transition-transform">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-sm font-black text-[#1E40AF] mb-1.5">
+                      Identidad Inviolable
+                    </h2>
+                    <p className="text-xs text-slate-600 leading-snug">
+                      Un microchip del tamaño de un granito de arroz colocado de forma segura. No se borra ni se pierde jamás.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold text-[#1E40AF]">
+                    Norma ISO 11784/85 →
+                  </div>
+                </div>
+
+                {/* Mini Tarjeta 2 */}
+                <div className="group bg-white p-4 sm:p-5 rounded-2xl border-2 border-slate-200/80 hover:border-[#1E40AF] shadow-sm hover:shadow-md transition-all duration-300 text-left flex flex-col justify-between">
+                  <div>
+                    <div className="w-10 h-10 rounded-xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center mb-3 shadow-sm group-hover:scale-105 transition-transform">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-sm font-black text-[#1E40AF] mb-1.5">
+                      Historial Médico QR
+                    </h2>
+                    <p className="text-xs text-slate-600 leading-snug">
+                      Escanea su PETCÉDULA física con cualquier smartphone para ver vacunas y contactos en emergencias.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold text-[#1E40AF]">
+                    Lectura móvil 24/7 →
+                  </div>
+                </div>
+
+                {/* Mini Tarjeta 3 */}
+                <div className="group bg-white p-4 sm:p-5 rounded-2xl border-2 border-slate-200/80 hover:border-[#1E40AF] shadow-sm hover:shadow-md transition-all duration-300 text-left flex flex-col justify-between">
+                  <div>
+                    <div className="w-10 h-10 rounded-xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center mb-3 shadow-sm group-hover:scale-105 transition-transform">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-sm font-black text-[#1E40AF] mb-1.5">
+                      Certificación Pet Travel
+                    </h2>
+                    <p className="text-xs text-slate-600 leading-snug">
+                      Microchips homologados bajo la norma internacional ISO. Asesoría y documentos listos para viajar.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold text-[#1E40AF]">
+                    Agrocalidad & IATA →
+                  </div>
+                </div>
               </div>
 
-              {/* Indicadores de Respaldo */}
-              <div className="pt-6 border-t border-amber-200/80 grid grid-cols-3 gap-4 text-center lg:text-left">
+              {/* Indicadores de Respaldo Cuantitativo */}
+              <div className="pt-4 border-t border-amber-200/80 grid grid-cols-3 gap-4 text-center lg:text-left">
                 <div>
                   <p className="text-2xl sm:text-3xl font-black text-[#1E40AF]">+15.000</p>
-                  <p className="text-xs sm:text-sm text-slate-600 font-semibold">Registros en Quito</p>
+                  <p className="text-xs text-slate-600 font-semibold">Registros en Quito</p>
                 </div>
                 <div>
                   <p className="text-2xl sm:text-3xl font-black text-slate-900">100%</p>
-                  <p className="text-xs sm:text-sm text-slate-600 font-semibold">Estándar ISO 11784/85</p>
+                  <p className="text-xs text-slate-600 font-semibold">Estándar ISO 11784/85</p>
                 </div>
                 <div>
                   <p className="text-2xl sm:text-3xl font-black text-[#1E40AF]">24/7</p>
-                  <p className="text-xs sm:text-sm text-slate-600 font-semibold">Historial Médico QR</p>
+                  <p className="text-xs text-slate-600 font-semibold">Historial Médico QR</p>
                 </div>
               </div>
             </div>
 
-            {/* Visual Cédula / Mockup Representativo */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-md">
-                <div className="absolute -inset-2 bg-gradient-to-r from-[#1E40AF]/20 to-[#FBBF24]/30 rounded-3xl blur-xl"></div>
-
-                {/* Tarjeta Cédula Física RUACE PET539 */}
-                <div className="relative bg-white rounded-3xl p-6 shadow-2xl border-2 border-[#1E40AF]/20 text-slate-800 space-y-5">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center font-black text-sm">
-                        EC
-                      </div>
-                      <div>
-                        <p className="text-xs font-black tracking-wider text-[#1E40AF] uppercase">REPÚBLICA DEL ECUADOR</p>
-                        <p className="text-[10px] font-bold text-slate-600">DISTRITO METROPOLITANO DE QUITO</p>
-                      </div>
+            {/* COLUMNA DERECHA: CONTENEDOR FLOTANTE DEL FORMULARIO FILTRO */}
+            <div className="lg:col-span-5">
+              <div className="bg-white rounded-2xl shadow-2xl border-2 border-slate-200/90 overflow-hidden relative transition-all duration-300 hover:shadow-[0_25px_50px_-12px_rgba(30,64,175,0.2)]">
+                
+                {/* Header del Formulario en Azul Primario PET593 */}
+                <div className="bg-[#1E40AF] p-5 sm:p-6 text-white">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#FBBF24] block">
+                        Formulario de Captación Oficial
+                      </span>
+                      <h2 className="text-lg sm:text-xl font-black text-white mt-0.5">
+                        Expediente RUACE PET539
+                      </h2>
                     </div>
-                    <span className="text-[11px] font-extrabold text-[#1E40AF] bg-[#FFFBEB] px-2.5 py-0.5 rounded-md border border-[#FBBF24]">
-                      RUACE-539
+                    <span className="bg-[#FFFBEB] text-[#1E40AF] text-[10px] font-black px-2.5 py-1 rounded-full border border-[#FBBF24] uppercase">
+                      Quito · DMQ
                     </span>
                   </div>
+                  <p className="text-xs text-amber-100/90 mt-1.5 leading-relaxed">
+                    Completa los datos en 2 minutos para agendar la colocación o activar su PETCÉDULA.
+                  </p>
+                </div>
 
-                  {/* Cuerpo Cédula */}
-                  <div className="grid grid-cols-12 gap-4 items-center">
-                    <div className="col-span-5">
-                      <div className="aspect-square rounded-2xl bg-[#FFFBEB] border-2 border-[#FBBF24] p-2 flex flex-col items-center justify-center text-center shadow-inner">
-                        <span className="text-4xl">🐕</span>
-                        <span className="text-[10px] font-black text-[#1E40AF] mt-1 uppercase">Max - Canino</span>
-                      </div>
-                    </div>
-
-                    <div className="col-span-7 space-y-1.5 text-xs">
+                {/* Mensajes de Estado (Success / Error) */}
+                {statusMessage && (
+                  <div
+                    className={`m-5 p-4 rounded-xl border text-xs transition-all ${
+                      statusMessage.type === 'success'
+                        ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                        : 'bg-rose-50 border-rose-300 text-rose-900'
+                    }`}
+                  >
+                    <div className="flex items-start gap-2.5">
+                      <span className="text-base">{statusMessage.type === 'success' ? '✓' : '⚠️'}</span>
                       <div>
-                        <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Código Microchip ISO</span>
-                        <p className="font-mono font-bold text-[#1E40AF] text-sm">792 098 100 539 201</p>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Tutor Registrado</span>
-                        <p className="font-bold text-slate-800">Carlos Mantilla E.</p>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Zona de Residencia</span>
-                        <p className="font-medium text-slate-700">Quito Norte - Rumipamba</p>
+                        <p className="font-bold">{statusMessage.type === 'success' ? 'Registro Exitoso' : 'Atención'}</p>
+                        <p className="mt-0.5 leading-relaxed">{statusMessage.text}</p>
                       </div>
                     </div>
                   </div>
+                )}
 
-                  {/* Footer Cédula con Chip & QR */}
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between bg-slate-50 -mx-6 -mb-6 p-4 rounded-b-3xl">
-                    <div className="flex items-center gap-2">
-                      <div className="w-9 h-7 bg-[#FFFBEB] border-2 border-[#FBBF24] rounded flex items-center justify-center text-[10px] font-black text-[#1E40AF] shadow-sm">
-                        RFID
-                      </div>
-                      <span className="text-[10px] font-semibold text-slate-600 leading-tight">
-                        Microchip Subdérmico<br />Biocompatible Activo
-                      </span>
+                {/* Formulario conectado a Supabase */}
+                <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
+                  
+                  {/* Fila: Propietario y Teléfono */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                      <label htmlFor="owner_name" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                        Tutor / Propietario *
+                      </label>
+                      <input
+                        type="text"
+                        id="owner_name"
+                        name="owner_name"
+                        required
+                        value={formData.owner_name}
+                        onChange={handleChange}
+                        placeholder="Ej. Carlos Vinueza"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
+                      />
                     </div>
 
-                    <div className="text-right flex items-center gap-2">
-                      <div className="text-[10px] font-bold text-[#1E40AF] text-right leading-tight">
-                        Escanear para<br />Historial Médico
-                      </div>
-                      <div className="w-10 h-10 bg-white border border-slate-300 rounded-lg p-1 flex items-center justify-center shadow-sm">
-                        <div className="w-full h-full bg-[#1E40AF] grid grid-cols-3 gap-0.5 p-0.5 rounded">
-                          <div className="bg-white"></div>
-                          <div className="bg-[#1E40AF]"></div>
-                          <div className="bg-white"></div>
-                          <div className="bg-[#1E40AF]"></div>
-                          <div className="bg-white"></div>
-                          <div className="bg-[#1E40AF]"></div>
-                          <div className="bg-white"></div>
-                          <div className="bg-[#1E40AF]"></div>
-                          <div className="bg-white"></div>
+                    <div>
+                      <label htmlFor="owner_phone" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                        Teléfono / WhatsApp *
+                      </label>
+                      <input
+                        type="tel"
+                        id="owner_phone"
+                        name="owner_phone"
+                        required
+                        value={formData.owner_phone}
+                        onChange={handleChange}
+                        placeholder="Ej. +593 99 594 3723"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Correo */}
+                  <div>
+                    <label htmlFor="owner_email" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                      Correo Electrónico *
+                    </label>
+                    <input
+                      type="email"
+                      id="owner_email"
+                      name="owner_email"
+                      required
+                      value={formData.owner_email}
+                      onChange={handleChange}
+                      placeholder="ejemplo@correo.com"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
+                    />
+                  </div>
+
+                  {/* Fila: Nombre Mascota y Tipo */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                      <label htmlFor="pet_name" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                        Nombre Mascota *
+                      </label>
+                      <input
+                        type="text"
+                        id="pet_name"
+                        name="pet_name"
+                        required
+                        value={formData.pet_name}
+                        onChange={handleChange}
+                        placeholder="Ej. Max, Luna, Toby"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="pet_type" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                        Tipo de Mascota *
+                      </label>
+                      <select
+                        id="pet_type"
+                        name="pet_type"
+                        required
+                        value={formData.pet_type}
+                        onChange={handleChange}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
+                      >
+                        <option value="Perro">🐶 Perro (Canino)</option>
+                        <option value="Gato">🐱 Gato (Felino)</option>
+                        <option value="Conejo">🐰 Conejo</option>
+                        <option value="Ave / Exótico">🦜 Ave o Exótico</option>
+                        <option value="Otro">🐾 Otro animal</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Estado Actual */}
+                  <div>
+                    <label htmlFor="current_status" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                      Estado Actual de Identificación *
+                    </label>
+                    <select
+                      id="current_status"
+                      name="current_status"
+                      required
+                      value={formData.current_status}
+                      onChange={handleChange}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
+                    >
+                      <option value="Sin microchip ni cédula">Sin microchip ni cédula (Deseo colocación en Quito)</option>
+                      <option value="Solo placa">Solo placa externa (Deseo microchip y cédula)</option>
+                      <option value="Tiene microchip, requiere Cédula RUACE">Ya tiene microchip, pero requiere Cédula Física y Placa QR</option>
+                      <option value="Requiere actualización de datos">Requiere actualización de tutor / cambio de domicilio</option>
+                      <option value="Mascota extraviada (Reporte Urgente)">Mascota extraviada (Reporte de urgencia en red de Quito)</option>
+                    </select>
+                  </div>
+
+                  {/* Fila: Viaje y Canal */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                      <label htmlFor="pet_travel_intent" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                        Intención de Viaje *
+                      </label>
+                      <select
+                        id="pet_travel_intent"
+                        name="pet_travel_intent"
+                        required
+                        value={formData.pet_travel_intent}
+                        onChange={handleChange}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
+                      >
+                        <option value="No planeo viajar (Solo protección local en Quito)">Solo protección local en Quito</option>
+                        <option value="Viaje Internacional próximo (USA / Europa / LATAM)">Viaje Internacional (USA / Europa)</option>
+                        <option value="Viaje Nacional / Galápagos">Viaje a Galápagos o Nacional</option>
+                        <option value="Necesito asesoría completa Agrocalidad & IATA">Asesoría Agrocalidad & IATA</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="contact_method" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                        Canal de Contacto *
+                      </label>
+                      <select
+                        id="contact_method"
+                        name="contact_method"
+                        required
+                        value={formData.contact_method}
+                        onChange={handleChange}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
+                      >
+                        <option value="WhatsApp">💬 WhatsApp (Inmediato)</option>
+                        <option value="Llamada Telefónica">📞 Llamada Telefónica</option>
+                        <option value="Correo Electrónico">✉️ Correo Electrónico</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* CASILLA OBLIGATORIA: LEY LOPDP ECUADOR 2026 */}
+                  <div className="pt-2">
+                    <div className="flex items-start gap-2.5 bg-[#FFFBEB] p-3 rounded-xl border border-amber-200">
+                      <input
+                        type="checkbox"
+                        id="termsAccepted"
+                        name="termsAccepted"
+                        required
+                        checked={termsAccepted}
+                        onChange={(e) => setTermsAccepted(e.target.checked)}
+                        className="h-4 w-4 rounded border-slate-300 text-[#1E40AF] focus:ring-[#1E40AF] mt-0.5 cursor-pointer shrink-0"
+                      />
+                      <div className="text-[11px] text-slate-700 leading-snug">
+                        <label htmlFor="termsAccepted" className="cursor-pointer font-bold text-slate-900">
+                          Acepto la Política de Privacidad y Tratamiento de Datos (Ley LOPDP Ecuador) *
+                        </label>
+                        <div className="mt-0.5">
+                          <button
+                            type="button"
+                            onClick={() => setShowPrivacyModal(true)}
+                            className="text-[10px] text-[#1E40AF] hover:underline font-bold"
+                          >
+                            Ver términos legales y derechos ARCO (LOPDP 2026)
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
 
+                  {/* BOTÓN SUBMIT EN AMARILLO ACENTO #FBBF24 */}
+                  <div className="pt-1">
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="w-full py-3.5 px-5 rounded-2xl bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black text-sm sm:text-base shadow-lg shadow-[#FBBF24]/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-amber-400"
+                    >
+                      {loading ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-slate-900" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          <span>Registrando en Supabase...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Enviar Solicitud de Registro Oficial</span>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          </svg>
+                        </>
+                      )}
+                    </button>
+                    <p className="text-center text-[10px] text-slate-400 mt-2">
+                      Sin suscripciones ocultas · Respaldo veterinario colegiado en Quito
+                    </p>
+                  </div>
+
+                </form>
+
+                {/* BLOQUE HORIZONTAL DE INSIGNIAS DE CONFIANZA (TRUST BADGES) */}
+                <div className="bg-[#FFFBEB] border-t border-amber-200/90 px-4 sm:px-6 py-3.5">
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-[10px] font-bold text-slate-700">
+                    <span className="inline-flex items-center gap-1">
+                      <span className="text-[#1E40AF] font-black">●</span> Norma ISO 11784/85
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <span className="text-emerald-600 font-black">●</span> Sin Mensualidades
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <span className="text-[#1E40AF] font-black">●</span> Red Quito DMQ
+                    </span>
+                  </div>
                 </div>
+
               </div>
             </div>
 
@@ -952,350 +1190,6 @@ export default function Home() {
             </div>
 
           </div>
-        </div>
-      </section>
-
-      {/* SECCIÓN 4: FORMULARIO FILTRO DE CAPTACIÓN */}
-      <section id="registro" className="py-20 lg:py-28 bg-[#FFFBEB] border-b border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center mb-12">
-            <span className="inline-block py-1.5 px-4 rounded-full bg-white text-[#1E40AF] text-xs font-black tracking-wider uppercase mb-3 border-2 border-[#FBBF24]">
-              Formulario de Captación y Asesoría Veterinaria
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#1E40AF] tracking-tight">
-              Registra a tu Mascota en RUACE PET539
-            </h2>
-            <p className="mt-3 text-slate-600 text-base sm:text-lg">
-              Ingresa los datos para coordinar la colocación de microchip, emisión de cédula física o iniciar tu asesoría de viaje en Quito.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
-            
-            {/* Header del Formulario en Azul Primario PET593 */}
-            <div className="bg-[#1E40AF] p-6 sm:p-8 text-white">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-black text-white">Expediente de Registro RUACE</h3>
-                  <p className="text-xs sm:text-sm text-amber-200 mt-1">
-                    Conexión segura en tiempo real · <code className="bg-blue-900/60 px-2 py-0.5 rounded font-mono text-white">ruace_pet539_leads</code>
-                  </p>
-                </div>
-                <div className="hidden sm:block text-right">
-                  <span className="text-xs font-bold uppercase tracking-wider text-amber-300 block">Distrito Metropolitano</span>
-                  <span className="text-sm font-extrabold text-white">Quito, Ecuador</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Mensajes de Estado (Success / Error) */}
-            {statusMessage && (
-              <div
-                className={`m-6 p-5 rounded-2xl border transition-all ${
-                  statusMessage.type === 'success'
-                    ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
-                    : 'bg-rose-50 border-rose-300 text-rose-900'
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  {statusMessage.type === 'success' ? (
-                    <svg className="w-6 h-6 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  ) : (
-                    <svg className="w-6 h-6 text-rose-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  )}
-                  <div>
-                    <h4 className="font-bold text-sm sm:text-base">
-                      {statusMessage.type === 'success' ? 'Solicitud Registrada Exitosamente' : 'Atención en el Registro'}
-                    </h4>
-                    <p className="text-xs sm:text-sm mt-1">{statusMessage.text}</p>
-                    {statusMessage.type === 'success' && (
-                      <div className="mt-4">
-                        <a
-                          href="https://wa.me/593964180420?text=Hola,%20acabo%20de%20registrar%20a%20mi%20mascota%20en%20RUACE%20PET539%20y%20deseo%20confirmar%20mi%20cita%20en%20Quito."
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-900 font-black text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow transition-colors"
-                        >
-                          <svg className="w-4 h-4 fill-current text-slate-900" viewBox="0 0 24 24">
-                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
-                          </svg>
-                          Confirmar Atención Directo por WhatsApp
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Formulario */}
-            <form onSubmit={handleSubmit} className="p-6 sm:p-10 space-y-6">
-              
-              <div className="border-b border-slate-100 pb-3">
-                <h4 className="text-xs font-black uppercase tracking-wider text-[#1E40AF]">1. Datos del Propietario / Tutor</h4>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* owner_name */}
-                <div>
-                  <label htmlFor="owner_name" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
-                    Nombre del Propietario *
-                  </label>
-                  <input
-                    type="text"
-                    id="owner_name"
-                    name="owner_name"
-                    required
-                    value={formData.owner_name}
-                    onChange={handleChange}
-                    placeholder="Ej. Carlos Vinueza"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 placeholder-slate-400 bg-white"
-                  />
-                </div>
-
-                {/* owner_phone */}
-                <div>
-                  <label htmlFor="owner_phone" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
-                    Teléfono / WhatsApp *
-                  </label>
-                  <input
-                    type="tel"
-                    id="owner_phone"
-                    name="owner_phone"
-                    required
-                    value={formData.owner_phone}
-                    onChange={handleChange}
-                    placeholder="Ej. +593 99 594 3723"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 placeholder-slate-400 bg-white"
-                  />
-                </div>
-
-                {/* owner_email */}
-                <div className="sm:col-span-2">
-                  <label htmlFor="owner_email" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
-                    Correo Electrónico *
-                  </label>
-                  <input
-                    type="email"
-                    id="owner_email"
-                    name="owner_email"
-                    required
-                    value={formData.owner_email}
-                    onChange={handleChange}
-                    placeholder="ejemplo@correo.com"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 placeholder-slate-400 bg-white"
-                  />
-                </div>
-              </div>
-
-              <div className="border-b border-slate-100 pb-3 pt-4">
-                <h4 className="text-xs font-black uppercase tracking-wider text-[#1E40AF]">2. Información de la Mascota</h4>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* pet_name */}
-                <div>
-                  <label htmlFor="pet_name" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
-                    Nombre de la Mascota *
-                  </label>
-                  <input
-                    type="text"
-                    id="pet_name"
-                    name="pet_name"
-                    required
-                    value={formData.pet_name}
-                    onChange={handleChange}
-                    placeholder="Ej. Luna, Toby, Rocky"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 placeholder-slate-400 bg-white"
-                  />
-                </div>
-
-                {/* pet_type */}
-                <div>
-                  <label htmlFor="pet_type" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
-                    Tipo de Mascota *
-                  </label>
-                  <select
-                    id="pet_type"
-                    name="pet_type"
-                    required
-                    value={formData.pet_type}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 bg-white font-medium"
-                  >
-                    <option value="Perro">Perro (Canino)</option>
-                    <option value="Gato">Gato (Felino)</option>
-                    <option value="Conejo">Conejo</option>
-                    <option value="Ave / Exótico">Ave o Exótico</option>
-                    <option value="Otro">Otro animal de compañía</option>
-                  </select>
-                </div>
-
-                {/* current_status */}
-                <div className="sm:col-span-2">
-                  <label htmlFor="current_status" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
-                    Estado Actual de Identificación *
-                  </label>
-                  <select
-                    id="current_status"
-                    name="current_status"
-                    required
-                    value={formData.current_status}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 bg-white font-medium"
-                  >
-                    <option value="Sin microchip ni cédula">Sin microchip ni cédula (Deseo colocación en Quito)</option>
-                    <option value="Solo placa">Solo placa externa (Deseo microchip y cédula)</option>
-                    <option value="Tiene microchip, requiere Cédula RUACE">Ya tiene microchip, pero requiere Cédula Física y Placa QR</option>
-                    <option value="Requiere actualización de datos">Requiere actualización de tutor / cambio de domicilio</option>
-                    <option value="Mascota extraviada (Reporte Urgente)">Mascota extraviada (Reporte de urgencia en red de Quito)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="border-b border-slate-100 pb-3 pt-4">
-                <h4 className="text-xs font-black uppercase tracking-wider text-[#1E40AF]">3. Preferencias de Servicio & Contacto</h4>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* pet_travel_intent */}
-                <div>
-                  <label htmlFor="pet_travel_intent" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
-                    Intención de Viaje (Pet Travel) *
-                  </label>
-                  <select
-                    id="pet_travel_intent"
-                    name="pet_travel_intent"
-                    required
-                    value={formData.pet_travel_intent}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 bg-white font-medium"
-                  >
-                    <option value="No planeo viajar (Solo protección local en Quito)">No planeo viajar (Solo protección local en Quito)</option>
-                    <option value="Viaje Internacional próximo (USA / Europa / LATAM)">Viaje Internacional próximo (USA, Europa, LATAM)</option>
-                    <option value="Viaje Nacional / Galápagos">Viaje Nacional / Galápagos</option>
-                    <option value="Necesito asesoría completa Agrocalidad & IATA">Necesito asesoría completa Agrocalidad & IATA</option>
-                  </select>
-                </div>
-
-                {/* contact_method */}
-                <div>
-                  <label htmlFor="contact_method" className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
-                    Método Preferido de Contacto *
-                  </label>
-                  <select
-                    id="contact_method"
-                    name="contact_method"
-                    required
-                    value={formData.contact_method}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 bg-white font-medium"
-                  >
-                    <option value="WhatsApp">WhatsApp (Respuesta rápida)</option>
-                    <option value="Llamada Telefónica">Llamada Telefónica</option>
-                    <option value="Correo Electrónico">Correo Electrónico</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* CHECKBOX OBLIGATORIO: POLÍTICA DE PRIVACIDAD Y TRATAMIENTO DE DATOS ECUADOR 2026 */}
-              <div className="pt-4 border-t border-slate-100">
-                <div className="flex items-start gap-3 bg-[#FFFBEB] p-4 rounded-2xl border border-amber-200">
-                  <input
-                    type="checkbox"
-                    id="termsAccepted"
-                    name="termsAccepted"
-                    required
-                    checked={termsAccepted}
-                    onChange={(e) => setTermsAccepted(e.target.checked)}
-                    className="h-5 w-5 rounded border-slate-300 text-[#1E40AF] focus:ring-[#1E40AF] mt-0.5 cursor-pointer shrink-0"
-                  />
-                  <div className="text-xs text-slate-700 leading-relaxed">
-                    <label htmlFor="termsAccepted" className="cursor-pointer font-bold text-slate-900">
-                      Acepto la Política de Privacidad y el Tratamiento de Datos Personales en Ecuador (Ley LOPDP) *
-                    </label>
-                    <div className="mt-1">
-                      <button
-                        type="button"
-                        onClick={() => setShowPrivacyModal(true)}
-                        className="text-[11px] text-[#1E40AF] hover:underline font-bold"
-                      >
-                        Ver términos legales y derechos ARCO (LOPDP 2026)
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Botón Submit en Amarillo Acento #FBBF24 */}
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full py-4 px-6 rounded-2xl bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-900 font-black text-base shadow-lg shadow-[#FBBF24]/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-                >
-                  {loading ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-slate-900" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Conectando con Supabase y registrando...
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                      </svg>
-                      Enviar Solicitud de Registro Oficial
-                    </>
-                  )}
-                </button>
-                <p className="text-center text-[11px] text-slate-400 mt-3">
-                  Tus datos son almacenados de forma segura bajo estrictos protocolos de protección animal y privacidad.
-                </p>
-              </div>
-
-            </form>
-
-            {/* BLOQUE HORIZONTAL DE INSIGNIAS DE CONFIANZA (TRUST BADGES - REFERENCIA 3 PET STATION) */}
-            <div className="bg-[#FFFBEB] border-t border-amber-200/90 px-6 sm:px-10 py-5 rounded-b-3xl">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center shrink-0 shadow-sm font-black text-lg">
-                    ✓
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-black text-[#1E40AF]">
-                      Pago único, sin suscripciones ocultas.
-                    </p>
-                    <p className="text-[11px] sm:text-xs text-slate-700 font-semibold">
-                      Registro certificado bajo estándares ISO internacionales.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 text-[11px] font-bold text-slate-700">
-                  <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-amber-200 shadow-xs">
-                    <span className="text-[#1E40AF] font-black">●</span> Norma ISO 11784/85
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-amber-200 shadow-xs">
-                    <span className="text-emerald-600 font-black">●</span> Sin Mensualidades
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-amber-200 shadow-xs">
-                    <span className="text-[#1E40AF] font-black">●</span> Red Quito DMQ
-                  </span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
         </div>
       </section>
 
