@@ -303,103 +303,106 @@ export default function Home() {
               {/* Resplandor suave decorativo de fondo */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-white/60 rounded-full blur-3xl pointer-events-none"></div>
 
-              {/* MICRO-TARJETA FLOTANTE ULTRA-COMPACTA (REFERENCIA OFICIAL PET ID ECUADOR - CORGI) */}
-              <div className="absolute bottom-4 right-2 z-30 w-[240px] h-[145px] md:w-[260px] md:h-[155px] rounded-xl border border-slate-200/60 shadow-lg p-2 flex flex-col justify-between bg-gradient-to-br from-white to-[#F8FAFC] overflow-hidden transform hover:scale-105 transition-transform duration-300 select-none group">
+              {/* MICRO-TARJETA FLOTANTE 3D VIBRANTE (REFERENCIA OFICIAL PET ID ECUADOR - CORGI) */}
+              <div className="absolute bottom-4 right-2 z-30 w-[240px] h-[145px] md:w-[260px] md:h-[155px] rounded-xl p-2.5 flex flex-col justify-between overflow-hidden shadow-[0_20px_50px_rgba(30,64,175,0.3)] border border-white/20 transform rotate-1 -rotate-y-6 rotate-x-6 scale-95 lg:scale-100 hover:scale-105 hover:rotate-0 transition-all duration-500 ease-out select-none group bg-gradient-to-br from-[#0F172A] via-[#1E3A8A] to-[#0284C7]">
                 
-                {/* Micro-textura lineal de ondas suaves de seguridad */}
-                <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                {/* Trama de vectores lineales en ondas de seguridad */}
+                <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
                   <defs>
-                    <pattern id="security-waves" width="30" height="15" patternUnits="userSpaceOnUse">
-                      <path d="M 0 7.5 Q 7.5 0, 15 7.5 T 30 7.5" fill="none" stroke="#1E40AF" strokeWidth="0.6" />
-                      <path d="M 0 12 Q 7.5 4.5, 15 12 T 30 12" fill="none" stroke="#F59E0B" strokeWidth="0.6" />
+                    <pattern id="security-waves-3d" width="40" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M 0 10 Q 10 0, 20 10 T 40 10" fill="none" stroke="#38BDF8" strokeWidth="0.7" />
+                      <path d="M 0 15 Q 10 5, 20 15 T 40 15" fill="none" stroke="#FBBF24" strokeWidth="0.7" />
                     </pattern>
                   </defs>
-                  <rect width="100%" height="100%" fill="url(#security-waves)" />
+                  <rect width="100%" height="100%" fill="url(#security-waves-3d)" />
                 </svg>
 
                 {/* Reflejo brillante de plástico PVC plastificado */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent pointer-events-none rounded-xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent pointer-events-none rounded-xl"></div>
 
-                {/* 1. HEADER INSTITUCIONAL: TÍTULOS + BARRA VERTICAL + ISOTIPO PET ID */}
-                <div className="flex items-center justify-between pb-1 border-b border-slate-200/80 gap-1 relative z-10">
-                  {/* Lado izquierdo: Barra vertical amarilla y azul + Títulos institucionales */}
+                {/* 1. HEADER INSTITUCIONAL: TÍTULOS EN BLANCO BRILLANTE + LÍNEA AMARILLA VIBRANTE + ISOTIPO PET ID */}
+                <div className="flex items-center justify-between pb-1 border-b border-white/20 gap-1 relative z-10">
+                  {/* Lado izquierdo: Barra vertical amarilla vibrante + Títulos institucionales */}
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <div className="flex flex-col h-4.5 w-1 rounded-full overflow-hidden flex-shrink-0 shadow-2xs">
-                      <div className="h-1/2 w-full bg-[#FFD100]"></div>
+                    <div className="flex flex-col h-4.5 w-1 rounded-full overflow-hidden flex-shrink-0 shadow-[0_0_8px_rgba(251,191,36,0.6)]">
+                      <div className="h-1/2 w-full bg-[#FBBF24]"></div>
                       <div className="h-1/2 w-full bg-[#0072CE]"></div>
                     </div>
                     <div className="flex flex-col justify-center leading-tight min-w-0">
-                      <span className="text-[7px] font-black uppercase text-slate-800 tracking-tight leading-none truncate">
+                      <span className="text-[7px] font-black uppercase text-white tracking-wide leading-none truncate brightness-125 drop-shadow-xs">
                         REPÚBLICA DEL ECUADOR
                       </span>
-                      <span className="text-[5.5px] font-extrabold uppercase text-[#1E40AF] tracking-tighter leading-none truncate mt-0.5">
+                      <span className="text-[5.5px] font-extrabold uppercase text-sky-200 tracking-tighter leading-none truncate mt-0.5 drop-shadow-xs">
                         IDENTIFICACIÓN Y REGISTRO DE ANIMALES DE COMPAÑÍA
                       </span>
                     </div>
                   </div>
 
-                  {/* Lado derecho: Isotipo miniaturizado de 'Pet ID' */}
+                  {/* Lado derecho: Imagotipo nítido de 'Pet ID' con acento amarillo */}
                   <div className="flex items-center gap-0.5 flex-shrink-0 pl-1">
-                    <span className="text-[9px] font-black tracking-tighter text-[#1E40AF] leading-none">
-                      Pet<span className="text-[#F59E0B]">ID</span>
+                    <span className="text-[9.5px] font-black tracking-tighter text-white leading-none drop-shadow-xs">
+                      Pet<span className="text-[#FBBF24] drop-shadow-[0_0_6px_rgba(251,191,36,0.8)]">ID</span>
                     </span>
-                    <span className="text-[6px] leading-none">🐾</span>
+                    <span className="text-[6.5px] leading-none">🐾</span>
                   </div>
                 </div>
 
-                {/* 2. DISTRIBUCIÓN DE DATOS EN ALTA DENSIDAD (GRID 12 COLS) */}
+                {/* 2. DISTRIBUCIÓN DE DATOS EN ALTA DENSIDAD Y MÁXIMO CONTRASTE (GRID 12 COLS) */}
                 <div className="grid grid-cols-12 gap-1.5 mt-1 items-center flex-1 min-h-0 relative z-10">
                   
-                  {/* SECCIÓN IZQUIERDA (PORTARRETRATO MINI - span 4): FOTO OFICIAL CORGI + MICROCHIP */}
+                  {/* SECCIÓN IZQUIERDA (PORTARRETRATO - span 4): FOTO CORGI CON BRILLO METÁLICO */}
                   <div className="col-span-4 flex flex-col items-center justify-center">
-                    <img
-                      src="/corgi.jpg"
-                      alt="MAX - Perro Corgi Valés"
-                      className="w-[55px] h-[65px] rounded-lg object-cover object-top border border-slate-200 shadow-sm pointer-events-none"
-                    />
-                    <p className="text-[5.5px] text-slate-700 tracking-tighter text-center leading-tight mt-0.5 font-bold">
+                    <div className="relative rounded-lg p-0.5 bg-gradient-to-b from-white/60 via-white/20 to-sky-400/40 shadow-md">
+                      <img
+                        src="/corgi.jpg"
+                        alt="MAX - Perro Corgi Valés"
+                        className="w-[55px] h-[65px] rounded-lg border border-white/40 shadow-inner object-cover object-top pointer-events-none"
+                      />
+                    </div>
+                    <p className="text-[5.5px] font-medium text-slate-200 tracking-tighter text-center leading-tight mt-0.5 drop-shadow-xs">
                       Microchip: 123456789012345
                     </p>
                   </div>
 
-                  {/* SECCIÓN DERECHA (DATOS DEL CENSO + CHIP FÍSICO - span 8) */}
+                  {/* SECCIÓN DERECHA (DATOS DEL CENSO + CHIP FÍSICO DORADO - span 8) */}
                   <div className="col-span-8 flex items-center justify-between min-w-0 pl-0.5 h-full py-0.5">
                     
-                    {/* Datos del Censo Nacional */}
+                    {/* Datos del Censo Nacional en Blanco Puro y Blanco Translúcido */}
                     <div className="flex-1 flex flex-col justify-between text-left space-y-0.5 min-w-0 pr-1">
                       <div className="leading-tight">
-                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">NOMBRE: </span>
-                        <span className="text-[7px] font-bold text-slate-900 tracking-tight">MAX</span>
+                        <span className="text-[6.5px] text-white/70 font-bold uppercase">NOMBRE: </span>
+                        <span className="text-[7.5px] font-bold text-white tracking-tight drop-shadow-xs">MAX</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">ESPECIE: </span>
-                        <span className="text-[7px] font-bold text-slate-800">CANINA</span>
+                        <span className="text-[6.5px] text-white/70 font-bold uppercase">ESPECIE: </span>
+                        <span className="text-[7.5px] font-bold text-white drop-shadow-xs">CANINA</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">RAZA: </span>
-                        <span className="text-[7px] font-bold text-slate-900 truncate inline-block max-w-[65px] sm:max-w-[78px] align-bottom">CORGI VALÉS</span>
+                        <span className="text-[6.5px] text-white/70 font-bold uppercase">RAZA: </span>
+                        <span className="text-[7.5px] font-bold text-white truncate inline-block max-w-[65px] sm:max-w-[78px] align-bottom drop-shadow-xs">CORGI VALÉS</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">SEXO: </span>
-                        <span className="text-[7px] font-bold text-slate-800">MACHO</span>
+                        <span className="text-[6.5px] text-white/70 font-bold uppercase">SEXO: </span>
+                        <span className="text-[7.5px] font-bold text-white drop-shadow-xs">MACHO</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">F. DE NACIMIENTO: </span>
-                        <span className="text-[7px] font-bold text-slate-800">06-MAY-2026</span>
+                        <span className="text-[6.5px] text-white/70 font-bold uppercase">F. DE NACIMIENTO: </span>
+                        <span className="text-[7.5px] font-bold text-white drop-shadow-xs">06-MAY-2026</span>
                       </div>
                     </div>
 
-                    {/* Detalle de Microchip Físico Inteligente Dorado ISO */}
-                    <div className="flex flex-col items-center justify-center flex-shrink-0 w-8 py-0.5 border-l border-slate-200/80 pl-1">
-                      <div className="bg-[#F59E0B] w-4 h-3.5 rounded-sm border border-amber-600/40 relative overflow-hidden flex items-center justify-center shadow-xs">
-                        <div className="absolute inset-x-0 top-1/2 h-px bg-amber-700/60 -translate-y-1/2"></div>
-                        <div className="absolute inset-y-0 left-1/3 w-px bg-amber-700/60"></div>
-                        <div className="absolute inset-y-0 right-1/3 w-px bg-amber-700/60"></div>
-                        <div className="w-1.5 h-1 rounded-2xs border border-amber-800/60 bg-amber-200/80 z-10 flex items-center justify-center">
+                    {/* Detalle de Microchip Físico Inteligente Dorado con Resplandor */}
+                    <div className="flex flex-col items-center justify-center flex-shrink-0 w-8 py-0.5 border-l border-white/20 pl-1">
+                      <div className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] w-4.5 h-3.5 rounded-sm border border-yellow-400 shadow-[0_0_8px_rgba(245,158,11,0.5)] relative overflow-hidden flex items-center justify-center">
+                        {/* Pistas internas de circuito de cobre grabado */}
+                        <div className="absolute inset-x-0 top-1/2 h-px bg-amber-900/70 -translate-y-1/2"></div>
+                        <div className="absolute inset-y-0 left-1/3 w-px bg-amber-900/70"></div>
+                        <div className="absolute inset-y-0 right-1/3 w-px bg-amber-900/70"></div>
+                        <div className="w-1.5 h-1 rounded-2xs border border-amber-900/80 bg-amber-200/90 z-10 flex items-center justify-center">
                           <span className="text-[3px] font-black text-amber-950 leading-none">ISO</span>
                         </div>
                       </div>
-                      <span className="text-[4px] font-black text-slate-500 tracking-tight leading-none mt-1">
+                      <span className="text-[4px] font-black text-amber-300 tracking-tight leading-none mt-1 drop-shadow-xs">
                         11784/85
                       </span>
                     </div>
