@@ -759,7 +759,7 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="empresa_negocio" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
-                    Clínica u Organización de Respaldo (Opcional)
+                    Veterinaria de tu mascota (Opcional)
                   </label>
                   <input
                     type="text"
@@ -767,7 +767,7 @@ export default function Home() {
                     name="empresa_negocio"
                     value={formData.empresa_negocio}
                     onChange={handleChange}
-                    placeholder="Clínica u Organización de Respaldo (Opcional)"
+                    placeholder="Veterinaria de tu mascota (Opcional)"
                     className="w-full h-10 px-3.5 py-2 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 placeholder-slate-400 bg-white"
                   />
                 </div>
