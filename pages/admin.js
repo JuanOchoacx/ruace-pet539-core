@@ -713,6 +713,33 @@ export default function AdminDashboard() {
     };
   }, [leads]);
 
+  // CAPA DE CÁLCULO EN TIEMPO REAL PARA EL SEMÁFORO DE PRIORIDADES (TAREAS URGENTES PENDIENTES)
+  const trafficLightCounts = useMemo(() => {
+    // Filtrar prospectos pendientes (lead_status estrictamente 'Por contactar' o nulo)
+    const pendingLeads = processedLeads.filter((l) => {
+      const st = (l.lead_status || '').trim().toLowerCase();
+      return !st || st === 'por contactar' || st === 'pendiente';
+    });
+
+    // 1. Alertas Rojas (Alta Prioridad): lead_score >= 80 (Riesgo Crítico / Viaje inminente)
+    const criticalRedCount = pendingLeads.filter((l) => l.lead_score >= 80).length;
+
+    // 2. Alertas Amarillas (Prioridad Media): lead_score entre 40 y 79 (Validación Médica)
+    const moderateYellowCount = pendingLeads.filter(
+      (l) => l.lead_score >= 40 && l.lead_score < 80
+    ).length;
+
+    // 3. Alertas Verdes (Prioridad Estable): lead_score < 40 (Baja urgencia)
+    const stableGreenCount = pendingLeads.filter((l) => l.lead_score < 40).length;
+
+    return {
+      pendingTotal: pendingLeads.length,
+      criticalRedCount,
+      moderateYellowCount,
+      stableGreenCount,
+    };
+  }, [processedLeads]);
+
   // SI NO ESTÁ AUTENTICADO: PANTALLA DE ACCESO CON PALETA OFICIAL PET593
   if (!isAuthenticated) {
     return (
@@ -1440,6 +1467,87 @@ export default function AdminDashboard() {
           <div className="p-4 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
             <span>Algoritmo de puntuación: <strong className="text-[#1E40AF]">RUACE Scoring Engine v1.5</strong></span>
             <span>Tabla Supabase: <code className="text-[#1E40AF] font-mono font-bold">ruace_pet539_leads</code></span>
+          </div>
+        </section>
+
+        {/* SEMÁFORO DE PRIORIDADES Y TAREAS URGENTES (VISIBLE PARA TODOS LOS ROLES) */}
+        <section className="bg-white rounded-3xl border-t border-gray-100 p-6 shadow-2xl space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl">🚨</span>
+              <h3 className="text-sm sm:text-base font-black text-[#1E40AF] tracking-tight">
+                Semáforo de Prioridades y Tareas Urgentes (Leads por Contactar)
+              </h3>
+            </div>
+            <span className="self-start sm:self-auto px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-mono font-bold border border-slate-200">
+              {trafficLightCounts.pendingTotal} leads pendientes en cola
+            </span>
+          </div>
+
+          {/* 3 BLOQUES VISUALES DE ALTO IMPACTO */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            {/* Bloque Rojo (Pulsante): CRÍTICO (Score ≥80) */}
+            <div className="bg-red-50 text-red-700 border-2 border-red-200 rounded-2xl p-4 flex items-start gap-3 transition-all hover:shadow-md">
+              <div className="relative flex items-center justify-center mt-1 shrink-0">
+                <span className="w-3 h-3 rounded-full bg-red-500 animate-ping absolute opacity-75"></span>
+                <span className="w-3 h-3 rounded-full bg-red-600 relative"></span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-baseline justify-between mb-1">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-red-800">
+                    CRÍTICO (Score ≥80)
+                  </span>
+                  <span className="text-2xl font-black font-mono text-red-700">
+                    {trafficLightCounts.criticalRedCount}
+                  </span>
+                </div>
+                <p className="text-xs font-semibold text-red-700 leading-snug">
+                  CRÍTICO (Score ≥80): <strong className="font-black text-red-900">{trafficLightCounts.criticalRedCount}</strong> Mascotas en riesgo de pérdida o con viajes a corto plazo.
+                </p>
+              </div>
+            </div>
+
+            {/* Bloque Amarillo: MODERADO (Score 40-79) */}
+            <div className="bg-amber-50 text-amber-700 border-2 border-amber-200 rounded-2xl p-4 flex items-start gap-3 transition-all hover:shadow-md">
+              <div className="mt-1 flex items-center justify-center shrink-0">
+                <span className="w-3 h-3 rounded-full bg-amber-500"></span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-baseline justify-between mb-1">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-900">
+                    MODERADO (Score 40-79)
+                  </span>
+                  <span className="text-2xl font-black font-mono text-amber-800">
+                    {trafficLightCounts.moderateYellowCount}
+                  </span>
+                </div>
+                <p className="text-xs font-semibold text-amber-800 leading-snug">
+                  MODERADO (Score 40-79): <strong className="font-black text-amber-950">{trafficLightCounts.moderateYellowCount}</strong> Registros pendientes de validación médica.
+                </p>
+              </div>
+            </div>
+
+            {/* Bloque Verde: ESTABLE (Score <40) */}
+            <div className="bg-emerald-50 text-emerald-700 border-2 border-emerald-200 rounded-2xl p-4 flex items-start gap-3 transition-all hover:shadow-md">
+              <div className="mt-1 flex items-center justify-center shrink-0">
+                <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-baseline justify-between mb-1">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-emerald-900">
+                    ESTABLE (Score &lt;40)
+                  </span>
+                  <span className="text-2xl font-black font-mono text-emerald-800">
+                    {trafficLightCounts.stableGreenCount}
+                  </span>
+                </div>
+                <p className="text-xs font-semibold text-emerald-800 leading-snug">
+                  ESTABLE (Score &lt;40): <strong className="font-black text-emerald-950">{trafficLightCounts.stableGreenCount}</strong> Leads de baja urgencia comercial.
+                </p>
+              </div>
+            </div>
+
           </div>
         </section>
 
