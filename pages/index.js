@@ -211,17 +211,12 @@ export default function Home() {
                 Identificación Veterinaria Oficial en el Distrito Metropolitano de Quito
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1E40AF] tracking-tight leading-[1.14]">
-                Dale a tu peludito una{' '}
-                <span className="text-slate-900 relative inline-block">
-                  identidad indestructible
-                  <span className="absolute bottom-1 left-0 w-full h-3 bg-[#FBBF24]/40 -z-10 rounded"></span>
-                </span>{' '}
-                y asegura su regreso a casa.
+              <h1 className="text-4xl sm:text-5xl font-extrabold text-[#1E40AF] tracking-tight leading-none mb-4">
+                Dale a tu peludito una identidad indestructible y asegura su regreso a casa.
               </h1>
 
               <p className="text-lg sm:text-xl text-slate-600 max-w-2xl font-normal leading-relaxed">
-                El microchip permanente y su <strong className="text-[#1E40AF] font-bold">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Sin mensualidades. Protegido en Quito y el mundo entero.
+                El microchip permanente y su <strong className="text-[#1E40AF] font-bold">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Protegido en Quito y el mundo entero.
               </p>
 
               {/* Botones de acción rápida */}
