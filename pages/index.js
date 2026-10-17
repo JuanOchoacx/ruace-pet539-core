@@ -1081,19 +1081,19 @@ export default function Home() {
                   </div>
 
                   {/* Collage fotográfico */}
-                  <div className="grid grid-cols-2 gap-3 pt-2">
-                    <div className="rounded-2xl overflow-hidden border-2 border-white/30 shadow-md">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 pt-2 items-stretch">
+                    <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-white/30 shadow-md bg-slate-900/40">
                       <img
-                        src="/hero-tutor-corgi.png"
-                        alt="Tutora abrazando a su perro Corgi con microchip oficial"
-                        className="w-full h-36 object-cover object-top hover:scale-110 transition-transform duration-500"
+                        src="/gato-y-duena.png"
+                        alt="Tutora abrazando a su gato bengalí identificado con microchip oficial"
+                        className="w-full h-full object-cover rounded-xl shadow-sm aspect-square hover:scale-105 transition-transform duration-500"
                       />
                     </div>
-                    <div className="rounded-2xl overflow-hidden border-2 border-white/30 shadow-md">
+                    <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-white/30 shadow-md bg-white flex items-center justify-center">
                       <img
-                        src="/corgi.jpg"
-                        alt="Perro identificado con cédula PET 593"
-                        className="w-full h-36 object-cover object-center hover:scale-110 transition-transform duration-500"
+                        src="/gato-bengali-pata.png"
+                        alt="Gato bengalí identificado con sistema RUACE PET593"
+                        className="w-full h-full object-cover rounded-xl shadow-sm aspect-square hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                   </div>
