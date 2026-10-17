@@ -158,20 +158,13 @@ export default function Home() {
         <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#1E40AF] flex items-center justify-center text-[#FBBF24] shadow-md shadow-[#1E40AF]/20">
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-black text-2xl tracking-tight text-[#1E40AF]">RUACE</span>
-                <span className="bg-[#FFFBEB] text-[#1E40AF] text-xs px-2.5 py-0.5 rounded-full font-extrabold uppercase tracking-wider border border-[#FBBF24]">
-                  PET539
-                </span>
-              </div>
-              <p className="text-xs text-slate-500 font-medium">Registro Animal & Cédulas Oficiales Ecuador</p>
-            </div>
+            <a href="#" className="flex items-center gap-2.5 group">
+              <img
+                src="/pet593-logo.png"
+                alt="PET 593 ID - Registro e Identificación Oficial de Mascotas"
+                className="h-12 w-auto object-contain md:h-14 transition-transform duration-300 hover:scale-105"
+              />
+            </a>
           </div>
 
           <nav className="hidden lg:flex items-center space-x-6 text-sm font-bold text-slate-700">
