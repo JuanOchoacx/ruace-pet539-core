@@ -190,8 +190,10 @@ const DEMO_LEADS = [
 ];
 
 export default function AdminDashboard() {
-  // CONTROL DE ACCESO CON CONTRASEÑA SEGURA
+  // CONTROL DE ACCESO CON USUARIO, CLAVE Y ROLES (ADMIN / OPERATOR)
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState(null); // 'admin' | 'operator'
+  const [usernameInput, setUsernameInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
@@ -213,12 +215,14 @@ export default function AdminDashboard() {
   const [loadingAiLead, setLoadingAiLead] = useState(null);
   const [triageLoading, setTriageLoading] = useState(false);
 
-  // VERIFICAR AUTENTICACIÓN EN SESIÓN
+  // VERIFICAR AUTENTICACIÓN Y ROL EN SESIÓN
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const authStored = sessionStorage.getItem('ruace_admin_auth');
-      if (authStored === 'true') {
+      const roleStored = sessionStorage.getItem('ruace_admin_role');
+      if (authStored === 'true' && roleStored) {
         setIsAuthenticated(true);
+        setUserRole(roleStored);
       }
     }
   }, []);
@@ -282,17 +286,32 @@ export default function AdminDashboard() {
     }
   }, [isAuthenticated]);
 
-  // MANEJO DE INICIO DE SESIÓN
+  // MANEJO DE INICIO DE SESIÓN CON CREDENCIALES EXACTAS Y ASIGNACIÓN DE ROL
   const handleLogin = (e) => {
     e.preventDefault();
-    if (passwordInput.trim() === MASTER_PASSWORD || passwordInput.trim() === 'admin539') {
+    const user = usernameInput.trim();
+    const pass = passwordInput.trim();
+
+    if (user === 'ruace2026' && pass === '12345') {
+      // Rol 'admin': Acceso Total Dueño
       if (typeof window !== 'undefined') {
         sessionStorage.setItem('ruace_admin_auth', 'true');
+        sessionStorage.setItem('ruace_admin_role', 'admin');
       }
       setIsAuthenticated(true);
+      setUserRole('admin');
+      setAuthError('');
+    } else if (user === 'empleado593' && pass === '11111') {
+      // Rol 'operator': Acceso Limitado Operador
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('ruace_admin_auth', 'true');
+        sessionStorage.setItem('ruace_admin_role', 'operator');
+      }
+      setIsAuthenticated(true);
+      setUserRole('operator');
       setAuthError('');
     } else {
-      setAuthError('Contraseña incorrecta. Por favor, verifica tus credenciales institucionales.');
+      setAuthError('Credenciales incorrectas. Intente de nuevo.');
     }
   };
 
@@ -300,8 +319,11 @@ export default function AdminDashboard() {
   const handleLogout = () => {
     if (typeof window !== 'undefined') {
       sessionStorage.removeItem('ruace_admin_auth');
+      sessionStorage.removeItem('ruace_admin_role');
     }
     setIsAuthenticated(false);
+    setUserRole(null);
+    setUsernameInput('');
     setPasswordInput('');
   };
 
@@ -652,10 +674,25 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label htmlFor="adminUsername" className="block text-xs font-bold text-[#1E40AF] uppercase tracking-wider mb-2">
+                Usuario *
+              </label>
+              <input
+                type="text"
+                id="adminUsername"
+                required
+                value={usernameInput}
+                onChange={(e) => setUsernameInput(e.target.value)}
+                placeholder="Ingresa tu usuario (ej. ruace2026 / empleado593)..."
+                className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 text-sm text-slate-900 placeholder-slate-400 outline-none transition font-medium"
+              />
+            </div>
+
             <div>
               <label htmlFor="adminPassword" className="block text-xs font-bold text-[#1E40AF] uppercase tracking-wider mb-2">
-                Contraseña de Acceso *
+                Clave *
               </label>
               <div className="relative">
                 <input
@@ -664,8 +701,8 @@ export default function AdminDashboard() {
                   required
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
-                  placeholder="Ingresa la clave segura..."
-                  className="w-full px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 text-sm text-slate-900 placeholder-slate-400 outline-none transition font-medium"
+                  placeholder="Ingresa tu clave..."
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 text-sm text-slate-900 placeholder-slate-400 outline-none transition font-medium"
                 />
                 <button
                   type="button"
@@ -675,20 +712,25 @@ export default function AdminDashboard() {
                   {showPassword ? 'Ocultar' : 'Ver'}
                 </button>
               </div>
-              <p className="text-[11px] text-slate-500 mt-2">
-                💡 <span className="font-semibold text-slate-700">Credencial de evaluación académica:</span> <code className="text-[#1E40AF] bg-amber-50 border border-[#FBBF24] px-1.5 py-0.5 rounded font-mono font-bold">ruace2026</code>
-              </p>
+            </div>
+
+            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-1">
+              <p className="font-bold text-slate-700">💡 Credenciales autorizadas del sistema:</p>
+              <div className="flex flex-col gap-1 font-mono text-[10px]">
+                <div>• <span className="font-bold text-[#1E40AF]">Dueño (Admin):</span> <code className="bg-amber-50 px-1 py-0.5 rounded border border-[#FBBF24]">ruace2026</code> / <code className="bg-amber-50 px-1 py-0.5 rounded border border-[#FBBF24]">12345</code></div>
+                <div>• <span className="font-bold text-slate-800">Operador (Empleado):</span> <code className="bg-slate-200 px-1 py-0.5 rounded border border-slate-300">empleado593</code> / <code className="bg-slate-200 px-1 py-0.5 rounded border border-slate-300">11111</code></div>
+              </div>
             </div>
 
             <button
               type="submit"
               className="w-full py-3.5 rounded-2xl bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-900 font-black text-sm shadow-lg shadow-[#FBBF24]/30 transition-all hover:scale-[1.01] active:scale-[0.99]"
             >
-              Desbloquear Dashboard
+              Iniciar Sesión
             </button>
           </form>
 
-          <div className="pt-4 border-t border-slate-100 text-center">
+          <div className="pt-3 border-t border-slate-100 text-center">
             <Link href="/" className="text-xs text-[#1E40AF] hover:underline transition font-bold">
               ← Volver a la Landing Page
             </Link>
@@ -725,6 +767,16 @@ export default function AdminDashboard() {
           </div>
 
           <div className="flex items-center gap-3">
+            {/* BADGE DE ROL ACTIVO (ADMIN / OPERATOR) */}
+            <span className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-xl border font-black ${
+              userRole === 'admin'
+                ? 'bg-amber-50 text-[#1E40AF] border-[#FBBF24]'
+                : 'bg-slate-100 text-slate-800 border-slate-300'
+            }`}>
+              <span>{userRole === 'admin' ? '👑' : '👤'}</span>
+              <span>{userRole === 'admin' ? 'Rol: Dueño (Admin Total)' : 'Rol: Operador (Empleado)'}</span>
+            </span>
+
             <span className="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-600 bg-[#FFFBEB] px-3 py-1.5 rounded-xl border border-amber-200 font-medium">
               <span className={`w-2 h-2 rounded-full ${dbConnected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`}></span>
               {dbConnected ? 'Supabase Conectado' : 'Modo Demostrativo'}
@@ -783,130 +835,153 @@ export default function AdminDashboard() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
         {/* SECCIÓN KPI DEL VENDEDOR: TARJETAS CON NÚMEROS GIGANTES EN NEGRITA (+15.000, +120) */}
-        <section className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFFBEB] border border-[#FBBF24] text-[#1E40AF] text-xs font-black uppercase tracking-wider mb-2">
-                🎯 Tablero de Objetivos Comerciales del Asesor
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-[#1E40AF] tracking-tight">
-                Métricas de Impacto y Conversión en Quito
-              </h1>
-              <p className="text-slate-600 text-xs sm:text-sm mt-0.5 font-normal">
-                Monitoreo en tiempo real de metas comerciales, atención prioritaria de leads y alcance de la red.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold">
-                Red Activa Quito
-              </span>
-              <span className="px-3 py-1 rounded-xl bg-[#FFFBEB] text-[#1E40AF] border border-[#FBBF24] text-xs font-bold">
-                Meta 2026
-              </span>
-            </div>
-          </div>
-
-          {/* GRID DE NÚMEROS GIGANTES */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            
-            {/* Tarjeta 1: +15,000 Mascotas Registradas */}
-            <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-28 h-28 bg-[#1E40AF]/5 rounded-bl-full pointer-events-none group-hover:bg-[#FBBF24]/10 transition-colors"></div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  Mascotas Registradas
-                </span>
-                <span className="text-xs font-black bg-[#FFFBEB] text-[#1E40AF] px-2 py-0.5 rounded-full border border-amber-200">
-                  Total DMQ
-                </span>
-              </div>
-              <p className="text-4xl sm:text-5xl font-black text-[#1E40AF] tracking-tight font-mono">
-                +15,000
-              </p>
-              <p className="text-xs text-slate-500 mt-2 font-medium">
-                Perros y gatos con microchip ISO y PETCÉDULA en Quito y Ecuador.
-              </p>
-            </div>
-
-            {/* Tarjeta 2: +120 Clínicas Aliadas en Quito */}
-            <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-28 h-28 bg-[#FBBF24]/10 rounded-bl-full pointer-events-none group-hover:bg-[#1E40AF]/10 transition-colors"></div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  Clínicas Aliadas en Quito
-                </span>
-                <span className="text-xs font-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
-                  Red Activa
-                </span>
-              </div>
-              <p className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight font-mono">
-                +120
-              </p>
-              <p className="text-xs text-slate-500 mt-2 font-medium">
-                Centros veterinarios homologados para colocación inmediata y validación.
-              </p>
-            </div>
-
-            {/* Tarjeta 3: 47.7% Tasa de Cierre Comercial */}
-            <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  Tasa de Cierre Comercial
-                </span>
-                <span className="text-xs font-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
-                  Efectividad
-                </span>
-              </div>
-              <p className="text-4xl sm:text-5xl font-black text-emerald-600 tracking-tight font-mono">
-                47.7%
-              </p>
-              <p className="text-xs text-slate-500 mt-2 font-medium">
-                Conversión promedio del asesor en prospectos de viaje y alto riesgo.
-              </p>
-            </div>
-
-            {/* Tarjeta 4: Contactos del Asesor (Meta Semanal) */}
-            <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  Meta Semanal del Asesor
-                </span>
-                <span className="text-xs font-black bg-[#FBBF24] text-slate-900 px-2.5 py-0.5 rounded-full shadow-sm">
-                  {sellerKpis.goalPercentage}%
-                </span>
-              </div>
-              <div className="flex items-baseline gap-2">
-                <p className="text-4xl sm:text-5xl font-black text-[#1E40AF] tracking-tight font-mono">
-                  {sellerKpis.contactedCount}
+        {/* REGLA DE ROL: VISIBLE ÚNICAMENTE PARA 'admin' (DUEÑO). OCULTO PARA 'operator' */}
+        {userRole === 'admin' && (
+          <section className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFFBEB] border border-[#FBBF24] text-[#1E40AF] text-xs font-black uppercase tracking-wider mb-2">
+                  🎯 Tablero de Objetivos Comerciales del Asesor (Vista Exclusiva Administrador)
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-black text-[#1E40AF] tracking-tight">
+                  Métricas de Impacto y Conversión en Quito
+                </h1>
+                <p className="text-slate-600 text-xs sm:text-sm mt-0.5 font-normal">
+                  Monitoreo en tiempo real de metas comerciales, atención prioritaria de leads y alcance de la red.
                 </p>
-                <span className="text-xl font-bold text-slate-400 font-mono">
-                  / {sellerKpis.weeklyGoal}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold">
+                  Red Activa Quito
+                </span>
+                <span className="px-3 py-1 rounded-xl bg-[#FFFBEB] text-[#1E40AF] border border-[#FBBF24] text-xs font-bold">
+                  Meta 2026
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-2 font-medium">
-                {sellerKpis.pendingCount} prospectos restantes en la cola actual.
-              </p>
             </div>
 
-          </div>
+            {/* GRID DE NÚMEROS GIGANTES */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              
+              {/* Tarjeta 1: +15,000 Mascotas Registradas */}
+              <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-28 h-28 bg-[#1E40AF]/5 rounded-bl-full pointer-events-none group-hover:bg-[#FBBF24]/10 transition-colors"></div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                    Mascotas Registradas
+                  </span>
+                  <span className="text-xs font-black bg-[#FFFBEB] text-[#1E40AF] px-2 py-0.5 rounded-full border border-amber-200">
+                    Total DMQ
+                  </span>
+                </div>
+                <p className="text-4xl sm:text-5xl font-black text-[#1E40AF] tracking-tight font-mono">
+                  +15,000
+                </p>
+                <p className="text-xs text-slate-500 mt-2 font-medium">
+                  Perros y gatos con microchip ISO y PETCÉDULA en Quito y Ecuador.
+                </p>
+              </div>
 
-          {/* BARRA DE PROGRESO DE OBJETIVO COMERCIAL */}
-          <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3">
-            <div className="flex items-center justify-between text-xs font-bold">
-              <span className="text-slate-700">Progreso hacia el objetivo comercial semanal ({sellerKpis.weeklyGoal} contactos):</span>
-              <span className={sellerKpis.goalPercentage >= 80 ? 'text-[#1E40AF]' : 'text-amber-700'}>
-                {sellerKpis.goalPercentage}% completado {sellerKpis.goalPercentage >= 100 ? '🎉 ¡Meta Semanal Alcanzada!' : ''}
-              </span>
+              {/* Tarjeta 2: +120 Clínicas Aliadas en Quito */}
+              <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-28 h-28 bg-[#FBBF24]/10 rounded-bl-full pointer-events-none group-hover:bg-[#1E40AF]/10 transition-colors"></div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                    Clínicas Aliadas en Quito
+                  </span>
+                  <span className="text-xs font-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
+                    Red Activa
+                  </span>
+                </div>
+                <p className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight font-mono">
+                  +120
+                </p>
+                <p className="text-xs text-slate-500 mt-2 font-medium">
+                  Centros veterinarios homologados para colocación inmediata y validación.
+                </p>
+              </div>
+
+              {/* Tarjeta 3: 47.7% Tasa de Cierre Comercial */}
+              <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                    Tasa de Cierre Comercial
+                  </span>
+                  <span className="text-xs font-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
+                    Efectividad
+                  </span>
+                </div>
+                <p className="text-4xl sm:text-5xl font-black text-emerald-600 tracking-tight font-mono">
+                  47.7%
+                </p>
+                <p className="text-xs text-slate-500 mt-2 font-medium">
+                  Conversión promedio del asesor en prospectos de viaje y alto riesgo.
+                </p>
+              </div>
+
+              {/* Tarjeta 4: Contactos del Asesor (Meta Semanal) */}
+              <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                    Meta Semanal del Asesor
+                  </span>
+                  <span className="text-xs font-black bg-[#FBBF24] text-slate-900 px-2.5 py-0.5 rounded-full shadow-sm">
+                    {sellerKpis.goalPercentage}%
+                  </span>
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-4xl sm:text-5xl font-black text-[#1E40AF] tracking-tight font-mono">
+                    {sellerKpis.contactedCount}
+                  </p>
+                  <span className="text-xl font-bold text-slate-400 font-mono">
+                    / {sellerKpis.weeklyGoal}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 mt-2 font-medium">
+                  {sellerKpis.pendingCount} prospectos restantes en la cola actual.
+                </p>
+              </div>
+
             </div>
-            <div className="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
-              <div
-                className="h-full bg-gradient-to-r from-[#1E40AF] via-[#1E40AF] to-[#FBBF24] rounded-full transition-all duration-500"
-                style={{ width: `${sellerKpis.goalPercentage}%` }}
-              ></div>
+
+            {/* BARRA DE PROGRESO DE OBJETIVO COMERCIAL */}
+            <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3">
+              <div className="flex items-center justify-between text-xs font-bold">
+                <span className="text-slate-700">Progreso hacia el objetivo comercial semanal ({sellerKpis.weeklyGoal} contactos):</span>
+                <span className={sellerKpis.goalPercentage >= 80 ? 'text-[#1E40AF]' : 'text-amber-700'}>
+                  {sellerKpis.goalPercentage}% completado {sellerKpis.goalPercentage >= 100 ? '🎉 ¡Meta Semanal Alcanzada!' : ''}
+                </span>
+              </div>
+              <div className="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                <div
+                  className="h-full bg-gradient-to-r from-[#1E40AF] via-[#1E40AF] to-[#FBBF24] rounded-full transition-all duration-500"
+                  style={{ width: `${sellerKpis.goalPercentage}%` }}
+                ></div>
+              </div>
             </div>
+          </section>
+        )}
+
+        {/* BANNER INFORMATIVO PARA EL OPERADOR SI ESTÁ EN MODO LIMITADO */}
+        {userRole === 'operator' && (
+          <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl">📋</span>
+              <div>
+                <p className="text-xs font-black text-[#1E40AF] uppercase tracking-wide">
+                  Panel de Operaciones Veterinarias
+                </p>
+                <p className="text-[11px] text-slate-500 font-medium">
+                  Gestión y seguimiento de prospectos en cola. Escribe tus notas y marca como contactado.
+                </p>
+              </div>
+            </div>
+            <span className="bg-slate-100 text-slate-700 text-[10px] font-mono px-2.5 py-1 rounded-full border border-slate-200 font-bold">
+              Vista Operador
+            </span>
           </div>
-        </section>
+        )}
 
         {/* FILTROS INTERACTIVOS: SEGMENTACIÓN CONTACTADOS VS PENDIENTES */}
         <section className="bg-white p-5 rounded-3xl border border-slate-200 space-y-4 shadow-sm">
