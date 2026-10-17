@@ -36,6 +36,8 @@ export const calculateLeadScore = (lead) => {
     score += 30; // Mascota desprotegida
   } else if (status.includes('chip sin perfil') || status.includes('requiere cédula') || status.includes('tiene microchip')) {
     score += 15; // Ya tiene chip pero falta cédula o perfil activo
+  } else if (status.includes('viaje') || status.includes('internacional') || status.includes('travel')) {
+    score += 40; // Trámite de Viaje Internacional / Pet Travel
   }
 
   // Evaluar Contact Method
@@ -1262,9 +1264,9 @@ export default function AdminDashboard() {
                             </p>
                             <div className="pt-1 flex items-center gap-1.5">
                               <span className="px-2 py-0.5 rounded-md bg-[#FFFBEB] text-[#1E40AF] text-[11px] font-bold border border-amber-200">
-                                {lead.pet_type === 'Gato' ? '🐱' : '🐶'} {lead.pet_name}
+                                {(lead.pet_type || '').toLowerCase().includes('gato') ? '🐈' : (lead.pet_type || '').toLowerCase().includes('perro') ? '🐕' : '🐾'} {lead.pet_name}
                               </span>
-                              <span className="text-[10px] text-slate-500">({lead.pet_type})</span>
+                              <span className="text-[10px] text-slate-500 capitalize">({lead.pet_type})</span>
                             </div>
                           </div>
                         </td>

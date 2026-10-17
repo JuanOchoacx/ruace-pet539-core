@@ -16,7 +16,8 @@ export default function Home() {
     owner_phone: '',
     owner_email: '',
     pet_name: '',
-    pet_type: 'Perro',
+    pet_type: 'perro',
+    tipo_mascota: 'perro',
     current_status: 'Sin microchip ni cédula',
     pet_travel_intent: 'No planeo viajar (Protección a nivel nacional)',
     contact_method: 'WhatsApp',
@@ -45,6 +46,8 @@ export default function Home() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === 'tipo_mascota' ? { pet_type: value } : {}),
+      ...(name === 'pet_type' ? { tipo_mascota: value } : {}),
     }));
   };
 
@@ -72,7 +75,7 @@ export default function Home() {
             owner_phone: formData.owner_phone.trim(),
             owner_email: formData.owner_email.trim().toLowerCase(),
             pet_name: formData.pet_name.trim(),
-            pet_type: formData.pet_type,
+            pet_type: formData.tipo_mascota || formData.pet_type || 'perro',
             current_status: formData.current_status,
             pet_travel_intent: formData.pet_travel_intent,
             contact_method: formData.contact_method,
@@ -95,7 +98,8 @@ export default function Home() {
         owner_phone: '',
         owner_email: '',
         pet_name: '',
-        pet_type: 'Perro',
+        pet_type: 'perro',
+        tipo_mascota: 'perro',
         current_status: 'Sin microchip ni cédula',
         pet_travel_intent: 'No planeo viajar (Protección a nivel nacional)',
         contact_method: 'WhatsApp',
@@ -917,22 +921,20 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <label htmlFor="pet_type" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                  <label htmlFor="tipo_mascota" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
                     Tipo de Mascota *
                   </label>
                   <select
-                    id="pet_type"
-                    name="pet_type"
+                    id="tipo_mascota"
+                    name="tipo_mascota"
                     required
-                    value={formData.pet_type}
+                    value={formData.tipo_mascota || formData.pet_type || 'perro'}
                     onChange={handleChange}
                     className="w-full h-10 px-3 py-2 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 bg-white font-medium"
                   >
-                    <option value="Perro">🐶 Perro (Canino)</option>
-                    <option value="Gato">🐱 Gato (Felino)</option>
-                    <option value="Conejo">🐰 Conejo</option>
-                    <option value="Ave / Exótico">🦜 Ave o Exótico</option>
-                    <option value="Otro">🐾 Otro animal</option>
+                    <option value="perro">🐕 Perro (Canino)</option>
+                    <option value="gato">🐈 Gato (Felino)</option>
+                    <option value="otro">🐾 Otro animal de compañía (Conejo, hurón, mini-pig, etc.)</option>
                   </select>
                 </div>
               </div>
@@ -952,10 +954,9 @@ export default function Home() {
                     className="w-full h-10 px-3 py-2 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 bg-white font-medium"
                   >
                     <option value="Sin microchip ni cédula">Sin microchip ni cédula (Deseo colocación en Ecuador)</option>
-                    <option value="Solo placa">Solo placa externa (Deseo microchip y cédula)</option>
-                    <option value="Tiene microchip, requiere Cédula RUACE">Ya tiene microchip, pero requiere Cédula Física y Placa QR</option>
-                    <option value="Requiere actualización de datos">Requiere actualización de tutor / cambio de domicilio</option>
-                    <option value="Mascota extraviada (Reporte Urgente)">Mascota extraviada (Reporte de urgencia en red nacional)</option>
+                    <option value="Solo placa externa">Solo placa externa (Deseo microchip y cédula)</option>
+                    <option value="Ya tiene microchip, requiere Cédula RUACE">Ya tiene microchip, pero requiere Cédula Física y Placa QR</option>
+                    <option value="Trámite de Viaje Internacional / Pet Travel">Trámite de Viaje Internacional / Pet Travel (Microchip ISO & Asesoría)</option>
                   </select>
                 </div>
 
