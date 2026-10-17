@@ -296,8 +296,8 @@ export default function Home() {
               </div>
 
               {/* TÍTULO PRINCIPAL: DOLOR DE PÉRDIDA Y SEGURIDAD */}
-              <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black text-[#1E40AF] tracking-tight leading-tight">
-                Dale a tu peludito una identidad indestructible y asegura su regreso a casa.
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-6 max-w-3xl text-[#1E3A8A]">
+                Dale a tu peludito una identidad segura y asegura su regreso a casa.
               </h1>
 
               {/* PÁRRAFO DESCRIPTIVO */}
