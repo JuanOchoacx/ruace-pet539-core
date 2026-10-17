@@ -326,6 +326,21 @@ export default function AdminDashboard() {
     setPasswordInput('');
   };
 
+  // ALTERNANCIA DE ROL EN 1-CLIC (DUEÑO ADMIN TOTAL VS OPERADOR EMPLEADO)
+  const handleToggleRole = () => {
+    const nextRole = userRole === 'admin' ? 'operator' : 'admin';
+    setUserRole(nextRole);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('ruace_admin_role', nextRole);
+    }
+    setNotification({
+      type: 'success',
+      text: nextRole === 'admin' 
+        ? '👑 Modo Dueño (Admin Total) activado: Acceso completo a KPIs, Triage IA y analítica.'
+        : '👤 Modo Operador (Empleado) activado: Vista simplificada para contactabilidad y gestión de leads.',
+    });
+  };
+
   // PROCESAMIENTO Y REORDENAMIENTO ESTRICTO POR SCORE (MAYOR A MENOR)
   const processedLeads = useMemo(() => {
     return leads
@@ -858,15 +873,21 @@ export default function AdminDashboard() {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* BADGE DE ROL ACTIVO (ADMIN / OPERATOR) */}
-            <span className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-xl border font-black ${
-              userRole === 'admin'
-                ? 'bg-amber-50 text-[#1E40AF] border-[#FBBF24]'
-                : 'bg-slate-100 text-slate-800 border-slate-300'
-            }`}>
+            {/* BADGE DE ROL ACTIVO CON ALTERNANCIA EN 1-CLIC (ADMIN / OPERATOR) */}
+            <button
+              type="button"
+              onClick={handleToggleRole}
+              className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-xl border font-black transition-all hover:scale-105 active:scale-95 shadow-xs cursor-pointer ${
+                userRole === 'admin'
+                  ? 'bg-amber-50 text-[#1E40AF] border-[#FBBF24] hover:bg-amber-100'
+                  : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
+              }`}
+              title="Haz clic para alternar entre Rol Dueño (Admin Total) y Rol Operador (Empleado)"
+            >
               <span>{userRole === 'admin' ? '👑' : '👤'}</span>
               <span>{userRole === 'admin' ? 'Rol: Dueño (Admin Total)' : 'Rol: Operador (Empleado)'}</span>
-            </span>
+              <span className="text-[10px] text-slate-400 font-normal ml-0.5">⇄</span>
+            </button>
 
             <span className="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-600 bg-[#FFFBEB] px-3 py-1.5 rounded-xl border border-amber-200 font-medium">
               <span className={`w-2 h-2 rounded-full ${dbConnected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`}></span>
@@ -1350,25 +1371,31 @@ export default function AdminDashboard() {
                                 </svg>
                                 <span>Consejo IA Real (/api/triage)</span>
                               </div>
-                              <button
-                                type="button"
-                                onClick={() => fetchPredictiveAdvice(lead)}
-                                disabled={loadingAiLead === leadKey}
-                                className="text-[10px] font-bold text-[#1E40AF] hover:text-blue-900 bg-white hover:bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200 transition-colors inline-flex items-center gap-1 shadow-xs disabled:opacity-50"
-                                title="Re-consultar /api/triage para este lead"
-                              >
-                                {loadingAiLead === leadKey ? (
-                                  <>
-                                    <span className="animate-spin text-[10px]">⚙️</span>
-                                    <span>Triage...</span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span>✨</span>
-                                    <span>Triage IA</span>
-                                  </>
-                                )}
-                              </button>
+                              {userRole === 'admin' ? (
+                                <button
+                                  type="button"
+                                  onClick={() => fetchPredictiveAdvice(lead)}
+                                  disabled={loadingAiLead === leadKey}
+                                  className="text-[10px] font-bold text-[#1E40AF] hover:text-blue-900 bg-white hover:bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200 transition-colors inline-flex items-center gap-1 shadow-xs disabled:opacity-50"
+                                  title="Re-consultar /api/triage para este lead (Acción Admin)"
+                                >
+                                  {loadingAiLead === leadKey ? (
+                                    <>
+                                      <span className="animate-spin text-[10px]">⚙️</span>
+                                      <span>Triage...</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <span>✨</span>
+                                      <span>Triage IA</span>
+                                    </>
+                                  )}
+                                </button>
+                              ) : (
+                                <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200" title="Configuración de IA reservada para Administrador">
+                                  🔒 Solo Lectura
+                                </span>
+                              )}
                             </div>
                             <div className="text-slate-800 text-[11px] leading-relaxed font-semibold">
                               {liveAiAdvice[leadKey] ? (
