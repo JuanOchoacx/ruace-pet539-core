@@ -303,105 +303,87 @@ export default function Home() {
               {/* Resplandor suave decorativo de fondo */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-white/60 rounded-full blur-3xl pointer-events-none"></div>
 
-              {/* BADGE PREMIUM REDISEÑADO: VIDRIO ESMERILADO TRANSLÚCIDO + INDICADOR EN VIVO 24/7 (FLOTANDO A LA DERECHA) */}
-              <div className="absolute bottom-10 right-2 sm:right-6 lg:-right-2 z-20 bg-white/80 backdrop-blur-md border border-white/50 rounded-2xl p-3 sm:px-4 sm:py-3 shadow-2xl shadow-sky-950/15 flex items-center gap-3 transition-transform hover:scale-105">
-                <div className="w-10 h-10 rounded-xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center font-black text-lg shadow-xs flex-shrink-0">
-                  🪪
-                </div>
-                <div className="text-left">
-                  <div className="flex items-center gap-1.5">
-                    <span className="relative flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                    </span>
-                    <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">
-                      • EN VIVO
-                    </span>
-                  </div>
-                  <p className="text-xs sm:text-sm font-black text-[#1E40AF] tracking-tight leading-tight mt-0.5">
-                    PETCÉDULA QR + CHIP ISO
-                  </p>
-                  <p className="text-[10px] text-slate-500 font-bold leading-none mt-0.5">
-                    Identidad Digital Vinculada 24/7
-                  </p>
-                </div>
-              </div>
-
-              {/* PETCÉDULA FÍSICA OFICIAL FLOTANTE (PRODUCTO PREMIUM SUPERPUESTO EN EL CUADRANTE INFERIOR IZQUIERDO) */}
-              <div className="absolute bottom-12 -left-6 z-20 md:-left-10 lg:-left-12 w-64 sm:w-72 bg-gradient-to-br from-white via-slate-50 to-amber-50/80 rounded-2xl p-3 sm:p-3.5 border-2 border-[#1E40AF]/20 shadow-[0_25px_50px_-12px_rgba(15,23,42,0.35)] transform -rotate-6 hover:rotate-0 transition-all duration-500 hover:scale-105 select-none cursor-default group">
+              {/* PETCÉDULA FÍSICA OFICIAL PET 593 ID REUBICADA EN EL EXTREMO INFERIOR DERECHO CON FOTO UNIFICADA DEL CACHORRO */}
+              <div className="absolute bottom-4 right-0 z-20 md:right-4 w-72 sm:w-80 bg-white/95 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 border-2 border-[#1E40AF]/20 shadow-[0_20px_45px_-10px_rgba(15,23,42,0.30)] animate-float hover:scale-105 transition-all duration-300 select-none cursor-default group">
                 
                 {/* Reflejo brillante de plástico PVC plastificado */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent pointer-events-none rounded-2xl"></div>
 
-                {/* Cabecera de la Cédula */}
+                {/* Cabecera de la Cédula: Logo Oficial + Indicador Activo EN VIVO */}
                 <div className="flex items-center justify-between pb-2 border-b border-slate-200">
                   <div className="flex items-center gap-1.5">
                     <img
                       src="/pet593-logo.png"
-                      alt="Logo PET 593 ID"
-                      className="h-5 sm:h-6 w-auto object-contain"
+                      alt="Logo Oficial PET 593 ID"
+                      className="h-6 w-auto object-contain"
                     />
                     <div>
-                      <p className="text-[8px] font-black uppercase text-[#1E40AF] tracking-wider leading-none">
+                      <p className="text-[9px] font-black uppercase text-[#1E40AF] tracking-wider leading-none">
                         PET 593 ID · ECUADOR
                       </p>
-                      <p className="text-[7px] text-slate-500 font-bold leading-none mt-0.5">
-                        PETCÉDULA NACIONAL
+                      <p className="text-[7.5px] text-slate-500 font-bold leading-none mt-0.5">
+                        PETCÉDULA OFICIAL MASCOTA
                       </p>
                     </div>
                   </div>
-                  <span className="bg-[#1E40AF] text-[#FBBF24] text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter">
-                    VÁLIDA 24/7
-                  </span>
+                  <div className="flex items-center gap-1 bg-emerald-50 border border-emerald-300 px-2 py-0.5 rounded-full">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span className="text-[8px] font-black text-emerald-700 uppercase tracking-tight">
+                      • EN VIVO 24/7
+                    </span>
+                  </div>
                 </div>
 
-                {/* Cuerpo con Foto, Chip Dorado y Datos del Animal */}
+                {/* Cuerpo con Foto Unificada del Cachorro Blanco, Chip Dorado y Datos */}
                 <div className="pt-2 flex items-center gap-2.5">
-                  {/* Foto de Mascota Identificada con Chip Simulado */}
-                  <div className="relative flex-shrink-0">
+                  {/* Foto Unificada del Mismo Cachorro Blanco de la Chica */}
+                  <div className="relative w-16 h-18 sm:w-18 sm:h-20 rounded-xl overflow-hidden border-2 border-[#1E40AF]/30 shadow-inner bg-amber-50 flex-shrink-0">
                     <img
-                      src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=160&q=80"
-                      alt="Mascota con PETCÉDULA"
-                      className="w-14 h-16 sm:w-16 sm:h-18 rounded-lg object-cover border border-slate-300 shadow-inner"
+                      src="/hero-pet.webp"
+                      alt="Foto oficial de MAX - Cachorro registrado"
+                      className="w-full h-full object-cover object-[52%_57%] scale-[2.7] transform pointer-events-none"
                     />
                     {/* Chip de Seguridad Microchip ISO Dorado */}
-                    <div className="absolute -bottom-1 -right-1 w-5 h-4 bg-amber-400 border border-amber-600 rounded flex items-center justify-center shadow-xs">
-                      <span className="text-[7px] font-black text-amber-950">ISO</span>
+                    <div className="absolute bottom-0 right-0 bg-amber-400 text-amber-950 text-[7px] font-black px-1.5 py-0.5 rounded-tl border-t border-l border-amber-500 shadow-xs">
+                      ISO
                     </div>
                   </div>
 
                   {/* Datos Registrados */}
                   <div className="text-left flex-1 space-y-0.5 min-w-0">
-                    <p className="text-xs font-black text-slate-900 truncate">
-                      MAX · Golden Retriever
+                    <p className="text-xs sm:text-sm font-black text-slate-900 truncate">
+                      MAX · Pomerania Blanco
                     </p>
-                    <p className="text-[8px] text-slate-500 font-bold leading-tight">
-                      ID: <span className="font-mono text-slate-800 font-black">593·092·841·029</span>
+                    <p className="text-[8.5px] text-slate-600 font-bold leading-tight">
+                      ID: <span className="font-mono text-slate-900 font-black">593·092·841·029</span>
                     </p>
                     <p className="text-[8px] text-[#1E40AF] font-extrabold leading-tight">
                       Chip Subdérmico ISO 11784/85
                     </p>
                     <div className="pt-1 flex items-center gap-1.5">
-                      <div className="w-6 h-6 bg-slate-900 rounded p-0.5 flex-shrink-0">
-                        {/* Mini QR Simulado */}
+                      <div className="w-6 h-6 bg-slate-900 rounded p-0.5 flex-shrink-0 flex items-center justify-center">
+                        {/* Micro QR Funcional */}
                         <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3zm-2-2h2v2h-2v-2z" />
                         </svg>
                       </div>
-                      <span className="text-[7px] font-black text-slate-600 leading-tight">
+                      <span className="text-[7.5px] font-black text-slate-600 leading-tight">
                         Escaneo QR Médico con cualquier smartphone
                       </span>
                     </div>
                   </div>
                 </div>
 
-                {/* Pie de la Cédula: Franja de Seguridad */}
-                <div className="mt-2 pt-1.5 border-t border-slate-200/80 flex items-center justify-between text-[7px] text-slate-500 font-bold">
+                {/* Pie de la Cédula: Homologación Agrocalidad */}
+                <div className="mt-2 pt-1.5 border-t border-slate-200/80 flex items-center justify-between text-[7.5px] text-slate-500 font-bold">
                   <span className="flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
                     Homologada Agrocalidad
                   </span>
-                  <span className="font-mono tracking-wider text-slate-600 font-black">
+                  <span className="font-mono tracking-wider text-[#1E40AF] font-black">
                     PETCÉDULA FÍSICA PVC
                   </span>
                 </div>
