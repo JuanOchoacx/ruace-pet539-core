@@ -115,52 +115,6 @@ export const generateAICounsel = (lead, score) => {
   return tip;
 };
 
-// CLASIFICACIÓN DE ESTRATEGIA DE REMARKETING Y AUDIENCE TAGGING (META / GOOGLE ADS)
-export const getRemarketingTag = (lead, score) => {
-  const travel = (lead?.pet_travel_intent || '').trim().toLowerCase();
-  const status = (lead?.current_status || '').trim().toLowerCase();
-  const petType = (lead?.pet_type || '').trim().toLowerCase();
-
-  // 1. Si 'pet_travel_intent' es 'Corto plazo' y el score >= 80 -> Inyecta el Tag: "🎯 Clúster Internacional Viaje Urgente"
-  if (travel.includes('corto') && score >= 80) {
-    return {
-      tag: '🎯 Clúster Internacional Viaje Urgente',
-      strategy: 'Anuncio de Microchips ISO + Trámite express',
-      badgeColor: 'bg-purple-100 text-purple-900 border-purple-300',
-      dotColor: 'bg-purple-600',
-      channel: 'Meta & Google Ads (High Intent)',
-    };
-  }
-  // 2. Si 'current_status' es 'Solo placa' -> Inyecta el Tag: "⚠️ Clúster Placa Insegura / Pérdida"
-  if (status.includes('placa')) {
-    return {
-      tag: '⚠️ Clúster Placa Insegura / Pérdida',
-      strategy: 'Anuncio persuasivo PAS sobre desprendimiento de collares',
-      badgeColor: 'bg-amber-100 text-amber-900 border-amber-300',
-      dotColor: 'bg-amber-600',
-      channel: 'Meta Ads (Story & Reels)',
-    };
-  }
-  // 3. Si 'pet_type' es 'Gato' y el score < 40 -> Inyecta el Tag: "🐱 Clúster Felino / Identificación QR Base"
-  if (petType.includes('gato') && score < 40) {
-    return {
-      tag: '🐱 Clúster Felino / Identificación QR Base',
-      strategy: 'Contenido orgánico sobre PETCÉDULA para departamento',
-      badgeColor: 'bg-emerald-100 text-emerald-900 border-emerald-300',
-      dotColor: 'bg-emerald-600',
-      channel: 'TikTok & Meta Ads (Awareness)',
-    };
-  }
-  // Fallback institucional
-  return {
-    tag: '📋 Clúster Preventivo General',
-    strategy: 'Campaña informativa de registro RUACE y tenencia responsable',
-    badgeColor: 'bg-slate-100 text-slate-800 border-slate-300',
-    dotColor: 'bg-slate-500',
-    channel: 'Remarketing Multicanal',
-  };
-};
-
 // DATOS DEMOSTRATIVOS DE RESPALDO (Académico / Presentación)
 const DEMO_LEADS = [
   {
@@ -254,7 +208,6 @@ export default function AdminDashboard() {
   const [savingNoteId, setSavingNoteId] = useState(null);
   const [dbConnected, setDbConnected] = useState(false);
   const [notification, setNotification] = useState(null);
-  const [syncingAudience, setSyncingAudience] = useState(false);
 
   // NOTAS LOCALES Y CONSEJOS PREDICTIVOS CLAUDE IA (/api/triage)
   const [leadNotes, setLeadNotes] = useState({});
@@ -386,7 +339,6 @@ export default function AdminDashboard() {
         const score = calculateLeadScore(lead);
         const temp = getTemperatureData(score);
         const aiTip = generateAICounsel(lead, score);
-        const remarketingTag = getRemarketingTag(lead, score);
         const rawStatus = (lead.lead_status || 'Por contactar').trim();
         const normalizedStatus = rawStatus.toLowerCase() === 'contactado' ? 'Contactado' : 'Por contactar';
         return {
@@ -394,7 +346,6 @@ export default function AdminDashboard() {
           lead_score: score,
           temperature: temp,
           ai_counsel: aiTip,
-          remarketing: remarketingTag,
           lead_status: normalizedStatus,
         };
       })
@@ -719,34 +670,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // SINCRONIZACIÓN SIMULADA DE AUDIENCIAS CON META / GOOGLE / TIKTOK ADS (SÓLO ROL ADMIN)
-  const handleSyncRemarketing = () => {
-    if (userRole !== 'admin') return;
-    setSyncingAudience(true);
-
-    let countViaje = 0;
-    let countPlaca = 0;
-    let countGato = 0;
-    let countPreventivo = 0;
-
-    processedLeads.forEach((lead) => {
-      const tag = lead.remarketing?.tag || '';
-      if (tag.includes('Internacional Viaje')) countViaje++;
-      else if (tag.includes('Placa Insegura')) countPlaca++;
-      else if (tag.includes('Felino')) countGato++;
-      else countPreventivo++;
-    });
-
-    setTimeout(() => {
-      setSyncingAudience(false);
-      setNotification({
-        type: 'success',
-        text: `✓ ${processedLeads.length} audiencias sincronizadas exitosamente con Meta/TikTok Ads Manager (${countViaje} Viaje Urgente, ${countPlaca} Placa Insegura, ${countGato} Felino, ${countPreventivo} Preventivo).`,
-      });
-      setTimeout(() => setNotification(null), 6000);
-    }, 900);
-  };
-
   // CAPA DE CÁLCULO DINÁMICO DE KPIS COMERCIALES Y MONITOREO DE OBJETIVOS (SUPABASE)
   const sellerKpis = useMemo(() => {
     // 1. Leads Totales: Conteo total de filas en la tabla importada de Supabase
@@ -945,33 +868,6 @@ export default function AdminDashboard() {
               <span>{userRole === 'admin' ? '👑' : '👤'}</span>
               <span>{userRole === 'admin' ? 'Rol: Dueño (Admin Total)' : 'Rol: Operador (Empleado)'}</span>
             </span>
-
-            {/* BOTÓN SINCRONIZAR AUDIENCIAS (SOLO ROL ADMIN) */}
-            {userRole === 'admin' && (
-              <button
-                type="button"
-                onClick={handleSyncRemarketing}
-                disabled={syncingAudience}
-                className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white font-black text-xs shadow-md shadow-indigo-500/20 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-                title="Sincronizar audiencias de remarketing segmentadas con Meta y TikTok Ads"
-              >
-                {syncingAudience ? (
-                  <>
-                    <svg className="w-3.5 h-3.5 animate-spin text-white" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>Sincronizando...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>📊</span>
-                    <span className="hidden sm:inline">Sincronizar Audiencias de Remarketing</span>
-                    <span className="sm:hidden">Sincronizar</span>
-                  </>
-                )}
-              </button>
-            )}
 
             <span className="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-600 bg-[#FFFBEB] px-3 py-1.5 rounded-xl border border-amber-200 font-medium">
               <span className={`w-2 h-2 rounded-full ${dbConnected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`}></span>
@@ -1313,7 +1209,6 @@ export default function AdminDashboard() {
                     <th scope="col" className="py-4 px-4 sm:px-6">Puesto & Score</th>
                     <th scope="col" className="py-4 px-4">Tutor & Mascota</th>
                     <th scope="col" className="py-4 px-4">Variables Clave</th>
-                    <th scope="col" className="py-4 px-4 min-w-[220px]">Etiqueta Remarketing</th>
                     <th scope="col" className="py-4 px-4 min-w-[260px]">Consejo de Cierre por IA</th>
                     <th scope="col" className="py-4 px-4 min-w-[270px]">Notas / Feedback del Cliente</th>
                     <th scope="col" className="py-4 px-4 text-center">Acción Comercial</th>
@@ -1394,30 +1289,6 @@ export default function AdminDashboard() {
                               <span className="font-bold text-[#1E40AF] text-right">
                                 {lead.contact_method}
                               </span>
-                            </div>
-                          </div>
-                        </td>
-
-                        {/* ETIQUETA REMARKETING (AUDIENCE TAGGING) */}
-                        <td className="py-4 px-4 align-top">
-                          <div className="space-y-1.5">
-                            <span
-                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-[11px] font-black border shadow-xs ${lead.remarketing.badgeColor}`}
-                            >
-                              <span className={`w-1.5 h-1.5 rounded-full ${lead.remarketing.dotColor}`}></span>
-                              <span>{lead.remarketing.tag}</span>
-                            </span>
-                            <div className="text-[10px] bg-slate-50 p-2 rounded-xl border border-slate-200 shadow-xs space-y-1">
-                              <div>
-                                <span className="font-bold text-slate-700 block">Pauta recomendada:</span>
-                                <span className="text-slate-600 font-medium leading-tight block mt-0.5">
-                                  {lead.remarketing.strategy}
-                                </span>
-                              </div>
-                              <div className="text-[9px] font-mono text-purple-700 font-bold flex items-center gap-1 pt-0.5 border-t border-slate-200">
-                                <span>📡</span>
-                                <span>{lead.remarketing.channel}</span>
-                              </div>
                             </div>
                           </div>
                         </td>
