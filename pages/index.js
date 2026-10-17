@@ -247,85 +247,67 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
             
-            {/* LATERAL IZQUIERDO: PLASTA DE COLOR SÓLIDA / FORMA GEOMÉTRICA ABSTRACTA QUE ENMARCA LA MASCOTA */}
-            <div className="lg:col-span-5 flex justify-center order-2 lg:order-1">
-              <div className="relative w-full max-w-sm sm:max-w-md">
+            {/* LATERAL IZQUIERDO: MONTAJE ASIMÉTRICO CON PLASTA DE COLOR ORGÁNICA ABSTRACTA & PERRO SOBRESALIENTE */}
+            <div className="lg:col-span-5 flex justify-center order-2 lg:order-1 relative">
+              <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[460px] h-[380px] sm:h-[450px] lg:h-[480px] flex items-center justify-center">
                 
-                {/* FORMA GEOMÉTRICA ABSTRACTA / PLASTA DE COLOR SÓLIDA DE ACENTO */}
-                <div className="absolute -top-5 -left-5 sm:-top-8 sm:-left-8 w-64 sm:w-72 h-64 sm:h-72 bg-[#1E40AF] rounded-[2.5rem] rotate-[-7deg] shadow-xl pointer-events-none"></div>
-                <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-52 sm:w-60 h-52 sm:h-60 bg-[#FBBF24] rounded-full opacity-90 pointer-events-none"></div>
+                {/* PLASTA DE COLOR ORGÁNICA Y ABSTRACTA DE ALTO CONTRASTE (ROJO/CORAL INTENSO #EF4444) */}
+                <div className="absolute inset-x-4 bottom-4 top-16 sm:top-20 bg-[#EF4444] rounded-[50%_50%_45%_55%/60%_40%_60%_40%] shadow-2xl shadow-red-500/30 rotate-[-4deg] transition-transform duration-700 hover:rotate-0"></div>
+                
+                {/* PLASTA SECUNDARIA DE ACENTO (AMARILLO ORO #FBBF24) EN EL EJE CENTRAL/INFERIOR */}
+                <div className="absolute -bottom-2 -left-2 w-32 h-32 sm:w-40 sm:h-40 bg-[#FBBF24] rounded-full opacity-90 blur-xs shadow-lg pointer-events-none -z-0"></div>
+                <div className="absolute -top-3 right-6 w-20 h-20 bg-sky-300 rounded-full opacity-60 blur-xs pointer-events-none"></div>
 
-                {/* CONTENEDOR PRINCIPAL: VIDEO DINÁMICO & TARJETA DE PROTECCIÓN VETERINARIA */}
-                <div className="relative bg-white rounded-3xl p-5 sm:p-6 shadow-2xl border-2 border-sky-100 overflow-hidden space-y-4">
-                  
-                  {/* Banner superior de la Cédula Animal */}
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
-                      <span className="text-[11px] font-black uppercase tracking-wider text-[#1E40AF]">
-                        RUACE PET539 · REGISTRO ACTIVO
-                      </span>
-                    </div>
-                    <span className="bg-[#E0F2FE] text-[#1E40AF] text-[10px] font-black px-2.5 py-0.5 rounded-full border border-sky-300">
-                      ECUADOR
-                    </span>
+                {/* FOTOGRAFÍA EN ALTA DEFINICIÓN DEL PERRO CON FONDO TRANSPARENTE (SOBRESALE DE LA PLASTA) */}
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/2/2d/German_Shepherd_Transparent.png"
+                  alt="Mascota identificada con microchip y cédula RUACE PET539"
+                  className="relative z-10 w-full h-[115%] sm:h-[120%] object-contain object-bottom -translate-y-8 sm:-translate-y-12 filter drop-shadow-[0_20px_25px_rgba(0,0,0,0.35)] pointer-events-none transform transition-transform duration-500 hover:scale-105"
+                  loading="eager"
+                />
+
+                {/* DOODLES Y ELEMENTOS LINEALES FLOTANTES RODEANDO LA SILUETA DEL PERRO */}
+                {/* 1. Hueso lineal flotante (superior izquierdo) */}
+                <div className="absolute -top-4 -left-4 z-20 text-[#1E40AF] bg-white/90 backdrop-blur-sm p-2 rounded-2xl shadow-lg border border-sky-100 rotate-[-15deg] animate-bounce">
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25a2.25 2.25 0 00-2.25-2.25h-.008a2.25 2.25 0 00-2.242 2.25v.008a2.25 2.25 0 00.75 1.697l-7.008 7.008a2.25 2.25 0 00-1.697-.75h-.008a2.25 2.25 0 00-2.242 2.25v.008a2.25 2.25 0 002.25 2.25h.008a2.25 2.25 0 002.242-2.25v-.008a2.25 2.25 0 00-.75-1.697l7.008-7.008a2.25 2.25 0 001.697.75h.008a2.25 2.25 0 002.242-2.25v-.008z" />
+                  </svg>
+                </div>
+
+                {/* 2. Corazón lineal flotante (superior derecho) */}
+                <div className="absolute top-2 -right-3 z-20 text-rose-500 bg-white/90 backdrop-blur-sm p-2 rounded-2xl shadow-lg border border-rose-100 rotate-[18deg]">
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 fill-rose-500/20" fill="currentColor" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                  </svg>
+                </div>
+
+                {/* 3. Balón / Pelota de juego lineal (inferior izquierdo) */}
+                <div className="absolute bottom-6 -left-3 z-20 text-[#1E40AF] bg-[#FBBF24] p-2.5 rounded-full shadow-xl border-2 border-slate-900 rotate-12">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-slate-950" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3a9 9 0 010 18M3 12h18M5.5 5.5l13 13M5.5 18.5l13-13" />
+                  </svg>
+                </div>
+
+                {/* 4. Huella protectora (inferior derecho cerca de la guía visual) */}
+                <div className="absolute bottom-2 -right-2 z-20 text-[#1E40AF] bg-white/95 backdrop-blur-sm px-3.5 py-1.5 rounded-full shadow-xl border border-sky-200 flex items-center gap-1.5 rotate-[-6deg]">
+                  <svg className="w-5 h-5 text-[#1E40AF]" fill="currentColor" viewBox="0 0 24 24">
+                    <ellipse cx="12" cy="15" rx="4" ry="4.5" />
+                    <circle cx="6.5" cy="9.5" r="2" />
+                    <circle cx="10" cy="7" r="2" />
+                    <circle cx="14" cy="7" r="2" />
+                    <circle cx="17.5" cy="9.5" r="2" />
+                  </svg>
+                  <span className="text-[11px] font-black text-slate-900 uppercase tracking-tight">100% Protegido</span>
+                </div>
+
+                {/* Insignia oficial flotante: Chip Subdérmico ISO */}
+                <div className="absolute top-1/2 -left-6 z-20 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-xl border border-slate-200/80 hidden sm:flex items-center gap-2">
+                  <span className="text-base">🔒</span>
+                  <div className="text-left">
+                    <p className="text-[10px] font-black text-[#1E40AF] leading-none">Norma ISO 11784/85</p>
+                    <p className="text-[9px] text-slate-500 font-bold leading-none mt-0.5">Chip 15 Dígitos</p>
                   </div>
-
-                  {/* CONTENEDOR DE VIDEO DINÁMICO EN LA NUBE (LIBRE DE DERECHOS DE AUTOR) */}
-                  <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-slate-900 border border-slate-200 shadow-md group">
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="auto"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    >
-                      <source
-                        src="https://cdn.jsdelivr.net/gh/luiantav/dog-island@main/videos/dog1.mp4"
-                        type="video/mp4"
-                      />
-                      <source
-                        src="https://cdn.jsdelivr.net/gh/luiantav/dog-island@main/videos/dog2.mp4"
-                        type="video/mp4"
-                      />
-                      Tu navegador no soporta la reproducción de video HTML5.
-                    </video>
-
-                    {/* Overlay sutil para realzar los badges flotantes */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none"></div>
-
-                    {/* Badge flotante superior: Vínculo Seguro */}
-                    <div className="absolute top-2.5 right-2.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/20 flex items-center gap-1.5 text-white">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                      <span className="text-[10px] font-bold">En Vivo · Vínculo Activo</span>
-                    </div>
-
-                    {/* Badge flotante inferior de microchip inviolable */}
-                    <div className="absolute bottom-2.5 left-2.5 bg-white/95 backdrop-blur-md px-3 py-1 rounded-xl shadow-lg border border-slate-200/90 flex items-center gap-2">
-                      <span className="text-sm">🔒</span>
-                      <span className="text-[10px] font-black text-slate-800">Chip ISO 11784/85</span>
-                    </div>
-
-                    {/* Badge flotante inferior derecho: Escaneo QR */}
-                    <div className="absolute bottom-2.5 right-2.5 bg-[#FBBF24] px-2.5 py-1 rounded-xl shadow-lg border border-amber-400 flex items-center gap-1 text-slate-950">
-                      <span className="text-xs">📲</span>
-                      <span className="text-[10px] font-black">Escaneo QR</span>
-                    </div>
-                  </div>
-
-                  {/* Fila de Especificaciones Clave de la Identidad */}
-                  <div className="grid grid-cols-2 gap-2 text-left pt-1">
-                    <div className="bg-[#E0F2FE]/60 rounded-xl p-2.5 border border-sky-200">
-                      <p className="text-[10px] text-sky-800 font-bold uppercase">Lectura Móvil</p>
-                      <p className="text-xs font-black text-[#1E40AF]">QR 24/7 sin App</p>
-                    </div>
-                    <div className="bg-amber-50 rounded-xl p-2.5 border border-amber-200">
-                      <p className="text-[10px] text-amber-800 font-bold uppercase">Mantenimiento</p>
-                      <p className="text-xs font-black text-slate-900">0$ Mensualidades</p>
-                    </div>
-                  </div>
-
                 </div>
 
               </div>
