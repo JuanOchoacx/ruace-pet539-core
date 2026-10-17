@@ -616,7 +616,7 @@ export default function Home() {
               Ingresa los datos de tu peludito para agendar su identificación
             </h2>
             <p className="text-slate-600 text-xs sm:text-sm">
-              Nuestros médicos veterinarios colegiados validarán la disponibilidad y coordinarán el implante del microchip o la emisión de su PETCÉDULA física.
+              Nuestros médicos veterinarios colegiados validarán la disponibilidad y coordinarán la colocación del microchip o la emisión de su PETCÉDULA física de forma segura y sin dolor.
             </p>
           </div>
 
