@@ -195,13 +195,6 @@ export default function Home() {
         <div className="bg-[#FBBF24] text-slate-900 text-xs sm:text-sm py-2 px-4 text-center font-black shadow-sm flex items-center justify-center gap-2 border-b border-amber-400">
           <span className="text-base inline-block">✈️</span>
           <span>¿Viajas pronto con tu peludito? Asesoría Pet Travel sin costo con tu registro RUACE PET593 en todo el país.</span>
-          <a
-            href="#registro"
-            className="ml-2 inline-flex items-center gap-1 bg-[#1E40AF] hover:bg-blue-900 text-white font-extrabold text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full transition-colors shadow-xs"
-          >
-            <span>Pedir Asesoría</span>
-            <span>→</span>
-          </a>
         </div>
 
         {/* NAVBAR CON IDENTIDAD OFICIAL RUACE PET593 */}
@@ -325,13 +318,13 @@ export default function Home() {
                 </a>
 
                 <a
-                  href="#pasos"
+                  href="#registro"
                   className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-full bg-white hover:bg-slate-50 text-[#1E40AF] font-bold text-sm sm:text-base shadow-md shadow-sky-900/5 border-2 border-[#1E40AF]/20 transition-all hover:scale-105 active:scale-95 gap-2 cursor-pointer"
                 >
                   <svg className="w-5 h-5 text-[#1E40AF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span>¿Cómo Funciona?</span>
+                  <span>Asesoría Pet Travel</span>
                 </a>
               </div>
 
@@ -585,18 +578,6 @@ export default function Home() {
               </div>
             </div>
 
-          </div>
-
-          <div className="mt-12 text-center">
-            <a
-              href="#registro"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm text-slate-900 bg-[#FBBF24] hover:bg-[#F59E0B] shadow-lg shadow-[#FBBF24]/30 transition-all hover:scale-105 cursor-pointer"
-            >
-              <span>Comenzar con el Paso 01 Ahora</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </a>
           </div>
 
         </div>
@@ -1252,19 +1233,6 @@ export default function Home() {
 
           </div>
 
-          {/* Banner CTA al pie de testimonios */}
-          <div className="mt-12 text-center">
-            <a
-              href="#registro"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm text-slate-900 bg-[#FBBF24] hover:bg-[#F59E0B] shadow-lg shadow-[#FBBF24]/30 transition-all hover:scale-105 cursor-pointer"
-            >
-              <span>Asegurar la Identidad de mi Mascota Ahora</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </a>
-          </div>
-
         </div>
       </section>
 
@@ -1327,21 +1295,6 @@ export default function Home() {
                 </div>
               );
             })}
-          </div>
-
-          <div className="mt-12 text-center p-6 bg-[#FFFBEB] rounded-2xl border border-amber-200">
-            <p className="text-sm font-bold text-slate-800">
-              ¿Tienes alguna duda específica sobre tu caso o viaje?
-            </p>
-            <a
-              href="https://wa.me/593963050719?text=Hola,%20tengo%20una%20consulta%20espec%C3%ADfica%20sobre%20el%20servicio%20RUACE%20PET593."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-3 text-xs font-black text-[#1E40AF] hover:underline"
-            >
-              <span>Hablar directamente con un asesor veterinario por WhatsApp (096 305 0719)</span>
-              <span>→</span>
-            </a>
           </div>
 
         </div>
