@@ -367,7 +367,7 @@ export default function Home() {
 
               {/* TÍTULO PRINCIPAL: DOLOR DE PÉRDIDA Y SEGURIDAD */}
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-6 max-w-3xl text-[#1E3A8A]">
-                Dale a tu peludito una identidad segura y asegura su regreso a casa.
+                Dale a tu peludito una identidad segura y protege su regreso a casa.
               </h1>
 
               {/* PÁRRAFO DESCRIPTIVO */}
