@@ -18,7 +18,7 @@ export default function Home() {
     pet_name: '',
     pet_type: 'Perro',
     current_status: 'Sin microchip ni cédula',
-    pet_travel_intent: 'No planeo viajar (Solo protección local en Quito)',
+    pet_travel_intent: 'No planeo viajar (Protección a nivel nacional)',
     contact_method: 'WhatsApp',
   });
 
@@ -78,7 +78,7 @@ export default function Home() {
 
       setStatusMessage({
         type: 'success',
-        text: `¡Excelente noticia! Los datos de ${formData.pet_name} han sido registrados con éxito en el sistema RUACE PET539. Un asesor veterinario en Quito se comunicará contigo vía ${formData.contact_method}.`,
+        text: `¡Excelente noticia! Los datos de ${formData.pet_name} han sido registrados con éxito en el sistema RUACE PET539. Un asesor veterinario se comunicará contigo vía ${formData.contact_method}.`,
       });
 
       // Limpiar formulario tras éxito
@@ -89,7 +89,7 @@ export default function Home() {
         pet_name: '',
         pet_type: 'Perro',
         current_status: 'Sin microchip ni cédula',
-        pet_travel_intent: 'No planeo viajar (Solo protección local en Quito)',
+        pet_travel_intent: 'No planeo viajar (Protección a nivel nacional)',
         contact_method: 'WhatsApp',
       });
       setTermsAccepted(false);
@@ -120,7 +120,7 @@ export default function Home() {
     },
     {
       q: '¿Tiene algún costo mensual o cobro recurrente?',
-      a: 'Ninguno. No hay mensualidades ni suscripciones. El registro oficial y el perfil digital están activos 24/7 para toda la vida. Además, puedes actualizar tus números telefónicos o dirección en Quito de forma gratuita cuando lo desees.',
+      a: 'Ninguno. No hay mensualidades ni suscripciones. El registro oficial y el perfil digital están activos 24/7 para toda la vida. Además, puedes actualizar tus números telefónicos o dirección en Ecuador de forma gratuita cuando lo desees.',
     },
     {
       q: '¿Sirve para viajar con mi mascota al exterior o a Galápagos?',
@@ -131,10 +131,10 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans selection:bg-[#FBBF24] selection:text-slate-900">
       <Head>
-        <title>RUACE PET539 | Identificación y Cédulas Oficiales para Mascotas en Quito</title>
+        <title>RUACE PET539 | Identificación y Cédulas Oficiales para Mascotas en Ecuador</title>
         <meta
           name="description"
-          content="Protege a tu mascota en Quito con microchip subdérmico oficial, cédula física con QR médico dinámico y asesoría especializada Pet Travel."
+          content="Protege a tu mascota en Ecuador con microchip subdérmico oficial, cédula física con QR médico dinámico y asesoría especializada Pet Travel a nivel nacional e internacional."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
@@ -144,7 +144,7 @@ export default function Home() {
         {/* TOP BAR BANNER (REFERENCIA 3 - PET STATION) - FONDO AMARILLO ACENTO Y TEXTO NEGRO */}
         <div className="bg-[#FBBF24] text-slate-900 text-xs sm:text-sm py-2 px-4 text-center font-black shadow-sm flex items-center justify-center gap-2 border-b border-amber-400">
           <span className="text-base inline-block">✈️</span>
-          <span>¿Viajas pronto con tu peludito? Obtén hoy tu consulta de asesoría Pet Travel sin costo con tu registro.</span>
+          <span>¿Viajas pronto con tu peludito? Obtén hoy tu consulta de asesoría Pet Travel sin costo con tu registro en todo el país.</span>
           <a
             href="#registro"
             className="ml-2 inline-flex items-center gap-1 bg-[#1E40AF] hover:bg-blue-900 text-white font-extrabold text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full transition-colors shadow-xs"
@@ -170,7 +170,7 @@ export default function Home() {
                   PET539
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-medium">Registro Animal & Cédulas Oficiales Quito</p>
+              <p className="text-xs text-slate-500 font-medium">Registro Animal & Cédulas Oficiales Ecuador</p>
             </div>
           </div>
 
@@ -208,7 +208,7 @@ export default function Home() {
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#FBBF24] text-[#1E40AF] text-xs sm:text-sm font-bold shadow-sm">
                 <span className="flex h-2.5 w-2.5 rounded-full bg-[#1E40AF] animate-pulse"></span>
-                Identificación Veterinaria Oficial en el Distrito Metropolitano de Quito
+                Identificación Veterinaria Oficial a Nivel Nacional en Ecuador
               </div>
 
               <h1 className="text-4xl sm:text-5xl font-extrabold text-[#1E40AF] tracking-tight leading-none mb-4">
@@ -216,7 +216,7 @@ export default function Home() {
               </h1>
 
               <p className="text-lg sm:text-xl text-slate-600 max-w-2xl font-normal leading-relaxed">
-                El microchip permanente y su <strong className="text-[#1E40AF] font-bold">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Protegido en Quito y el mundo entero.
+                El microchip permanente y su <strong className="text-[#1E40AF] font-bold">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Sin mensualidades. Protegido en Ecuador y el mundo entero.
               </p>
 
               {/* 3 BENEFICIOS EN MINI-TARJETAS INTERACTIVAS CON SOMBRAS SUAVES (MOTION STYLE) */}
@@ -286,7 +286,7 @@ export default function Home() {
               <div className="pt-4 border-t border-amber-200/80 grid grid-cols-3 gap-4 text-center lg:text-left">
                 <div>
                   <p className="text-2xl sm:text-3xl font-black text-[#1E40AF]">+15.000</p>
-                  <p className="text-xs text-slate-600 font-semibold">Registros en Quito</p>
+                  <p className="text-xs text-slate-600 font-semibold">Registros a Nivel Nacional</p>
                 </div>
                 <div>
                   <p className="text-2xl sm:text-3xl font-black text-slate-900">100%</p>
@@ -315,7 +315,7 @@ export default function Home() {
                       </h2>
                     </div>
                     <span className="bg-[#FFFBEB] text-[#1E40AF] text-[10px] font-black px-2.5 py-1 rounded-full border border-[#FBBF24] uppercase">
-                      Quito · DMQ
+                      Cobertura Nacional · Ecuador
                     </span>
                   </div>
                   <p className="text-xs text-amber-100/90 mt-1.5 leading-relaxed">
@@ -358,7 +358,7 @@ export default function Home() {
                         required
                         value={formData.owner_name}
                         onChange={handleChange}
-                        placeholder="Ej. Carlos Vinueza"
+                        placeholder="Ej. Carlos Mendoza"
                         className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
                       />
                     </div>
@@ -449,11 +449,11 @@ export default function Home() {
                       onChange={handleChange}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
                     >
-                      <option value="Sin microchip ni cédula">Sin microchip ni cédula (Deseo colocación en Quito)</option>
+                      <option value="Sin microchip ni cédula">Sin microchip ni cédula (Deseo colocación en Ecuador)</option>
                       <option value="Solo placa">Solo placa externa (Deseo microchip y cédula)</option>
                       <option value="Tiene microchip, requiere Cédula RUACE">Ya tiene microchip, pero requiere Cédula Física y Placa QR</option>
                       <option value="Requiere actualización de datos">Requiere actualización de tutor / cambio de domicilio</option>
-                      <option value="Mascota extraviada (Reporte Urgente)">Mascota extraviada (Reporte de urgencia en red de Quito)</option>
+                      <option value="Mascota extraviada (Reporte Urgente)">Mascota extraviada (Reporte de urgencia en red nacional)</option>
                     </select>
                   </div>
 
@@ -471,7 +471,7 @@ export default function Home() {
                         onChange={handleChange}
                         className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
                       >
-                        <option value="No planeo viajar (Solo protección local en Quito)">Solo protección local en Quito</option>
+                        <option value="No planeo viajar (Protección a nivel nacional)">Solo protección a nivel nacional</option>
                         <option value="Viaje Internacional próximo (USA / Europa / LATAM)">Viaje Internacional (USA / Europa)</option>
                         <option value="Viaje Nacional / Galápagos">Viaje a Galápagos o Nacional</option>
                         <option value="Necesito asesoría completa Agrocalidad & IATA">Asesoría Agrocalidad & IATA</option>
@@ -551,7 +551,7 @@ export default function Home() {
                       )}
                     </button>
                     <p className="text-center text-[10px] text-slate-400 mt-2">
-                      Sin suscripciones ocultas · Respaldo veterinario colegiado en Quito
+                      Sin suscripciones ocultas · Respaldo veterinario colegiado en todo el país
                     </p>
                   </div>
 
@@ -567,7 +567,7 @@ export default function Home() {
                       <span className="text-emerald-600 font-black">●</span> Sin Mensualidades
                     </span>
                     <span className="inline-flex items-center gap-1">
-                      <span className="text-[#1E40AF] font-black">●</span> Red Quito DMQ
+                      <span className="text-[#1E40AF] font-black">●</span> Red Nacional Ecuador
                     </span>
                   </div>
                 </div>
@@ -591,7 +591,7 @@ export default function Home() {
               Protege a tu Mejor Amigo en 3 Simples Pasos
             </h2>
             <p className="text-slate-600 text-base sm:text-lg">
-              Diseñamos una experiencia libre de burocracia para que tu mascota quede identificada y protegida con respaldo veterinario en Quito.
+              Diseñamos una experiencia libre de burocracia para que tu mascota quede identificada y protegida con respaldo veterinario en todo el país.
             </p>
           </div>
 
@@ -644,7 +644,7 @@ export default function Home() {
                   02. Agenda la Implantación
                 </h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  Coordinamos con un veterinario colegiado en clínica aliada o en tu casa en Quito. El microchip se coloca en segundos, es como una vacuna.
+                  Coordinamos con un veterinario colegiado en clínica aliada o en tu casa a nivel nacional. El microchip se coloca en segundos, es como una vacuna.
                 </p>
               </div>
 
@@ -707,7 +707,7 @@ export default function Home() {
               Tecnología y Respaldo Veterinario
             </h2>
             <h3 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              Tres Pilares para Proteger a tu Mascota en Quito
+              Tres Pilares para Proteger a tu Mascota a Nivel Nacional
             </h3>
             <p className="mt-4 text-slate-600 text-base sm:text-lg">
               El sistema RUACE PET539 combina identificación subdérmica permanente, perfil médico en la nube y acompañamiento en normativas de viaje para el bienestar integral de tu animal de compañía.
@@ -738,7 +738,7 @@ export default function Home() {
                     <span className="text-[#1E40AF] font-bold">✓</span> Homologación internacional ISO 11784 e ISO 11785
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-[#1E40AF] font-bold">✓</span> Compatible con todas las clínicas veterinarias de Quito
+                    <span className="text-[#1E40AF] font-bold">✓</span> Compatible con todas las clínicas veterinarias del país
                   </li>
                 </ul>
               </div>
@@ -826,7 +826,7 @@ export default function Home() {
               ¿Por qué asegurar la identidad de tu peludito hoy?
             </h2>
             <p className="text-slate-600 text-base sm:text-lg">
-              Descubre las cuatro razones fundamentales por las que las placas tradicionales quedaron en el pasado para las familias responsables en Quito.
+              Descubre las cuatro razones fundamentales por las que las placas tradicionales quedaron en el pasado para las familias responsables en todo el país.
             </p>
           </div>
 
@@ -920,11 +920,11 @@ export default function Home() {
                   Propiedad legal protegida
                 </h3>
                 <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                  Asocia legalmente el código irrepetible de 15 dígitos al tutor en Quito, brindando respaldo jurídico fehaciente ante robos o disputas de custodia.
+                  Asocia legalmente el código irrepetible de 15 dígitos al tutor en Ecuador, brindando respaldo jurídico fehaciente ante robos o disputas de custodia.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-amber-200/60 text-xs font-bold text-[#1E40AF]">
-                Respaldo oficial DMQ →
+                Respaldo oficial nacional →
               </div>
             </div>
 
@@ -933,19 +933,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* MÓDULO DE VALOR: CUADRÍCULA ASIMÉTRICA DE "HISTORIAS FELICES" (TESTIMONIOS EN QUITO) */}
+      {/* MÓDULO DE VALOR: CUADRÍCULA ASIMÉTRICA DE "HISTORIAS FELICES" (TESTIMONIOS EN TODO EL PAÍS) */}
       <section id="historias" className="py-20 lg:py-28 bg-[#FFFBEB] border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
             <span className="inline-block py-1 px-3.5 rounded-full bg-white border border-[#FBBF24] text-[#1E40AF] text-xs font-black uppercase tracking-wider shadow-sm">
-              Impacto Real en Familias de Quito
+              Impacto Real en Familias de Todo el País
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1E40AF] tracking-tight">
               Historias Felices: Familias que Recuperaron su Tranquilidad
             </h2>
             <p className="text-slate-600 text-base sm:text-lg">
-              Casos reales de escapes urbanos y viajes internacionales resueltos con éxito gracias a la red RUACE PET539 en el Distrito Metropolitano.
+              Casos reales de escapes y viajes internacionales resueltos con éxito gracias a la red RUACE PET539 en todo el país.
             </p>
           </div>
 
@@ -959,7 +959,7 @@ export default function Home() {
               <div>
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFFBEB] border border-[#FBBF24] text-[#1E40AF] text-xs font-black uppercase tracking-wide">
-                    🚨 Escape Resuelto · Quito Norte (Monteserrín)
+                    🚨 Escape Resuelto · Retorno Seguro
                   </span>
                   <div className="flex items-center gap-1 text-[#FBBF24] text-sm">
                     {"★".repeat(5)}
@@ -980,7 +980,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="font-black text-slate-900 text-sm">Familia Mantilla & Rocky</h4>
-                    <p className="text-xs text-slate-500">Tutor de Golden Retriever (3 años) · Quito</p>
+                    <p className="text-xs text-slate-500">Tutor de Golden Retriever (3 años) · Ecuador</p>
                   </div>
                 </div>
                 <span className="hidden sm:inline-flex text-[11px] font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
@@ -1001,7 +1001,7 @@ export default function Home() {
 
                 <div className="text-3xl text-[#1E40AF] font-serif leading-none mb-2">“</div>
                 <p className="text-slate-600 text-sm leading-relaxed mb-6">
-                  Teníamos programada nuestra mudanza a España y en el counter de la aerolínea nos pidieron el microchip homologado ISO 15 dígitos y la ficha técnica de Agrocalidad. RUACE PET539 nos coordinó la cita veterinaria a domicilio en Quito y nos entregó el expediente listo. <strong className="text-slate-900 font-bold">Pasamos la inspección aduanera en 5 minutos</strong> sin ninguna observación ni retraso.
+                  Teníamos programada nuestra mudanza a España y en el counter de la aerolínea nos pidieron el microchip homologado ISO 15 dígitos y la ficha técnica de Agrocalidad. RUACE PET539 nos coordinó la cita veterinaria a domicilio y nos entregó el expediente listo. <strong className="text-slate-900 font-bold">Pasamos la inspección aduanera en 5 minutos</strong> sin ninguna observación ni retraso.
                 </p>
               </div>
 
@@ -1021,13 +1021,13 @@ export default function Home() {
               <div>
                 <div className="flex items-center justify-between gap-2 mb-4">
                   <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wide">
-                    🏷️ Parque La Carolina · Cero Placas Perdidas
+                    🏷️ Parque Recreativo · Cero Placas Perdidas
                   </span>
                   <div className="flex text-[#FBBF24] text-xs">{"★".repeat(5)}</div>
                 </div>
 
                 <p className="text-slate-600 text-sm leading-relaxed mb-6">
-                  Lucas solía perder sus placas metálicas jugando con otros perros en La Carolina; compramos tres en solo un año porque se rompían las anillas. Con el microchip subdérmico y la PETCÉDULA física, sabemos que su identificación real está bajo la piel y nunca se borrará. Nos devolvió la paz total al soltarlo en el parque.
+                  Lucas solía perder sus placas metálicas jugando con otros perros; compramos tres en solo un año porque se rompían las anillas. Con el microchip subdérmico y la PETCÉDULA física, sabemos que su identificación real está bajo la piel y nunca se borrará. Nos devolvió la paz total al soltarlo en el parque.
                 </p>
               </div>
 
@@ -1037,7 +1037,7 @@ export default function Home() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 text-xs">David E. & Lucas</h4>
-                  <p className="text-[11px] text-slate-500">Tutor de Canino Mestizo · Quito Centro Norte</p>
+                  <p className="text-[11px] text-slate-500">Tutor de Canino Mestizo · Ecuador</p>
                 </div>
               </div>
             </div>
@@ -1111,14 +1111,14 @@ export default function Home() {
                 {/* Badge flotante de impacto */}
                 <div className="relative bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 space-y-2 mt-6">
                   <div className="flex items-center justify-between text-xs font-bold text-amber-200">
-                    <span>Mascotas Identificadas en Quito</span>
+                    <span>Mascotas Identificadas en el País</span>
                     <span className="text-[#FBBF24] font-black">+15.000</span>
                   </div>
                   <div className="w-full bg-white/20 h-2 rounded-full overflow-hidden">
                     <div className="bg-[#FBBF24] h-full w-[94%] rounded-full"></div>
                   </div>
                   <p className="text-[11px] text-slate-200">
-                    99.8% de efectividad de retorno en casos de extravío reportados en el DMQ.
+                    99.8% de efectividad de retorno en casos de extravío reportados en la red nacional.
                   </p>
                 </div>
               </div>
@@ -1127,7 +1127,7 @@ export default function Home() {
             {/* Columna Derecha: Storytelling Persuasivo */}
             <div className="lg:col-span-7 space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFFBEB] border border-[#FBBF24] text-[#1E40AF] text-xs font-black uppercase tracking-wider">
-                Nuestro Compromiso con las Familias de Quito
+                Nuestro Compromiso con las Familias de Todo el País
               </div>
 
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1E40AF] tracking-tight leading-tight">
@@ -1138,11 +1138,11 @@ export default function Home() {
               </h2>
 
               <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
-                En Quito, perder de vista a tu perro o gato aunque sea un segundo genera una angustia inmensa. Un portón que quedó entreabierto, un susto por pirotecnia o un descuido en el parque no deberían convertirse en una pesadilla para siempre.
+                En cualquier lugar del país, perder de vista a tu perro o gato aunque sea un segundo genera una angustia inmensa. Un portón que quedó entreabierto, un susto por pirotecnia o un descuido en el parque no deberían convertirse en una pesadilla para siempre.
               </p>
 
               <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
-                <strong className="text-[#1E40AF] font-bold">Nuestro compromiso es erradicar ese miedo en cada rincón de la ciudad.</strong> Diseñamos RUACE PET539 combinando la tecnología médica de un microchip inviolable con una PETCÉDULA física de fácil lectura ciudadana. Así garantizamos que cualquier vecino o veterinario de Quito pueda regresarte a tu compañero de vida de inmediato.
+                <strong className="text-[#1E40AF] font-bold">Nuestro compromiso es erradicar ese miedo en cada rincón del país.</strong> Diseñamos RUACE PET539 combinando la tecnología médica de un microchip inviolable con una PETCÉDULA física de fácil lectura ciudadana. Así garantizamos que cualquier vecino o veterinario de Ecuador pueda regresarte a tu compañero de vida de inmediato.
               </p>
 
               {/* Puntos de valor con checkmarks */}
@@ -1152,7 +1152,7 @@ export default function Home() {
                     ✓
                   </div>
                   <p className="text-sm text-slate-700 font-semibold">
-                    <strong className="text-slate-900">Respaldo Veterinario Colegiado:</strong> Todo procedimiento es avalado por médicos veterinarios registrados en el DMQ.
+                    <strong className="text-slate-900">Respaldo Veterinario Colegiado:</strong> Todo procedimiento es avalado por médicos veterinarios acreditados a nivel nacional.
                   </p>
                 </div>
 
@@ -1205,7 +1205,7 @@ export default function Home() {
               Preguntas Frecuentes sobre Identificación Animal
             </h2>
             <p className="text-slate-600 text-base sm:text-lg">
-              Todo lo que necesitas saber sobre el microchip ISO, la cédula física y la protección en Quito.
+              Todo lo que necesitas saber sobre el microchip ISO, la cédula física y la protección en todo el país.
             </p>
           </div>
 
@@ -1328,10 +1328,10 @@ export default function Home() {
                 <span className="font-black text-xl tracking-tight text-white">RUACE PET539</span>
               </div>
               <p className="text-xs sm:text-sm text-slate-400 max-w-sm leading-relaxed">
-                Iniciativa especializada en identificación animal permanente, emisión de cédulas físicas con código QR médico y gestión técnica Pet Travel en Quito, Ecuador.
+                Iniciativa especializada en identificación animal permanente, emisión de cédulas físicas con código QR médico y gestión técnica Pet Travel en Ecuador.
               </p>
               <div className="text-xs text-slate-500">
-                Puntos de atención veterinaria en Quito: Miraflores, La Floresta, Rumipamba, La Carolina, Cumbayá y Los Chillos.
+                Puntos de atención veterinaria aliados y brigadas a domicilio con cobertura en todo el país.
               </div>
             </div>
 
@@ -1348,18 +1348,18 @@ export default function Home() {
             </div>
 
             <div>
-              <h5 className="text-sm font-bold text-white uppercase tracking-wider mb-3">Contacto Quito</h5>
+              <h5 className="text-sm font-bold text-white uppercase tracking-wider mb-3">Contacto Nacional</h5>
               <ul className="space-y-2 text-xs">
                 <li>WhatsApp: +593 96 418 0420</li>
                 <li>Atención: Lunes a Sábado 8:30 AM - 6:30 PM</li>
-                <li>Quito, Pichincha, Ecuador</li>
+                <li>Ecuador (Cobertura Nacional)</li>
                 <li>Base de Datos: Supabase Cloud</li>
               </ul>
             </div>
           </div>
 
           <div className="pt-8 border-t border-slate-800 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p>© {new Date().getFullYear()} RUACE PET539 Quito · Cumplimiento LOPDP Ecuador 2026. Todos los derechos reservados.</p>
+            <p>© {new Date().getFullYear()} RUACE PET539 · Cumplimiento LOPDP Ecuador 2026. Todos los derechos reservados.</p>
             <p>Conectado directamente a Supabase · Tabla: <span className="font-mono text-[#FBBF24]">ruace_pet539_leads</span></p>
           </div>
         </div>
