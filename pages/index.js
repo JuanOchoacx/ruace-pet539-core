@@ -139,14 +139,23 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* TOP NOTIFICATION BAR - PALETA OFICIAL PET593 */}
-      <div className="bg-[#1E40AF] text-white text-xs sm:text-sm py-2.5 px-4 text-center font-medium shadow-inner flex items-center justify-center gap-2">
-        <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#FBBF24] animate-pulse"></span>
-        <span>Red Metropolitana de Identificación Animal Quito · Norma ISO 11784/11785 & Ley LOPDP Ecuador 2026</span>
-      </div>
+      {/* WRAPPER STICKY TOP: BANNER + NAVBAR */}
+      <div className="sticky top-0 z-50">
+        {/* TOP BAR BANNER (REFERENCIA 3 - PET STATION) - FONDO AMARILLO ACENTO Y TEXTO NEGRO */}
+        <div className="bg-[#FBBF24] text-slate-900 text-xs sm:text-sm py-2 px-4 text-center font-black shadow-sm flex items-center justify-center gap-2 border-b border-amber-400">
+          <span className="text-base inline-block">✈️</span>
+          <span>¿Viajas pronto con tu peludito? Obtén hoy tu consulta de asesoría Pet Travel sin costo con tu registro.</span>
+          <a
+            href="#registro"
+            className="ml-2 inline-flex items-center gap-1 bg-[#1E40AF] hover:bg-blue-900 text-white font-extrabold text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full transition-colors shadow-xs"
+          >
+            <span>Pedir Asesoría</span>
+            <span>→</span>
+          </a>
+        </div>
 
-      {/* NAVBAR */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all shadow-sm">
+        {/* NAVBAR */}
+        <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 rounded-2xl bg-[#1E40AF] flex items-center justify-center text-[#FBBF24] shadow-md shadow-[#1E40AF]/20">
@@ -185,6 +194,7 @@ export default function Home() {
           </div>
         </div>
       </header>
+    </div>
 
       {/* HERO SECTION */}
       <section className="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28 bg-[#FFFBEB]">
@@ -1257,6 +1267,38 @@ export default function Home() {
               </div>
 
             </form>
+
+            {/* BLOQUE HORIZONTAL DE INSIGNIAS DE CONFIANZA (TRUST BADGES - REFERENCIA 3 PET STATION) */}
+            <div className="bg-[#FFFBEB] border-t border-amber-200/90 px-6 sm:px-10 py-5 rounded-b-3xl">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center shrink-0 shadow-sm font-black text-lg">
+                    ✓
+                  </div>
+                  <div>
+                    <p className="text-xs sm:text-sm font-black text-[#1E40AF]">
+                      Pago único, sin suscripciones ocultas.
+                    </p>
+                    <p className="text-[11px] sm:text-xs text-slate-700 font-semibold">
+                      Registro certificado bajo estándares ISO internacionales.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 text-[11px] font-bold text-slate-700">
+                  <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-amber-200 shadow-xs">
+                    <span className="text-[#1E40AF] font-black">●</span> Norma ISO 11784/85
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-amber-200 shadow-xs">
+                    <span className="text-emerald-600 font-black">●</span> Sin Mensualidades
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-amber-200 shadow-xs">
+                    <span className="text-[#1E40AF] font-black">●</span> Red Quito DMQ
+                  </span>
+                </div>
+              </div>
+            </div>
+
           </div>
 
         </div>
