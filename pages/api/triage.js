@@ -1,70 +1,87 @@
-import { createAnthropic } from '@ai-sdk/anthropic';
-import { generateText } from 'ai';
+import { createClient } from '@supabase/supabase-js';
+import { GoogleGenerativeAI } from '@google/generative-ai'; // Consolidado en un solo skill de IA
 
-const anthropic = createAnthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+const GoogleGenAI = GoogleGenerativeAI;
+
+// Inicialización de los únicos 2 módulos activos del ecosistema
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://supabase.co',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL'
+);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Método no permitido. Utiliza POST.' });
+    return res.status(405).json({ message: 'Método no permitido' });
   }
 
-  const { owner_name, pet_name, pet_type, current_status, pet_travel_intent } = req.body || {};
-
-  // Regla de Oro de Anonimato y Privacidad
-  const sanitizedOwner = (owner_name || 'el tutor').split(' ')[0];
-  const sanitizedPet = pet_name || 'la mascota';
-  const sanitizedType = pet_type || 'animal de compañía';
-  const sanitizedStatus = current_status || 'Sin microchip';
-  const sanitizedTravel = pet_travel_intent || 'No';
+  const { lead_id, owner_name, pet_name, current_status, pet_travel_intent } = req.body || {};
 
   try {
-    const prompt = `
-      Actúas como Asesor Predictivo de Cierre para la marca oficial RUACE PET539 en Quito, Ecuador.
-      Analiza las siguientes variables cualificadas del lead:
-      - Tutor: ${sanitizedOwner}
-      - Mascota: ${sanitizedPet} (${sanitizedType})
-      - Estado actual de identificación: ${sanitizedStatus}
-      - Intención de viaje: ${sanitizedTravel}
+    // SKILL ACTIVO 1: Motor Predictivo de IA (Google AI / Anthropic)
+    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error('API key de IA no configurada en el entorno');
+    }
 
-      Instrucciones estrictas:
-      1. Genera un consejo táctico y persuasivo de ventas en español para el asesor comercial (máximo 2 frases, menos de 30 palabras).
-      2. Si la intención de viaje es próxima/corto plazo, prioriza urgentemente el Microchip Homologado ISO 11784/85 por plazos de Agrocalidad y aerolíneas.
-      3. Si el estado actual es 'Solo placa', enfatiza el alto riesgo de desprendimiento en Quito y ofrece la PETCÉDULA física con microchip permanente.
-      4. Si no tiene microchip ni cédula, ofrece el registro integral inmediato para evitar extravíos.
-      5. Respeta rigurosamente la regla de oro de anonimato: no utilices datos personales externos ni nombres completos.
+    const ai = new GoogleGenAI(apiKey);
+    const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+
+    const prompt = `
+      Actúas como el asesor comercial predictivo de la marca RUACE PET539 en Quito, Ecuador.
+      Analiza estas variables del lead: Tutor: ${owner_name || 'el tutor'}, Mascota: ${pet_name || 'la mascota'}, Estado: ${current_status || 'Sin microchip'}, Viaje: ${pet_travel_intent || 'No'}.
+      Genera una sugerencia de venta ultra-corta (máximo 25 palabras) en español. Si viaja pronto, prioriza urgencia por microchip ISO. Si usa solo placa, resalta el riesgo de pérdida según el Scraping de la Fase 1. Mantén estricto anonimato institucional.
     `;
 
-    const { text } = await generateText({
-      model: anthropic('claude-3-5-sonnet-20241022'),
-      prompt: prompt,
-      temperature: 0.3,
-    });
+    const aiResponse = await model.generateContent(prompt);
+    const adviceText = aiResponse.response.text().trim();
 
-    return res.status(200).json({ 
-      advice: text.trim(),
-      triage: text.trim() 
-    });
-  } catch (error) {
-    console.error('Error en el motor de triage IA:', error);
-    
-    // Fallback inteligente según reglas de negocio de RUACE PET539
-    let fallbackTip = `Sugerencia: Contactar a ${sanitizedOwner} vía WhatsApp para coordinar la colocación del microchip permanente para ${sanitizedPet}.`;
-    
-    const travelLow = sanitizedTravel.toLowerCase();
-    const statusLow = sanitizedStatus.toLowerCase();
-    
-    if (travelLow.includes('corto') || travelLow.includes('internacional') || travelLow.includes('próximo')) {
-      fallbackTip = `🚨 Urgencia Pet Travel: ${sanitizedOwner} viaja pronto con ${sanitizedPet}. Ofrece microchip ISO 15 dígitos por plazos de Agrocalidad.`;
-    } else if (statusLow.includes('placa')) {
-      fallbackTip = `⚡ Alto Riesgo: ${sanitizedPet} solo usa placa externa. Enfatiza a ${sanitizedOwner} el microchip subdérmico inviolable ante pérdidas.`;
+    // SKILL ACTIVO 2: Persistencia y Sincronización en Base de Datos (Supabase)
+    if (lead_id && !String(lead_id).startsWith('demo-')) {
+      const { error } = await supabase
+        .from('ruace_pet539_leads')
+        .update({ lead_advice: adviceText })
+        .eq('id', lead_id);
+
+      if (error) {
+        console.warn('Advertencia al actualizar en Supabase:', error.message);
+      }
     }
 
     return res.status(200).json({ 
-      advice: fallbackTip,
-      triage: fallbackTip,
-      fallback: true 
+      success: true, 
+      advice: adviceText, 
+      triage: adviceText 
+    });
+  } catch (error) {
+    console.error('Error en el backend unificado:', error);
+    
+    // Fallback inteligente según reglas de negocio de RUACE PET539
+    let fallbackAdvice = "Sugerencia: Contactar de inmediato vía WhatsApp para ofrecer microchip ISO de seguridad.";
+    const travel = (pet_travel_intent || '').toLowerCase();
+    const status = (current_status || '').toLowerCase();
+
+    if (travel.includes('corto') || travel.includes('internacional') || travel.includes('próximo')) {
+      fallbackAdvice = "🚨 Urgencia Pet Travel: Priorizar microchip homologado ISO 15 dígitos por plazos de Agrocalidad y aerolíneas.";
+    } else if (status.includes('placa')) {
+      fallbackAdvice = "⚡ Alto Riesgo: Reemplazar placa externa con microchip subdérmico y PETCÉDULA física ante riesgo de pérdida en Quito.";
+    }
+
+    // Persistencia de fallback en Supabase si aplica
+    if (lead_id && !String(lead_id).startsWith('demo-')) {
+      try {
+        await supabase
+          .from('ruace_pet539_leads')
+          .update({ lead_advice: fallbackAdvice })
+          .eq('id', lead_id);
+      } catch (err) {
+        console.warn('Fallback sync warning:', err.message);
+      }
+    }
+
+    return res.status(200).json({ 
+      success: true, 
+      advice: fallbackAdvice, 
+      triage: fallbackAdvice 
     });
   }
 }

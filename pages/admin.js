@@ -436,6 +436,7 @@ export default function AdminDashboard() {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
+                lead_id: lead.id,
                 owner_name: lead.owner_name,
                 pet_name: lead.pet_name,
                 pet_type: lead.pet_type,
@@ -476,6 +477,7 @@ export default function AdminDashboard() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          lead_id: lead.id,
           owner_name: lead.owner_name,
           pet_name: lead.pet_name,
           pet_type: lead.pet_type,
