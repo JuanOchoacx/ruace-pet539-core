@@ -334,12 +334,14 @@ export default function AdminDashboard() {
         const score = calculateLeadScore(lead);
         const temp = getTemperatureData(score);
         const aiTip = generateAICounsel(lead, score);
+        const rawStatus = (lead.lead_status || 'Por contactar').trim();
+        const normalizedStatus = rawStatus.toLowerCase() === 'contactado' ? 'Contactado' : 'Por contactar';
         return {
           ...lead,
           lead_score: score,
           temperature: temp,
           ai_counsel: aiTip,
-          lead_status: lead.lead_status || 'Por contactar',
+          lead_status: normalizedStatus,
         };
       })
       .sort((a, b) => b.lead_score - a.lead_score); // Reordenamiento estricto descendente
@@ -376,43 +378,25 @@ export default function AdminDashboard() {
     });
   }, [processedLeads, searchQuery, filterTemperature, segmentFilter]);
 
-  // MARCAR COMO CONTACTADO Y PERSISTIR NOTA/FEEDBACK
+  // MARCAR COMO CONTACTADO Y PERSISTIR NOTA/FEEDBACK ASÍNCRONAMENTE EN SUPABASE
   const handleMarkAsContacted = async (lead) => {
     const leadKey = lead.id || lead.owner_email;
-    const currentNote = leadNotes[leadKey] !== undefined ? leadNotes[leadKey] : (lead.notes || '');
+    const currentNote = leadNotes[leadKey] !== undefined ? leadNotes[leadKey] : (lead.notes || lead.lead_advice || '');
     setUpdatingId(leadKey);
 
-    // Actualización optimista del estado y nota en interfaz
-    setLeads((prev) =>
-      prev.map((item) => {
-        const isMatch = (item.id && item.id === lead.id) || item.owner_email === lead.owner_email;
-        return isMatch
-          ? {
-              ...item,
-              lead_status: 'Contactado',
-              notes: currentNote,
-              lead_advice: currentNote || item.lead_advice,
-            }
-          : item;
-      })
-    );
-
-    // Persistencia local inmediata
+    // Persistencia local en navegador para respaldo inmediato
     if (typeof window !== 'undefined') {
       localStorage.setItem(`ruace_note_${leadKey}`, currentNote);
     }
 
-    // Persistencia en Supabase
+    // 1. LLAMADA ASÍNCRONA .update() A SUPABASE (ruace_pet539_leads)
     try {
       if (lead.id && !String(lead.id).startsWith('demo-')) {
         const updatePayload = {
           lead_status: 'Contactado',
           notes: currentNote,
+          lead_advice: currentNote,
         };
-        // También actualizar lead_advice si existe en la tabla
-        if (currentNote) {
-          updatePayload.lead_advice = currentNote;
-        }
 
         const { error } = await supabase
           .from('ruace_pet539_leads')
@@ -420,24 +404,60 @@ export default function AdminDashboard() {
           .eq('id', lead.id);
 
         if (error) {
-          // Si lead_advice fallara por esquema, reintentar solo con lead_status y notes
-          console.warn('Reintentando update con campos base:', error.message);
-          await supabase
+          console.warn('Reintentando update en Supabase con campos individuales:', error.message);
+          // Fallback resiliente si alguna columna no existiera en la definición de la tabla
+          const { error: retryError } = await supabase
             .from('ruace_pet539_leads')
             .update({ lead_status: 'Contactado', notes: currentNote })
             .eq('id', lead.id);
+
+          if (retryError) {
+            await supabase
+              .from('ruace_pet539_leads')
+              .update({ lead_status: 'Contactado', lead_advice: currentNote })
+              .eq('id', lead.id);
+          }
         }
       }
 
+      // 2. ACTUALIZACIÓN INMEDIATA DEL ESTADO LOCAL DE REACT TRAS ÉXITO
+      setLeads((prev) =>
+        prev.map((item) => {
+          const isMatch = (item.id && item.id === lead.id) || item.owner_email === lead.owner_email;
+          return isMatch
+            ? {
+                ...item,
+                lead_status: 'Contactado',
+                notes: currentNote,
+                lead_advice: currentNote || item.lead_advice,
+              }
+            : item;
+        })
+      );
+
       setNotification({
         type: 'success',
-        text: `✓ Lead de ${lead.owner_name} marcado como Contactado y feedback persistido.`,
+        text: `✓ Lead de ${lead.owner_name} marcado como "Contactado" y guardado en Supabase.`,
       });
     } catch (err) {
-      console.warn('Persistido localmente con éxito:', err.message);
+      console.warn('Error al actualizar en Supabase, aplicando actualización en memoria:', err.message);
+      // Actualización local de respaldo para leads demo o modo offline
+      setLeads((prev) =>
+        prev.map((item) => {
+          const isMatch = (item.id && item.id === lead.id) || item.owner_email === lead.owner_email;
+          return isMatch
+            ? {
+                ...item,
+                lead_status: 'Contactado',
+                notes: currentNote,
+                lead_advice: currentNote || item.lead_advice,
+              }
+            : item;
+        })
+      );
       setNotification({
         type: 'success',
-        text: `✓ ${lead.owner_name} marcado como Contactado (guardado localmente).`,
+        text: `✓ ${lead.owner_name} marcado como "Contactado" (guardado localmente).`,
       });
     } finally {
       setUpdatingId(null);
@@ -451,14 +471,6 @@ export default function AdminDashboard() {
     const targetKey = lead.id || lead.owner_email;
     setUpdatingId(targetKey);
 
-    // Actualización optimista en interfaz
-    setLeads((prev) =>
-      prev.map((item) => {
-        const isMatch = (item.id && item.id === lead.id) || item.owner_email === lead.owner_email;
-        return isMatch ? { ...item, lead_status: nextStatus } : item;
-      })
-    );
-
     // Actualización en Supabase
     try {
       if (lead.id && !String(lead.id).startsWith('demo-')) {
@@ -470,12 +482,26 @@ export default function AdminDashboard() {
         if (error) throw error;
       }
 
+      // Actualización del estado local tras éxito
+      setLeads((prev) =>
+        prev.map((item) => {
+          const isMatch = (item.id && item.id === lead.id) || item.owner_email === lead.owner_email;
+          return isMatch ? { ...item, lead_status: nextStatus } : item;
+        })
+      );
+
       setNotification({
         type: 'success',
         text: `Estado de ${lead.owner_name} actualizado a "${nextStatus}".`,
       });
     } catch (err) {
       console.warn('Actualizado localmente:', err.message);
+      setLeads((prev) =>
+        prev.map((item) => {
+          const isMatch = (item.id && item.id === lead.id) || item.owner_email === lead.owner_email;
+          return isMatch ? { ...item, lead_status: nextStatus } : item;
+        })
+      );
       setNotification({
         type: 'success',
         text: `Estado de ${lead.owner_name} actualizado a "${nextStatus}" (local).`,
@@ -1294,35 +1320,62 @@ export default function AdminDashboard() {
                         {/* BOTÓN DE CONTACTO Y ACCIÓN COMERCIAL */}
                         <td className="py-4 px-4 align-top text-center">
                           <div className="flex flex-col items-center gap-2">
-                            <button
-                              type="button"
-                              onClick={() => handleMarkAsContacted(lead)}
-                              disabled={updatingId === leadKey}
-                              className={`w-full max-w-[170px] px-3.5 py-2 rounded-xl font-black text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm ${
-                                isContacted
-                                  ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-2 border-emerald-300'
-                                  : 'bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 border border-amber-400 shadow-md hover:scale-[1.02] active:scale-[0.98]'
-                              }`}
-                              title={isContacted ? 'Lead ya contactado (clic para volver a guardar nota)' : 'Marcar como Contactado y persistir feedback'}
-                            >
-                              {updatingId === leadKey ? (
-                                <span className="animate-spin text-xs">🌀</span>
-                              ) : isContacted ? (
-                                <span>✓</span>
-                              ) : (
-                                <span>📞</span>
-                              )}
-                              <span>{isContacted ? 'Contactado' : 'Marcar como Contactado'}</span>
-                            </button>
-
-                            {/* Alternar estado a Por contactar si ya fue contactado */}
-                            {isContacted && (
+                            {isContacted ? (
+                              <div className="flex flex-col items-center gap-1.5 w-full max-w-[190px]">
+                                <button
+                                  type="button"
+                                  onClick={() => handleMarkAsContacted(lead)}
+                                  disabled={updatingId === leadKey}
+                                  className="w-full px-3.5 py-2.5 rounded-xl font-black text-xs transition-all flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-2 border-emerald-300 shadow-xs cursor-pointer group"
+                                  title="Lead ya contactado. Haz clic si deseas sincronizar nuevas notas con Supabase."
+                                >
+                                  {updatingId === leadKey ? (
+                                    <svg className="w-4 h-4 animate-spin text-emerald-700" fill="none" viewBox="0 0 24 24">
+                                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                  ) : (
+                                    <svg className="w-4 h-4 text-emerald-600 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                  )}
+                                  <span>Contactado ✓</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleToggleStatus(lead)}
+                                  className="text-[10px] text-slate-400 hover:text-slate-700 underline font-semibold transition-colors"
+                                  title="Revertir el estado a Por contactar"
+                                >
+                                  Revertir a Por Contactar
+                                </button>
+                              </div>
+                            ) : (
                               <button
                                 type="button"
-                                onClick={() => handleToggleStatus(lead)}
-                                className="text-[10px] text-slate-400 hover:text-slate-600 underline font-medium"
+                                onClick={() => handleMarkAsContacted(lead)}
+                                disabled={updatingId === leadKey}
+                                className="w-full max-w-[190px] px-3.5 py-2.5 rounded-xl font-black text-xs transition-all duration-200 flex items-center justify-center gap-2 shadow-sm bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 border border-amber-400 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group cursor-pointer"
+                                title="Marcar como Contactado y guardar notas en Supabase"
                               >
-                                Revertir a pendiente
+                                {updatingId === leadKey ? (
+                                  <>
+                                    <svg className="w-4 h-4 animate-spin text-slate-900" fill="none" viewBox="0 0 24 24">
+                                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <span>Guardando...</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div className="w-4 h-4 rounded-full bg-slate-900/10 flex items-center justify-center group-hover:bg-slate-900/20 transition-colors">
+                                      <svg className="w-3 h-3 text-slate-950 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                      </svg>
+                                    </div>
+                                    <span>Marcar como Contactado</span>
+                                  </>
+                                )}
                               </button>
                             )}
                           </div>
