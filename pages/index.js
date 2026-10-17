@@ -303,8 +303,8 @@ export default function Home() {
               {/* Resplandor suave decorativo de fondo */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-white/60 rounded-full blur-3xl pointer-events-none"></div>
 
-              {/* MICRO-TARJETA FLOTANTE ULTRA-COMPACTA (REFERENCIA OFICIAL PET ID ECUADOR) */}
-              <div className="absolute bottom-4 right-2 z-30 w-[240px] h-[145px] md:w-[260px] md:h-[155px] rounded-xl border border-slate-200 shadow-md p-2 flex flex-col justify-between bg-[#F8FAFC] overflow-hidden transform hover:scale-105 transition-transform duration-300 select-none group">
+              {/* MICRO-TARJETA FLOTANTE ULTRA-COMPACTA (REFERENCIA OFICIAL PET ID ECUADOR - CORGI) */}
+              <div className="absolute bottom-4 right-2 z-30 w-[240px] h-[145px] md:w-[260px] md:h-[155px] rounded-xl border border-slate-200/60 shadow-lg p-2 flex flex-col justify-between bg-gradient-to-br from-white to-[#F8FAFC] overflow-hidden transform hover:scale-105 transition-transform duration-300 select-none group">
                 
                 {/* Micro-textura lineal de ondas suaves de seguridad */}
                 <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
@@ -320,7 +320,7 @@ export default function Home() {
                 {/* Reflejo brillante de plástico PVC plastificado */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent pointer-events-none rounded-xl"></div>
 
-                {/* 1. HEADER INSTITUCIONAL: TÍTULOS + BARRA VERTICAL + IMAGOTIPO PET ID */}
+                {/* 1. HEADER INSTITUCIONAL: TÍTULOS + BARRA VERTICAL + ISOTIPO PET ID */}
                 <div className="flex items-center justify-between pb-1 border-b border-slate-200/80 gap-1 relative z-10">
                   {/* Lado izquierdo: Barra vertical amarilla y azul + Títulos institucionales */}
                   <div className="flex items-center gap-1.5 min-w-0">
@@ -338,7 +338,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Lado derecho: Imagotipo miniaturizado de 'Pet ID' */}
+                  {/* Lado derecho: Isotipo miniaturizado de 'Pet ID' */}
                   <div className="flex items-center gap-0.5 flex-shrink-0 pl-1">
                     <span className="text-[9px] font-black tracking-tighter text-[#1E40AF] leading-none">
                       Pet<span className="text-[#F59E0B]">ID</span>
@@ -350,12 +350,12 @@ export default function Home() {
                 {/* 2. DISTRIBUCIÓN DE DATOS EN ALTA DENSIDAD (GRID 12 COLS) */}
                 <div className="grid grid-cols-12 gap-1.5 mt-1 items-center flex-1 min-h-0 relative z-10">
                   
-                  {/* SECCIÓN IZQUIERDA (PORTARRETRATO MINI - span 4) */}
+                  {/* SECCIÓN IZQUIERDA (PORTARRETRATO MINI - span 4): FOTO OFICIAL CORGI + MICROCHIP */}
                   <div className="col-span-4 flex flex-col items-center justify-center">
                     <img
-                      src="/pomerania-blanco.png"
-                      alt="MAX - Pomerania Blanco"
-                      className="w-[55px] h-[65px] rounded-lg object-cover border border-slate-200 shadow-xs pointer-events-none"
+                      src="/corgi.jpg"
+                      alt="MAX - Perro Corgi Valés"
+                      className="w-[55px] h-[65px] rounded-lg object-cover object-top border border-slate-200 shadow-sm pointer-events-none"
                     />
                     <p className="text-[5.5px] text-slate-700 tracking-tighter text-center leading-tight mt-0.5 font-bold">
                       Microchip: 123456789012345
@@ -368,23 +368,23 @@ export default function Home() {
                     {/* Datos del Censo Nacional */}
                     <div className="flex-1 flex flex-col justify-between text-left space-y-0.5 min-w-0 pr-1">
                       <div className="leading-tight">
-                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">Nombre: </span>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">NOMBRE: </span>
                         <span className="text-[7px] font-bold text-slate-900 tracking-tight">MAX</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">Especie: </span>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">ESPECIE: </span>
                         <span className="text-[7px] font-bold text-slate-800">CANINA</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">Raza: </span>
-                        <span className="text-[7px] font-bold text-slate-900 truncate inline-block max-w-[65px] sm:max-w-[78px] align-bottom">POMERANIA BLANCO</span>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">RAZA: </span>
+                        <span className="text-[7px] font-bold text-slate-900 truncate inline-block max-w-[65px] sm:max-w-[78px] align-bottom">CORGI VALÉS</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">Sexo: </span>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">SEXO: </span>
                         <span className="text-[7px] font-bold text-slate-800">MACHO</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">F. de Nacimiento: </span>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">F. DE NACIMIENTO: </span>
                         <span className="text-[7px] font-bold text-slate-800">06-MAY-2026</span>
                       </div>
                     </div>
