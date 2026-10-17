@@ -245,76 +245,10 @@ export default function Home() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-12 lg:gap-12">
             
-            {/* LATERAL IZQUIERDO: MONTAJE ASIMÉTRICO CON PLASTA DE COLOR ORGÁNICA ABSTRACTA & PERRO SOBRESALIENTE */}
-            <div className="lg:col-span-5 flex justify-center order-2 lg:order-1 relative">
-              <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[460px] h-[380px] sm:h-[450px] lg:h-[480px] flex items-center justify-center">
-                
-                {/* PLASTA DE COLOR ORGÁNICA Y ABSTRACTA DE ALTO CONTRASTE (ROJO/CORAL INTENSO #EF4444) */}
-                <div className="absolute inset-x-4 bottom-4 top-16 sm:top-20 bg-[#EF4444] rounded-[50%_50%_45%_55%/60%_40%_60%_40%] shadow-2xl shadow-red-500/30 rotate-[-4deg] transition-transform duration-700 hover:rotate-0"></div>
-                
-                {/* PLASTA SECUNDARIA DE ACENTO (AMARILLO ORO #FBBF24) EN EL EJE CENTRAL/INFERIOR */}
-                <div className="absolute -bottom-2 -left-2 w-32 h-32 sm:w-40 sm:h-40 bg-[#FBBF24] rounded-full opacity-90 blur-xs shadow-lg pointer-events-none -z-0"></div>
-                <div className="absolute -top-3 right-6 w-20 h-20 bg-sky-300 rounded-full opacity-60 blur-xs pointer-events-none"></div>
-
-                {/* FOTOGRAFÍA EN ALTA DEFINICIÓN DEL PERRO CON FONDO TRANSPARENTE (SOBRESALE DE LA PLASTA) */}
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/2/2d/German_Shepherd_Transparent.png"
-                  alt="Mascota identificada con microchip y cédula RUACE PET539"
-                  className="relative z-10 w-full h-[115%] sm:h-[120%] object-contain object-bottom -translate-y-8 sm:-translate-y-12 filter drop-shadow-[0_20px_25px_rgba(0,0,0,0.35)] pointer-events-none transform transition-transform duration-500 hover:scale-105"
-                  loading="eager"
-                />
-
-                {/* DOODLES Y ELEMENTOS LINEALES FLOTANTES RODEANDO LA SILUETA DEL PERRO */}
-                {/* 1. Hueso lineal flotante (superior izquierdo) */}
-                <div className="absolute -top-4 -left-4 z-20 text-[#1E40AF] bg-white/90 backdrop-blur-sm p-2 rounded-2xl shadow-lg border border-sky-100 rotate-[-15deg] animate-bounce">
-                  <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25a2.25 2.25 0 00-2.25-2.25h-.008a2.25 2.25 0 00-2.242 2.25v.008a2.25 2.25 0 00.75 1.697l-7.008 7.008a2.25 2.25 0 00-1.697-.75h-.008a2.25 2.25 0 00-2.242 2.25v.008a2.25 2.25 0 002.25 2.25h.008a2.25 2.25 0 002.242-2.25v-.008a2.25 2.25 0 00-.75-1.697l7.008-7.008a2.25 2.25 0 001.697.75h.008a2.25 2.25 0 002.242-2.25v-.008z" />
-                  </svg>
-                </div>
-
-                {/* 2. Corazón lineal flotante (superior derecho) */}
-                <div className="absolute top-2 -right-3 z-20 text-rose-500 bg-white/90 backdrop-blur-sm p-2 rounded-2xl shadow-lg border border-rose-100 rotate-[18deg]">
-                  <svg className="w-6 h-6 sm:w-7 sm:h-7 fill-rose-500/20" fill="currentColor" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                  </svg>
-                </div>
-
-                {/* 3. Balón / Pelota de juego lineal (inferior izquierdo) */}
-                <div className="absolute bottom-6 -left-3 z-20 text-[#1E40AF] bg-[#FBBF24] p-2.5 rounded-full shadow-xl border-2 border-slate-900 rotate-12">
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-slate-950" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="9" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3a9 9 0 010 18M3 12h18M5.5 5.5l13 13M5.5 18.5l13-13" />
-                  </svg>
-                </div>
-
-                {/* 4. Huella protectora (inferior derecho cerca de la guía visual) */}
-                <div className="absolute bottom-2 -right-2 z-20 text-[#1E40AF] bg-white/95 backdrop-blur-sm px-3.5 py-1.5 rounded-full shadow-xl border border-sky-200 flex items-center gap-1.5 rotate-[-6deg]">
-                  <svg className="w-5 h-5 text-[#1E40AF]" fill="currentColor" viewBox="0 0 24 24">
-                    <ellipse cx="12" cy="15" rx="4" ry="4.5" />
-                    <circle cx="6.5" cy="9.5" r="2" />
-                    <circle cx="10" cy="7" r="2" />
-                    <circle cx="14" cy="7" r="2" />
-                    <circle cx="17.5" cy="9.5" r="2" />
-                  </svg>
-                  <span className="text-[11px] font-black text-slate-900 uppercase tracking-tight">100% Protegido</span>
-                </div>
-
-                {/* Insignia oficial flotante: Chip Subdérmico ISO */}
-                <div className="absolute top-1/2 -left-6 z-20 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-xl border border-slate-200/80 hidden sm:flex items-center gap-2">
-                  <span className="text-base">🔒</span>
-                  <div className="text-left">
-                    <p className="text-[10px] font-black text-[#1E40AF] leading-none">Norma ISO 11784/85</p>
-                    <p className="text-[9px] text-slate-500 font-bold leading-none mt-0.5">Chip 15 Dígitos</p>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            {/* LATERAL DERECHO: CONTENIDOS CALIBRADOS CON EL SCRAPING DE APIFY (SECCIÓN 1) */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left order-1 lg:order-2">
+            {/* BLOQUE DE CONTENIDOS (lg:col-span-6): KICKER, COPY DE IMPACTO Y CTAs CON SMOOTH SCROLL */}
+            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
               
               {/* KICKER SUPERIOR: AUTORIDAD INMEDIATA FRENTE AL VACÍO INSTITUCIONAL */}
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#1E40AF]/30 text-[#1E40AF] text-xs sm:text-sm font-black shadow-sm tracking-wider uppercase">
@@ -328,11 +262,11 @@ export default function Home() {
               </h1>
 
               {/* PÁRRAFO DESCRIPTIVO: DOLOR DE COSTOS OCULTOS Y BUROCRACIA */}
-              <p className="text-base sm:text-lg text-slate-700 font-medium leading-relaxed max-w-2xl">
+              <p className="text-base sm:text-lg text-slate-700 font-medium leading-relaxed max-w-xl">
                 El microchip permanente y su <strong className="text-[#1E40AF] font-black">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Sin mensualidades ocultas. Homologado bajo la norma internacional ISO 11784/85 para lectura inmediata en Ecuador y procesos Pet Travel.
               </p>
 
-              {/* BOTÓN DE ACCIÓN PRINCIPAL (TWO-STEP OPT-IN CON ESTILO REDONDEADO Y SMOOTH SCROLL) */}
+              {/* BOTONES DE ACCIÓN PRINCIPALES (TWO-STEP OPT-IN CON ESTILO REDONDEADO Y SMOOTH SCROLL) */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <a
                   href="#registro"
@@ -368,6 +302,71 @@ export default function Home() {
                 </span>
               </div>
 
+            </div>
+
+            {/* BLOQUE VISUAL DOMINANTE (lg:col-span-6): IMAGEN WEBP OPTIMIZADA TUTOR-MASCOTA CON MÁSCARA FLUIDA */}
+            <div className="lg:col-span-6 flex justify-center relative">
+              <div className="relative w-full max-w-lg lg:max-w-none h-[420px] sm:h-[500px] lg:h-[560px] flex items-center justify-center">
+                
+                {/* Orbe decorativo difuminado en amarillo acento #FBBF24 */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-[#FBBF24]/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                {/* CONTENEDOR DE LA IMAGEN WEBP CON MÁSCARA DE DEGRADADO Y BORDES ORGÁNICOS */}
+                <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white/80 [mask-image:radial-gradient(ellipse_at_center,black_75%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_75%,transparent_100%)]">
+                  <picture>
+                    <source
+                      srcSet="https://images.pexels.com/photos/5257630/pexels-photo-5257630.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                      type="image/webp"
+                    />
+                    <img
+                      src="https://images.pexels.com/photos/5257630/pexels-photo-5257630.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                      alt="Conexión y protección inseparable entre tutor y mascota RUACE PET539"
+                      priority="true"
+                      loading="eager"
+                      fetchPriority="high"
+                      decoding="async"
+                      className="w-full h-full object-cover object-center transform transition-transform duration-700 hover:scale-105"
+                    />
+                  </picture>
+
+                  {/* Gradiente protector de contraste suave en bordes */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1E40AF]/30 via-transparent to-transparent pointer-events-none"></div>
+                </div>
+
+                {/* DOODLES Y BADGES FLOTANTES DE AUTORIDAD VETERINARIA */}
+                {/* 1. Badge superior: Identificación Oficial Activa */}
+                <div className="absolute top-4 left-4 z-20 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-xl border border-sky-100 flex items-center gap-2 rotate-[-3deg]">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                  <div className="text-left">
+                    <p className="text-[11px] font-black text-[#1E40AF] uppercase tracking-wider leading-none">
+                      RUACE PET539
+                    </p>
+                    <p className="text-[9px] text-slate-500 font-bold leading-none mt-0.5">
+                      Registro Nacional Activo
+                    </p>
+                  </div>
+                </div>
+
+                {/* 2. Badge inferior izquierdo: Norma ISO 11784/85 */}
+                <div className="absolute bottom-6 left-4 z-20 bg-[#1E40AF] text-white px-4 py-2.5 rounded-2xl shadow-2xl border-2 border-white/90 flex items-center gap-2.5 rotate-[2deg]">
+                  <span className="text-base">🔒</span>
+                  <div className="text-left">
+                    <p className="text-xs font-black text-[#FBBF24] leading-none uppercase tracking-wide">
+                      Norma ISO 11784/85
+                    </p>
+                    <p className="text-[10px] text-blue-100 font-medium leading-none mt-1">
+                      Chip Subdérmico Oficial de 15 Dígitos
+                    </p>
+                  </div>
+                </div>
+
+                {/* 3. Badge inferior derecho: PETCÉDULA QR */}
+                <div className="absolute bottom-8 right-4 z-20 bg-[#FBBF24] text-slate-950 px-3.5 py-2 rounded-2xl shadow-2xl border-2 border-slate-900 flex items-center gap-1.5 rotate-[-4deg]">
+                  <span className="text-sm">📲</span>
+                  <span className="text-xs font-black tracking-tight">PETCÉDULA QR 24/7</span>
+                </div>
+
+              </div>
             </div>
 
           </div>
