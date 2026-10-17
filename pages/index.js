@@ -196,46 +196,179 @@ export default function Home() {
       </header>
     </div>
 
-      {/* HERO SECTION CENTRALIZADO (ANCHO COMPLETO - RUACE PET539 EXCLUSIVO) */}
-      <section id="registro" className="relative overflow-hidden pt-12 pb-24 bg-gradient-to-b from-[#1E40AF]/5 via-[#FFFBEB]/40 to-white">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#FBBF24]/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute top-40 right-10 w-96 h-96 bg-[#1E40AF]/5 rounded-full blur-3xl pointer-events-none"></div>
+      {/* HERO EMOCIONAL ENFOCADO EN LOS HALLAZGOS DE APIFY (ABOVE THE FOLD - FULL-WIDTH HERO) */}
+      <section className="relative overflow-hidden bg-[#1E40AF] text-white py-16 lg:py-24">
+        {/* Glows y elementos decorativos de fondo */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#FBBF24]/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-blue-600/30 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none"></div>
 
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* BLOQUE SUPERIOR CENTRADO: TITULAR PERSUASIVO + SUBTÍTULO OFICIAL */}
-          <div className="text-center max-w-3xl mx-auto space-y-5">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#FBBF24] text-[#1E40AF] text-xs sm:text-sm font-bold shadow-sm">
-              <span className="flex h-2.5 w-2.5 rounded-full bg-[#1E40AF] animate-pulse"></span>
-              Identificación Veterinaria Oficial a Nivel Nacional en Ecuador
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            
+            {/* LATERAL IZQUIERDO: TEXTOS CALIBRADOS CON EL SCRAPING DE APIFY */}
+            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+              
+              {/* Badge Oficial de Respaldo Nacional */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-900/80 border border-[#FBBF24]/70 text-[#FBBF24] text-xs sm:text-sm font-bold shadow-sm backdrop-blur-sm">
+                <span className="flex h-2.5 w-2.5 rounded-full bg-[#FBBF24] animate-pulse"></span>
+                Identificación Veterinaria Oficial a Nivel Nacional en Ecuador
+              </div>
+
+              {/* TÍTULO DE IMPACTO: RESUELVE EL DOLOR DE PÉRDIDA DEFINITIVA */}
+              <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+                Dale a tu peludito una identidad indestructible y asegura su regreso a casa.
+              </h1>
+
+              {/* SUBTÍTULO DE ALIVIO: RESUELVE EL MIEDO A MENSUALIDADES Y FALTA DE LECTURA INTERNACIONAL */}
+              <p className="text-base sm:text-lg text-blue-100 font-normal leading-relaxed max-w-2xl">
+                El microchip permanente y su <strong className="text-[#FBBF24] font-bold">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Sin mensualidades ocultas. Homologado bajo la norma internacional ISO 11784/85 para lectura inmediata en Ecuador y el mundo entero.
+              </p>
+
+              {/* BOTONES DE ACCIÓN: CTAs BASADOS EN INTENCIÓN DE COMPRA */}
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <a
+                  href="#registro"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-2xl bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black text-sm sm:text-base shadow-xl shadow-[#FBBF24]/20 transition-all hover:scale-[1.02] active:scale-[0.98] border border-amber-300 gap-2 cursor-pointer"
+                >
+                  <span>Registrar Mi Mascota con Código Único</span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
+
+                <a
+                  href="#registro"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm sm:text-base backdrop-blur-md border border-white/20 transition-all hover:scale-[1.02] active:scale-[0.98] gap-2 cursor-pointer"
+                >
+                  <svg className="w-5 h-5 text-[#FBBF24]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>Solicitar Asesoría de Viaje Certificada</span>
+                </a>
+              </div>
+
+              {/* MICRO-GARANTÍAS INMEDIATAS (HALLAZGOS APIFY) */}
+              <div className="pt-4 border-t border-blue-500/30 flex flex-wrap items-center justify-center lg:justify-start gap-5 text-xs text-blue-200 font-semibold">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="text-[#FBBF24]">✓</span> Implante indoloro y seguro
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="text-[#FBBF24]">✓</span> Sin tarifas de renovación mensual
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="text-[#FBBF24]">✓</span> Compatible IATA & Agrocalidad
+                </span>
+              </div>
+
             </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#1E40AF] tracking-tight leading-tight">
-              Dale a tu peludito una identidad indestructible y asegura su regreso a casa.
-            </h1>
+            {/* LATERAL DERECHO: IMAGEN CONCEPTUAL DE LA CONEXIÓN EMOCIONAL Y SEGURA */}
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="relative w-full max-w-md">
+                
+                {/* Resplandor decorativo */}
+                <div className="absolute -inset-1.5 bg-gradient-to-r from-[#FBBF24] to-blue-400 rounded-3xl blur-lg opacity-40"></div>
+                
+                {/* Tarjeta Visual de Conexión Emocional & Expediente Digital */}
+                <div className="relative bg-gradient-to-b from-blue-900/90 to-blue-950/90 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-6 sm:p-7 shadow-2xl space-y-5">
+                  
+                  {/* Cabecera de la Tarjeta Conceptual */}
+                  <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-[#FBBF24] text-slate-950 flex items-center justify-center font-black text-xl shadow-md">
+                        🐾
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-[#FBBF24] block">
+                          Identidad Oficial RUACE
+                        </span>
+                        <h4 className="text-base font-black text-white">
+                          PETCÉDULA Inteligente
+                        </h4>
+                      </div>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black border border-emerald-400/30 uppercase tracking-wide">
+                      Activo 24/7
+                    </span>
+                  </div>
 
-            <p className="text-base sm:text-xl text-slate-600 font-normal leading-relaxed">
-              El microchip permanente y su <strong className="text-[#1E40AF] font-bold">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Sin mensualidades. Protegido en Ecuador y el mundo entero.
-            </p>
+                  {/* Representación Visual: Vínculo Protector Tutor - Mascota */}
+                  <div className="space-y-3.5 bg-white/5 rounded-2xl p-4 border border-white/10">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-blue-200 font-medium">Estándar Global:</span>
+                      <span className="font-mono font-bold text-[#FBBF24]">ISO 11784/85 (15 dígitos)</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-blue-200 font-medium">Lectura Inmediata:</span>
+                      <span className="font-semibold text-white">Microchip Subdérmico + QR Móvil</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-blue-200 font-medium">Plan Económico:</span>
+                      <span className="font-bold text-emerald-400">0 Mensualidades · De Por Vida</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-blue-200 font-medium">Cobertura:</span>
+                      <span className="font-semibold text-white">Nacional (Ecuador) & Viajes Globales</span>
+                    </div>
+                  </div>
+
+                  {/* Micro-Tarjeta del Tutor y Mascota protegida */}
+                  <div className="bg-[#1E40AF]/60 rounded-2xl p-4 border border-blue-400/30 flex items-center gap-4">
+                    <div className="w-11 h-11 rounded-xl bg-blue-800 text-[#FBBF24] flex items-center justify-center shrink-0 border border-blue-400/40">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-white leading-tight">
+                        Tranquilidad y Vínculo Inquebrantable
+                      </p>
+                      <p className="text-[11px] text-blue-200 mt-0.5 leading-snug">
+                        Si tu peludo se desorienta, cualquier veterinaria o persona con smartphone te contacta al instante.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Métricas Rápidas de Autoridad */}
+                  <div className="grid grid-cols-3 gap-2 pt-1 text-center">
+                    <div className="bg-white/5 rounded-xl p-2 border border-white/10">
+                      <p className="text-lg font-black text-[#FBBF24]">+15.000</p>
+                      <p className="text-[9px] text-blue-200 uppercase font-bold">Registros</p>
+                    </div>
+                    <div className="bg-white/5 rounded-xl p-2 border border-white/10">
+                      <p className="text-lg font-black text-white">100%</p>
+                      <p className="text-[9px] text-blue-200 uppercase font-bold">Oficial ISO</p>
+                    </div>
+                    <div className="bg-white/5 rounded-xl p-2 border border-white/10">
+                      <p className="text-lg font-black text-emerald-400">0$</p>
+                      <p className="text-[9px] text-blue-200 uppercase font-bold">Mensual</p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
           </div>
+        </div>
+      </section>
 
-          {/* BLOQUE DE CONFIANZA INMEDIATA (SOCIAL PROOF GRID HORIZONTAL) */}
-          <div className="max-w-4xl mx-auto my-10 py-5 px-6 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-slate-200/80 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-slate-200">
-            <div className="pt-2 sm:pt-0">
-              <p className="text-3xl sm:text-4xl font-black text-[#1E40AF]">+15.000</p>
-              <p className="text-xs sm:text-sm text-slate-600 font-bold mt-1">Registros a Nivel Nacional</p>
-              <span className="inline-block text-[11px] text-slate-400 font-medium">Familias protegidas en Ecuador</span>
-            </div>
-            <div className="pt-4 sm:pt-0 sm:px-4">
-              <p className="text-3xl sm:text-4xl font-black text-slate-900">100%</p>
-              <p className="text-xs sm:text-sm text-slate-600 font-bold mt-1">Norma ISO 11784/85</p>
-              <span className="inline-block text-[11px] text-slate-400 font-medium">Estándar veterinario mundial</span>
-            </div>
-            <div className="pt-4 sm:pt-0 sm:pl-4">
-              <p className="text-3xl sm:text-4xl font-black text-[#1E40AF]">24/7</p>
-              <p className="text-xs sm:text-sm text-slate-600 font-bold mt-1">Historial Médico QR & Soporte</p>
-              <span className="inline-block text-[11px] text-slate-400 font-medium">Lectura con cualquier smartphone</span>
-            </div>
+      {/* BLOQUE DE CAPTACIÓN MOFU: FORMULARIO DE CUALIFICACIÓN INTELIGENTE (TWO-STEP OPT-IN) */}
+      <section id="registro" className="relative py-16 lg:py-20 bg-gradient-to-b from-[#FFFBEB] via-white to-[#FFFBEB]/50 border-b border-slate-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          {/* Encabezado de Transición hacia el Formulario */}
+          <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
+            <span className="inline-block py-1 px-3.5 rounded-full bg-white border border-[#FBBF24] text-[#1E40AF] text-xs font-black uppercase tracking-wider shadow-xs">
+              Paso 2: Registro y Cualificación Oficial
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1E40AF] tracking-tight">
+              Ingresa los datos de tu peludito para agendar su identificación
+            </h2>
+            <p className="text-slate-600 text-sm sm:text-base">
+              Nuestros médicos veterinarios colegiados validarán la disponibilidad y coordinarán el implante del microchip o la emisión de su PETCÉDULA física.
+            </p>
           </div>
 
           {/* CONTENEDOR FLOTANTE CENTRALIZADO DEL FORMULARIO FILTRO */}
@@ -249,9 +382,9 @@ export default function Home() {
                     <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#FBBF24] block">
                       Formulario de Captación Oficial
                     </span>
-                    <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                    <h3 className="text-xl sm:text-2xl font-black text-white mt-1">
                       Expediente RUACE PET539
-                    </h2>
+                    </h3>
                   </div>
                   <span className="bg-[#FFFBEB] text-[#1E40AF] text-[11px] font-black px-3 py-1 rounded-full border border-[#FBBF24] uppercase shadow-sm">
                     Cobertura Nacional · Ecuador
