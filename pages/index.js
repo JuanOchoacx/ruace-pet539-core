@@ -303,116 +303,105 @@ export default function Home() {
               {/* Resplandor suave decorativo de fondo */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-white/60 rounded-full blur-3xl pointer-events-none"></div>
 
-              {/* MICRO-CREDENCIAL FLOTANTE HORIZONTAL - MINIATURIZACIÓN RADICAL (ESTILO REPÚBLICA DEL ECUADOR) */}
-              <div className="absolute bottom-4 right-2 z-30 w-[260px] h-[155px] md:w-[280px] md:h-[165px] rounded-xl border border-slate-200/50 shadow-lg p-2.5 flex flex-col justify-between bg-gradient-to-br from-white via-white to-[#F0F9FF] saturate-150 brightness-105 contrast-105 transform hover:scale-105 transition-transform duration-300 select-none overflow-hidden group">
+              {/* MICRO-TARJETA FLOTANTE ULTRA-COMPACTA (REFERENCIA OFICIAL PET ID ECUADOR) */}
+              <div className="absolute bottom-4 right-2 z-30 w-[240px] h-[145px] md:w-[260px] md:h-[155px] rounded-xl border border-slate-200 shadow-md p-2 flex flex-col justify-between bg-[#F8FAFC] overflow-hidden transform hover:scale-105 transition-transform duration-300 select-none group">
                 
+                {/* Micro-textura lineal de ondas suaves de seguridad */}
+                <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <pattern id="security-waves" width="30" height="15" patternUnits="userSpaceOnUse">
+                      <path d="M 0 7.5 Q 7.5 0, 15 7.5 T 30 7.5" fill="none" stroke="#1E40AF" strokeWidth="0.6" />
+                      <path d="M 0 12 Q 7.5 4.5, 15 12 T 30 12" fill="none" stroke="#F59E0B" strokeWidth="0.6" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#security-waves)" />
+                </svg>
+
                 {/* Reflejo brillante de plástico PVC plastificado */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent pointer-events-none rounded-xl"></div>
 
-                {/* 1. CABECERA MICRO-INSTITUCIONAL */}
-                <div className="flex items-center justify-between pb-1 border-b border-sky-200/60 -mx-2.5 -mt-2.5 px-2 py-1 bg-sky-50/70 rounded-t-xl gap-1">
-                  {/* Lado Izquierdo: Cédula de Identidad en Azul Institucional */}
-                  <span className="text-[#1E40AF] font-black text-[8px] tracking-wider uppercase leading-none flex-shrink-0">
-                    CÉDULA DE IDENTIDAD
-                  </span>
-
-                  {/* Centro: Bandera con el escudo del Ecuador */}
-                  <div className="flex items-center justify-center flex-shrink-0">
-                    <div className="relative flex flex-col h-2.5 w-4 rounded-2xs overflow-hidden border border-slate-300 shadow-2xs">
-                      <div className="h-[50%] w-full bg-[#FFD100]"></div>
-                      <div className="h-[25%] w-full bg-[#0072CE]"></div>
-                      <div className="h-[25%] w-full bg-[#ED1C24]"></div>
-                      {/* Escudo Nacional central simulado */}
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div className="w-1.5 h-1.5 rounded-full bg-amber-400/90 border border-amber-700/80 flex items-center justify-center">
-                          <span className="text-[2.5px] leading-none">🦅</span>
-                        </div>
-                      </div>
+                {/* 1. HEADER INSTITUCIONAL: TÍTULOS + BARRA VERTICAL + IMAGOTIPO PET ID */}
+                <div className="flex items-center justify-between pb-1 border-b border-slate-200/80 gap-1 relative z-10">
+                  {/* Lado izquierdo: Barra vertical amarilla y azul + Títulos institucionales */}
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <div className="flex flex-col h-4.5 w-1 rounded-full overflow-hidden flex-shrink-0 shadow-2xs">
+                      <div className="h-1/2 w-full bg-[#FFD100]"></div>
+                      <div className="h-1/2 w-full bg-[#0072CE]"></div>
+                    </div>
+                    <div className="flex flex-col justify-center leading-tight min-w-0">
+                      <span className="text-[7px] font-black uppercase text-slate-800 tracking-tight leading-none truncate">
+                        REPÚBLICA DEL ECUADOR
+                      </span>
+                      <span className="text-[5.5px] font-extrabold uppercase text-[#1E40AF] tracking-tighter leading-none truncate mt-0.5">
+                        IDENTIFICACIÓN Y REGISTRO DE ANIMALES DE COMPAÑÍA
+                      </span>
                     </div>
                   </div>
 
-                  {/* Lado Derecho: República del Ecuador */}
-                  <span className="text-[7px] font-bold text-slate-800 leading-none text-right flex-shrink-0">
-                    REPÚBLICA DEL ECUADOR
-                  </span>
+                  {/* Lado derecho: Imagotipo miniaturizado de 'Pet ID' */}
+                  <div className="flex items-center gap-0.5 flex-shrink-0 pl-1">
+                    <span className="text-[9px] font-black tracking-tighter text-[#1E40AF] leading-none">
+                      Pet<span className="text-[#F59E0B]">ID</span>
+                    </span>
+                    <span className="text-[6px] leading-none">🐾</span>
+                  </div>
                 </div>
 
-                {/* 2. GRID INTERNO DE DOS COLUMNAS DE ALTA DENSIDAD */}
-                <div className="grid grid-cols-12 gap-1.5 items-center mt-0.5 flex-1 min-h-0">
+                {/* 2. DISTRIBUCIÓN DE DATOS EN ALTA DENSIDAD (GRID 12 COLS) */}
+                <div className="grid grid-cols-12 gap-1.5 mt-1 items-center flex-1 min-h-0 relative z-10">
                   
-                  {/* LADO IZQUIERDO (PORTARRETRATO MINI - span 4): FOTO POMERANIA BLANCO + NUI */}
+                  {/* SECCIÓN IZQUIERDA (PORTARRETRATO MINI - span 4) */}
                   <div className="col-span-4 flex flex-col items-center justify-center">
                     <img
                       src="/pomerania-blanco.png"
                       alt="MAX - Pomerania Blanco"
-                      className="w-[60px] h-[72px] rounded-md object-cover border border-slate-200 shadow-sm pointer-events-none"
+                      className="w-[55px] h-[65px] rounded-lg object-cover border border-slate-200 shadow-xs pointer-events-none"
                     />
-                    <p className="text-[6.5px] text-slate-700 text-center tracking-tighter mt-0.5 leading-tight">
-                      NUI. MICROCHIP: 900215000123174
+                    <p className="text-[5.5px] text-slate-700 tracking-tighter text-center leading-tight mt-0.5 font-bold">
+                      Microchip: 123456789012345
                     </p>
                   </div>
 
-                  {/* LADO DERECHO (BLOQUE DE DATOS SINCRONIZADOS - span 8) */}
+                  {/* SECCIÓN DERECHA (DATOS DEL CENSO + CHIP FÍSICO - span 8) */}
                   <div className="col-span-8 flex items-center justify-between min-w-0 pl-0.5 h-full py-0.5">
                     
-                    {/* Sub-bloque de datos oficiales */}
+                    {/* Datos del Censo Nacional */}
                     <div className="flex-1 flex flex-col justify-between text-left space-y-0.5 min-w-0 pr-1">
                       <div className="leading-tight">
-                        <span className="text-[7.5px] text-slate-400 font-bold uppercase">NOMBRE: </span>
-                        <span className="text-[8px] font-black text-slate-900 tracking-tight">MAX</span>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">Nombre: </span>
+                        <span className="text-[7px] font-bold text-slate-900 tracking-tight">MAX</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[7.5px] text-slate-400 font-bold uppercase">ESPECIE: </span>
-                        <span className="text-[8px] font-black text-slate-800">CANINA</span>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">Especie: </span>
+                        <span className="text-[7px] font-bold text-slate-800">CANINA</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[7.5px] text-slate-400 font-bold uppercase">RAZA: </span>
-                        <span className="text-[8px] font-black text-slate-900 truncate inline-block max-w-[70px] sm:max-w-[85px] align-bottom">POMERANIA BLANCO</span>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">Raza: </span>
+                        <span className="text-[7px] font-bold text-slate-900 truncate inline-block max-w-[65px] sm:max-w-[78px] align-bottom">POMERANIA BLANCO</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[7.5px] text-slate-400 font-bold uppercase">SEXO: </span>
-                        <span className="text-[8px] font-black text-slate-800">MACHO</span>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">Sexo: </span>
+                        <span className="text-[7px] font-bold text-slate-800">MACHO</span>
                       </div>
                       <div className="leading-tight">
-                        <span className="text-[7.5px] text-slate-400 font-bold uppercase">NACIMIENTO: </span>
-                        <span className="text-[8px] font-black text-slate-800">06-MAY-2026</span>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase">F. de Nacimiento: </span>
+                        <span className="text-[7px] font-bold text-slate-800">06-MAY-2026</span>
                       </div>
                     </div>
 
-                    {/* Sub-bloque de detalles tecnológicos de realismo */}
-                    <div className="flex flex-col items-center justify-between flex-shrink-0 w-10 py-0.5 border-l border-slate-200/80 pl-1 space-y-1">
-                      
-                      {/* Microchip Electrónico Dorado en formato micro */}
-                      <div className="flex flex-col items-center">
-                        <div className="bg-[#F59E0B] w-4 h-3.5 rounded-sm border border-amber-600/30 relative overflow-hidden flex items-center justify-center shadow-xs">
-                          <div className="absolute inset-x-0 top-1/2 h-px bg-amber-700/60 -translate-y-1/2"></div>
-                          <div className="absolute inset-y-0 left-1/3 w-px bg-amber-700/60"></div>
-                          <div className="absolute inset-y-0 right-1/3 w-px bg-amber-700/60"></div>
-                          <div className="w-1.5 h-1 rounded-2xs border border-amber-800/60 bg-amber-200/80 z-10"></div>
+                    {/* Detalle de Microchip Físico Inteligente Dorado ISO */}
+                    <div className="flex flex-col items-center justify-center flex-shrink-0 w-8 py-0.5 border-l border-slate-200/80 pl-1">
+                      <div className="bg-[#F59E0B] w-4 h-3.5 rounded-sm border border-amber-600/40 relative overflow-hidden flex items-center justify-center shadow-xs">
+                        <div className="absolute inset-x-0 top-1/2 h-px bg-amber-700/60 -translate-y-1/2"></div>
+                        <div className="absolute inset-y-0 left-1/3 w-px bg-amber-700/60"></div>
+                        <div className="absolute inset-y-0 right-1/3 w-px bg-amber-700/60"></div>
+                        <div className="w-1.5 h-1 rounded-2xs border border-amber-800/60 bg-amber-200/80 z-10 flex items-center justify-center">
+                          <span className="text-[3px] font-black text-amber-950 leading-none">ISO</span>
                         </div>
                       </div>
-
-                      {/* Círculo reflectante gris plata (Holograma Oficial de Seguridad) */}
-                      <div className="relative w-4 h-4 rounded-full bg-gradient-to-tr from-slate-400 via-slate-100 to-slate-300 border border-slate-400 shadow-inner flex items-center justify-center overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/80 to-transparent rotate-45"></div>
-                        <span className="text-[4.5px] font-black text-slate-700 tracking-tighter z-10">EC</span>
-                      </div>
-
-                      {/* Mini Sello Oficial PET 593 ID / RENIAC.EC */}
-                      <div className="flex flex-col items-center text-center">
-                        <img
-                          src="/pet593-logo.png"
-                          alt="PET 593 ID"
-                          className="h-3.5 w-auto object-contain"
-                        />
-                        <span className="text-[4px] font-black text-[#1E40AF] tracking-tighter leading-none mt-0.5">
-                          PET 593 ID
-                        </span>
-                        <span className="text-[3.5px] font-extrabold text-slate-500 tracking-tighter leading-none">
-                          RENIAC.EC
-                        </span>
-                      </div>
-
+                      <span className="text-[4px] font-black text-slate-500 tracking-tight leading-none mt-1">
+                        11784/85
+                      </span>
                     </div>
 
                   </div>
