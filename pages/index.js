@@ -25,11 +25,19 @@ export default function Home() {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [openFaq, setOpenFaq] = useState(0); // Primer FAQ abierto por defecto
+  const [openTestimonial, setOpenTestimonial] = useState(0); // Primer testimonio abierto por defecto
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false); // Dropdown de servicios en footer
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null); // { type: 'success' | 'error', text: string }
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
+  };
+
+  const toggleTestimonial = (index) => {
+    setOpenTestimonial(openTestimonial === index ? null : index);
   };
 
   const handleChange = (e) => {
@@ -104,7 +112,49 @@ export default function Home() {
     }
   };
 
-  // DATOS DEL ACORDEÓN DE PREGUNTAS FRECUENTES (FAQ) - RESOLUCIÓN DIRECTA DE OBJECIONES CLAVE
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    if (newsletterEmail.trim()) {
+      setNewsletterSubscribed(true);
+      setNewsletterEmail('');
+    }
+  };
+
+  // DATOS REALES DE TESTIMONIOS (ACORDEÓN COLAPSABLE VERTICAL INTERACTIVO)
+  const testimonials = [
+    {
+      title: 'Lucy, la gata aventurera',
+      petInfo: 'Gata Siamés (2 años)',
+      tutor: 'Carolina V. · Quito',
+      emoji: '🐱',
+      story:
+        'Lucy siempre salía a explorar los techos y cornisas del barrio en Villaflora. El miedo constante de que se desorientara y no supiera volver era una angustia diaria. Con su microchip subdérmico y su PETCÉDULA física con código QR inteligente, recuperé la tranquilidad total. La colocación en la clínica fue rápida, no sintió dolor y los doctores fueron sumamente atentos.',
+      procedure: 'Microchip ISO + PETCÉDULA QR',
+      badge: '✓ 100% Protegida en Casa',
+    },
+    {
+      title: 'Rocky, el perrito explorador',
+      petInfo: 'Golden Retriever (3 años)',
+      tutor: 'Familia Mantilla · Quito',
+      emoji: '🐕',
+      story:
+        'Rocky es muy juguetón y un día se asustó con fuegos artificiales y salió del portón. Estuvimos horas buscándolo desesperados por Monteserrín. Una familia vecina lo encontró, vio su PETCÉDULA física plastificada, escaneó el código QR con la cámara de su celular y nos llamó de inmediato por WhatsApp. El sistema funcionó al instante sin apps engorrosas.',
+      procedure: 'Identificación Oficial Villaflora',
+      badge: '✓ Retorno Seguro en <15 min',
+    },
+    {
+      title: 'Bella, la cocker spaniel traviesa',
+      petInfo: 'Cocker Spaniel (4 años)',
+      tutor: 'Esteban P. & Mariana · Quito Sur',
+      emoji: '🐾',
+      story:
+        'Bella siempre rompía y perdía las placas metálicas tradicionales jugando con otros perros en el parque. En Pet 593 le colocaron su microchip biocompatible y nos entregaron su PETCÉDULA física plastificada con chip. Ahora viajamos tranquilos dentro y fuera del país con su expediente médico activo 24/7 y su código único de 15 dígitos.',
+      procedure: 'Brigada Veterinaria a Domicilio',
+      badge: '✓ Identidad Inviolable',
+    },
+  ];
+
+  // DATOS DEL ACORDEÓN DE PREGUNTAS FRECUENTES (FAQ)
   const faqs = [
     {
       q: '¿La colocación del microchip le duele a mi mascota?',
@@ -124,7 +174,7 @@ export default function Home() {
     },
     {
       q: '¿Cómo coordino la cita en Villaflora o el servicio a domicilio?',
-      a: 'Una vez completado el registro en línea, nuestro equipo veterinario te contacta de inmediato por WhatsApp para agendar tu cita en nuestra sede de Villaflora (Quito Sur) o coordinar la brigada de implantación a domicilio en cualquier sector del país.',
+      a: 'Una vez completado el registro en línea, nuestro equipo veterinario te contacta de inmediato por WhatsApp (096 305 0719) para agendar tu cita en nuestra sede de Villaflora (Quito Sur) o coordinar la brigada de implantación a domicilio en cualquier sector del país.',
     },
   ];
 
@@ -134,7 +184,7 @@ export default function Home() {
         <title>RUACE PET593 | Identificación y Cédulas Oficiales para Mascotas en Ecuador</title>
         <meta
           name="description"
-          content="Protege a tu mascota en Ecuador con microchip subdérmico oficial ISO 11784/85, PETCÉDULA física con QR médico dinámico y asesoría Pet Travel en todo el país."
+          content="Protege a tu mascota en Ecuador con microchip subdérmico oficial ISO 11784/85, PETCÉDULA física con QR médico dinámico y asesoría Pet Travel en Villaflora y todo el país."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
@@ -158,7 +208,7 @@ export default function Home() {
         <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <a href="#" className="flex items-center gap-2.5 group">
+              <a href="#hero" className="flex items-center gap-2.5 group">
                 <img
                   src="/pet593-logo.png"
                   alt="PET 593 ID - Registro e Identificación Oficial de Mascotas"
@@ -167,11 +217,13 @@ export default function Home() {
               </a>
             </div>
 
-            <nav className="hidden lg:flex items-center space-x-8 text-sm font-bold text-slate-700">
+            <nav className="hidden lg:flex items-center space-x-7 text-sm font-bold text-slate-700">
+              <a href="#hero" className="hover:text-[#1E40AF] transition-colors">Inicio</a>
               <a href="#pasos" className="hover:text-[#1E40AF] transition-colors">¿Cómo Funciona?</a>
+              <a href="#bienestar" className="hover:text-[#1E40AF] transition-colors">Nosotros</a>
+              <a href="#testimonios" className="hover:text-[#1E40AF] transition-colors">Testimonios</a>
               <a href="#registro" className="hover:text-[#1E40AF] transition-colors">Registro Oficial</a>
-              <a href="#historias" className="hover:text-[#1E40AF] transition-colors">Historias Felices</a>
-              <a href="#faq" className="hover:text-[#1E40AF] transition-colors">Preguntas Frecuentes</a>
+              <a href="#faq" className="hover:text-[#1E40AF] transition-colors">FAQ</a>
             </nav>
 
             <div className="flex items-center gap-3">
@@ -187,8 +239,8 @@ export default function Home() {
       </div>
 
       {/* =========================================================================
-          BLOQUE 1: HERO SECTION (OPTIMIZADO)
-          Lienzo pastel #E0F2FE, doodles lineales, ilustración animada de tutora
+          BLOQUE 1: HERO SECTION (OPTIMIZADO - INTACTO)
+          Lienzo pastel #E0F2FE, doodles lineales, silueta animada de tutora
           sosteniendo al perro Corgi y la Petcédula 3D micro-compacta con chip dorado.
           ========================================================================= */}
       <section id="hero" className="relative overflow-hidden bg-[#E0F2FE] pt-12 lg:pt-16 pb-0 border-b border-sky-200/70">
@@ -255,7 +307,7 @@ export default function Home() {
                 Dale a tu peludito una identidad indestructible y asegura su regreso a casa.
               </h1>
 
-              {/* PÁRRAFO DESCRIPTIVO: DOLOR DE COSTOS OCULTOS Y BUROCRACIA */}
+              {/* PÁRRAFO DESCRIPTIVO */}
               <p className="text-base sm:text-lg text-slate-700 font-medium leading-relaxed max-w-xl">
                 El microchip permanente y su <strong className="text-[#1E40AF] font-black">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. <strong className="text-slate-900 font-black">Pago único</strong> sin mensualidades ocultas. Homologado bajo la norma internacional ISO 11784/85 para lectura inmediata en Ecuador y procesos Pet Travel.
               </p>
@@ -434,10 +486,6 @@ export default function Home() {
 
       {/* =========================================================================
           BLOQUE 2: PROCESO EN 3 SIMPLES PASOS
-          Flujo transparente y libre de burocracia para mitigar fricciones:
-          01. Registro en Línea
-          02. Agenda Implantación en Villaflora / a Domicilio
-          03. Entrega de PETCÉDULA e Historial QR
           ========================================================================= */}
       <section id="pasos" className="py-20 lg:py-24 bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -555,7 +603,204 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
-          BLOQUE 3: FORMULARIO FILTRO (EXPEDIENTE RUACE PET593)
+          REQUERIMIENTO 1: BARRA HORIZONTAL DE MÉTRICAS OFICIALES PET 593
+          Ubicada justo debajo de la sección de Pasos:
+          "+120 Cédulas Perros" | "+142 Cédulas Gatos" | "+963 Cuidado Animal" | "+147 Clientes Satisfechos"
+          ========================================================================= */}
+      <section className="bg-gradient-to-r from-[#0F172A] via-[#1E3A8A] to-[#0284C7] py-10 border-y border-sky-400/20 text-white shadow-xl relative overflow-hidden">
+        {/* Vector de fondo sutil */}
+        <div className="absolute inset-0 bg-[radial-gradient(#38BDF8_1px,transparent_1px)] [background-size:20px_20px] opacity-15 pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-white/15">
+            
+            {/* Métrica 1 */}
+            <div className="pt-4 md:pt-0 px-4 flex flex-col items-center">
+              <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#FBBF24] tracking-tight drop-shadow-md">
+                +120
+              </span>
+              <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-sky-100 mt-2 flex items-center gap-1.5">
+                <span className="text-base">🐶</span> Cédulas Perros
+              </span>
+            </div>
+
+            {/* Métrica 2 */}
+            <div className="pt-4 md:pt-0 px-4 flex flex-col items-center">
+              <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#FBBF24] tracking-tight drop-shadow-md">
+                +142
+              </span>
+              <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-sky-100 mt-2 flex items-center gap-1.5">
+                <span className="text-base">🐱</span> Cédulas Gatos
+              </span>
+            </div>
+
+            {/* Métrica 3 */}
+            <div className="pt-4 md:pt-0 px-4 flex flex-col items-center">
+              <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#FBBF24] tracking-tight drop-shadow-md">
+                +963
+              </span>
+              <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-sky-100 mt-2 flex items-center gap-1.5">
+                <span className="text-base">🏥</span> Cuidado Animal
+              </span>
+            </div>
+
+            {/* Métrica 4 */}
+            <div className="pt-4 md:pt-0 px-4 flex flex-col items-center">
+              <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#FBBF24] tracking-tight drop-shadow-md">
+                +147
+              </span>
+              <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-sky-100 mt-2 flex items-center gap-1.5">
+                <span className="text-base">⭐</span> Clientes Satisfechos
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          REQUERIMIENTO 2: SECCIÓN DE BIENESTAR CORPORATIVO (BLOQUE CENTRAL)
+          "Pet 593: Nos Dedicamos a la Seguridad y Bienestar de tus Mascotas"
+          Izquierda: Mosaico fotográfico de la tutora con el perro y el gato en su cesta.
+          Derecha: Párrafo descriptivo, 4 viñetas técnicas con checks azules en Villaflora:
+          "Consulta Inicial", "Preparación", "Identificación del Animal", "Implantación del Microchip",
+          finalizando con botón amarillo "Contáctanos".
+          ========================================================================= */}
+      <section id="bienestar" className="py-20 lg:py-28 bg-[#F8FAFC] border-b border-slate-200 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            
+            {/* LADO IZQUIERDO: MOSAICO FOTOGRÁFICO DE LA TUTORA CON PERRO Y GATO EN SU CESTA */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gradient-to-br from-sky-100 to-amber-50 group">
+                <img
+                  src="/hero-pet.webp"
+                  alt="Tutora con perro y gato en su cesta - Pet 593 Seguridad y Bienestar"
+                  className="w-full h-auto max-h-[480px] object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent pointer-events-none"></div>
+
+                {/* Badge flotante de acreditación de sede Villaflora */}
+                <div className="absolute bottom-5 left-5 right-5 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-white/60 shadow-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center font-black text-lg shrink-0 shadow-sm">
+                      🐾
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black text-[#1E40AF] uppercase tracking-wide">
+                        Clínica y Brigadas en Villaflora
+                      </h4>
+                      <p className="text-[11px] text-slate-600 font-semibold leading-tight">
+                        Calles Francisco Londoño OE-1224 Y Pedro de Alfaro
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* LADO DERECHO: PÁRRAFO DESCRIPTIVO + 4 VIÑETAS CON CHECKS AZULES + BOTÓN CTA AMARILLO */}
+            <div className="lg:col-span-7 space-y-6">
+              
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#1E40AF]/20 text-[#1E40AF] text-xs font-black uppercase tracking-wider shadow-xs">
+                <span className="w-2 h-2 rounded-full bg-[#0284C7] animate-pulse"></span>
+                Atención Médica Veterinaria Oficial
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1E40AF] tracking-tight leading-tight">
+                Pet 593: Nos Dedicamos a la Seguridad y Bienestar de tus Mascotas
+              </h2>
+
+              <p className="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">
+                En Pet 593 combinamos tecnología médica de vanguardia con vocación veterinaria para garantizar que ningún animal de compañía quede desprotegido. Desde nuestra sede central en Villaflora y mediante brigadas domiciliarias a nivel nacional, implementamos microchips biocompatibles bajo norma internacional ISO 11784/85 y expedimos la PETCÉDULA física oficial con código QR dinámico para acceso 24/7 a su historial médico.
+              </p>
+
+              {/* LISTA DE VIÑETAS CON CHECKS AZULES: PROCESO TÉCNICO EN VILLAFLORA */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                
+                {/* Viñeta 1: Consulta Inicial */}
+                <div className="bg-white p-4 rounded-2xl border border-sky-100 shadow-xs flex items-start gap-3 hover:border-sky-300 transition-colors">
+                  <div className="w-7 h-7 rounded-lg bg-sky-100 text-[#0284C7] flex items-center justify-center shrink-0 mt-0.5 font-black">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-black text-[#1E40AF]">Consulta Inicial</h4>
+                    <p className="text-xs text-slate-600 mt-0.5 leading-snug">
+                      Evaluación clínica y revisión preventiva general previa al procedimiento.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Viñeta 2: Preparación */}
+                <div className="bg-white p-4 rounded-2xl border border-sky-100 shadow-xs flex items-start gap-3 hover:border-sky-300 transition-colors">
+                  <div className="w-7 h-7 rounded-lg bg-sky-100 text-[#0284C7] flex items-center justify-center shrink-0 mt-0.5 font-black">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-black text-[#1E40AF]">Preparación</h4>
+                    <p className="text-xs text-slate-600 mt-0.5 leading-snug">
+                      Asepsia de la zona intercapsular y verificación del microchip estéril con lector.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Viñeta 3: Identificación del Animal */}
+                <div className="bg-white p-4 rounded-2xl border border-sky-100 shadow-xs flex items-start gap-3 hover:border-sky-300 transition-colors">
+                  <div className="w-7 h-7 rounded-lg bg-sky-100 text-[#0284C7] flex items-center justify-center shrink-0 mt-0.5 font-black">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-black text-[#1E40AF]">Identificación del Animal</h4>
+                    <p className="text-xs text-slate-600 mt-0.5 leading-snug">
+                      Asignación legal del código numérico de 15 dígitos en la base de datos oficial.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Viñeta 4: Implantación del Microchip */}
+                <div className="bg-white p-4 rounded-2xl border border-sky-100 shadow-xs flex items-start gap-3 hover:border-sky-300 transition-colors">
+                  <div className="w-7 h-7 rounded-lg bg-sky-100 text-[#0284C7] flex items-center justify-center shrink-0 mt-0.5 font-black">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-black text-[#1E40AF]">Implantación del Microchip</h4>
+                    <p className="text-xs text-slate-600 mt-0.5 leading-snug">
+                      Colocación subcutánea rápida e indolora y entrega de la PETCÉDULA física con QR.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* BOTÓN CTA CONTÁCTANOS EN COLOR AMARILLO */}
+              <div className="pt-3">
+                <a
+                  href="#registro"
+                  className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black text-sm sm:text-base shadow-xl shadow-[#FBBF24]/30 transition-all hover:scale-105 border border-amber-400 cursor-pointer"
+                >
+                  <span>Contáctanos</span>
+                  <svg className="w-5 h-5 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          BLOQUE 3: FORMULARIO FILTRO (EXPEDIENTE RUACE PET593) - INTACTO
           Conexión asíncrona a Supabase (ruace_pet539_leads), cualificación de leads,
           casilla obligatoria Ley LOPDP Ecuador 2026 y feedback en tiempo real.
           ========================================================================= */}
@@ -855,124 +1100,159 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
-          BLOQUE 4: HISTORIAS FELICES (PRUEBA SOCIAL)
-          Testimonios específicos enfocados en mitigar dolores reales:
-          1. Escape resuelto (Familia Mantilla & Rocky)
-          2. Inspección aduanera en 5 min en Tababela (Paola S. & Mía)
-          3. Viaje a Galápagos sin contratiempos (Sofía R. & Milo)
+          REQUERIMIENTO 1: SECCIÓN NUESTROS TESTIMONIOS (ACORDEÓN COLAPSABLE VERTICAL)
+          "Lucy, la gata aventurera", "Rocky, el perrito explorador", "Bella, la cocker spaniel traviesa"
+          Costado derecho: Composición fotográfica real de tutores abrazando a sus mascotas.
           ========================================================================= */}
-      <section id="historias" className="py-20 lg:py-28 bg-[#FFFBEB] border-b border-slate-200">
+      <section id="testimonios" className="py-20 lg:py-28 bg-[#FFFBEB] border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
             <span className="inline-block py-1 px-3.5 rounded-full bg-white border border-[#FBBF24] text-[#1E40AF] text-xs font-black uppercase tracking-wider shadow-sm">
-              +45,000 Mascotas Identificadas · Casos Reales
+              Prueba Social · +147 Clientes Satisfechos
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1E40AF] tracking-tight">
-              Historias Felices: Familias que Recuperaron su Tranquilidad
+              Nuestros Testimonios
             </h2>
             <p className="text-slate-600 text-base sm:text-lg">
-              Casos reales de escapes y viajes internacionales resueltos con éxito gracias a la red RUACE PET593 en todo el país.
+              Historias reales de tutores que aseguraron la identidad y el retorno de sus peluditos con el sistema oficial de RUACE PET593.
             </p>
           </div>
 
-          {/* Cuadrícula de 3 Testimonios Clave */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             
-            {/* Historia 1: Caso de Escape Resuelto (Rocky) */}
-            <div className="bg-white rounded-3xl p-8 border-2 border-[#1E40AF]/25 shadow-xl relative overflow-hidden flex flex-col justify-between hover:shadow-2xl transition-all">
-              <div className="absolute top-0 right-0 w-36 h-36 bg-[#FBBF24]/15 rounded-full blur-2xl pointer-events-none"></div>
+            {/* LADO IZQUIERDO (lg:col-span-7): ACORDEÓN COLAPSABLE VERTICAL INTERACTIVO */}
+            <div className="lg:col-span-7 space-y-4">
+              {testimonials.map((testimonio, idx) => {
+                const isOpen = openTestimonial === idx;
+                return (
+                  <div
+                    key={idx}
+                    className={`rounded-2xl border transition-all duration-300 bg-white overflow-hidden ${
+                      isOpen
+                        ? 'border-[#1E40AF] shadow-xl ring-2 ring-[#1E40AF]/10'
+                        : 'border-slate-200 hover:border-amber-300 shadow-sm'
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleTestimonial(idx)}
+                      className="w-full p-6 text-left flex items-center justify-between gap-4 transition-colors cursor-pointer bg-white"
+                    >
+                      <div className="flex items-center gap-3.5 min-w-0">
+                        <span className="text-2xl shrink-0 p-2 rounded-xl bg-[#FFFBEB] border border-amber-200">
+                          {testimonio.emoji}
+                        </span>
+                        <div className="truncate">
+                          <h3 className={`text-base sm:text-lg font-black transition-colors ${
+                            isOpen ? 'text-[#1E40AF]' : 'text-slate-900'
+                          }`}>
+                            {testimonio.title}
+                          </h3>
+                          <p className="text-xs text-slate-500 font-medium">
+                            {testimonio.petInfo} · {testimonio.tutor}
+                          </p>
+                        </div>
+                      </div>
 
-              <div>
-                <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFFBEB] border border-[#FBBF24] text-[#1E40AF] text-xs font-black uppercase tracking-wide">
-                    🚨 Escape Resuelto
-                  </span>
-                  <div className="flex items-center gap-1 text-[#FBBF24] text-sm">
-                    {"★".repeat(5)}
-                    <span className="text-xs font-black text-slate-800 ml-1">5.0</span>
-                  </div>
-                </div>
+                      <div className="flex items-center gap-3 shrink-0">
+                        <div className="hidden sm:flex text-[#FBBF24] text-xs">
+                          {"★".repeat(5)}
+                        </div>
+                        <span
+                          className={`w-9 h-9 rounded-full flex items-center justify-center font-black text-base shrink-0 transition-all ${
+                            isOpen
+                              ? 'bg-[#1E40AF] text-[#FBBF24] rotate-180'
+                              : 'bg-[#FFFBEB] text-[#1E40AF] border border-[#FBBF24]'
+                          }`}
+                        >
+                          {isOpen ? '−' : '+'}
+                        </span>
+                      </div>
+                    </button>
 
-                <div className="text-3xl text-[#FBBF24] font-serif leading-none mb-3">“</div>
-                <p className="text-slate-700 text-sm sm:text-base leading-relaxed font-medium mb-6">
-                  A Rocky lo asustaron unos fuegos artificiales y salió del portón. Estuvimos cuatro horas recorriendo Monteserrín desesperados. Una familia vecina lo encontró, vio su <strong className="text-[#1E40AF] font-bold">PETCÉDULA física plastificada</strong>, escaneó el código QR y nos llamó de inmediato por WhatsApp. Sin este sistema, no sabemos si habría regresado a casa.
-                </p>
-              </div>
-
-              <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center font-black text-lg shadow-md shadow-[#1E40AF]/20">
-                    🐕
+                    {isOpen && (
+                      <div className="px-6 pb-6 pt-2 text-slate-700 text-sm leading-relaxed border-t border-slate-100 bg-slate-50/50 animate-fadeIn">
+                        <div className="text-2xl text-[#FBBF24] font-serif leading-none mb-2">“</div>
+                        <p className="font-medium text-slate-700 leading-relaxed mb-4">
+                          {testimonio.story}
+                        </p>
+                        <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-200/60 text-xs">
+                          <span className="font-bold text-[#1E40AF]">
+                            ✓ Procedimiento: {testimonio.procedure}
+                          </span>
+                          <span className="bg-emerald-50 text-emerald-800 font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200">
+                            {testimonio.badge}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div>
-                    <h4 className="font-black text-slate-900 text-sm">Familia Mantilla & Rocky</h4>
-                    <p className="text-xs text-slate-500">Golden Retriever (3 años) · Ecuador</p>
-                  </div>
-                </div>
-                <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-                  ✓ En Casa
-                </span>
-              </div>
+                );
+              })}
             </div>
 
-            {/* Historia 2: Inspección Aduanera en 5 Minutos (Tababela) */}
-            <div className="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-md hover:border-[#1E40AF] transition-all flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-6">
-                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wide">
-                    ✈️ Aeropuerto Tababela
-                  </span>
-                  <div className="flex text-[#FBBF24] text-xs">{"★".repeat(5)}</div>
+            {/* LADO DERECHO (lg:col-span-5): COMPOSICIÓN FOTOGRÁFICA REAL DE TUTORES ABRAZANDO A SUS MASCOTAS */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gradient-to-br from-[#1E3A8A] to-slate-900 p-6 sm:p-8 text-white min-h-[460px] flex flex-col justify-between">
+                
+                {/* Glow decorativo */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#FBBF24]/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                {/* Composición Fotográfica con Imágenes de Tutores y Mascotas */}
+                <div className="relative space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[#FBBF24] text-xs font-black uppercase tracking-wider border border-white/20">
+                      ❤️ Vínculo Inseparable
+                    </span>
+                    <span className="text-xs font-black text-amber-200">
+                      Calificación 5.0 / 5.0
+                    </span>
+                  </div>
+
+                  {/* Collage fotográfico */}
+                  <div className="grid grid-cols-2 gap-3 pt-2">
+                    <div className="rounded-2xl overflow-hidden border-2 border-white/30 shadow-md">
+                      <img
+                        src="/hero-tutor-corgi.png"
+                        alt="Tutora abrazando a su perro Corgi con microchip oficial"
+                        className="w-full h-36 object-cover object-top hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="rounded-2xl overflow-hidden border-2 border-white/30 shadow-md">
+                      <img
+                        src="/corgi.jpg"
+                        alt="Perro identificado con cédula PET 593"
+                        className="w-full h-36 object-cover object-center hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl sm:text-2xl font-black text-white leading-snug mt-2">
+                    "La tranquilidad de saber que siempre podrán regresar a casa."
+                  </h3>
                 </div>
 
-                <div className="text-3xl text-[#1E40AF] font-serif leading-none mb-2">“</div>
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
-                  Teníamos programada nuestra mudanza a España y en el counter nos pidieron el microchip homologado ISO 15 dígitos y la ficha técnica de Agrocalidad. RUACE PET593 nos coordinó la cita a domicilio y nos entregó el expediente listo. <strong className="text-slate-900 font-bold">Pasamos la inspección aduanera en 5 minutos</strong> sin ninguna observación ni retraso.
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-slate-100 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#FFFBEB] border border-[#FBBF24] text-[#1E40AF] flex items-center justify-center font-bold text-sm">
-                  🐱
-                </div>
-                <div>
-                  <h4 className="font-bold text-slate-900 text-xs">Paola S. & Mía</h4>
-                  <p className="text-[11px] text-slate-500">Felina Siamesa · Vuelo Internacional</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Historia 3: Viaje a Galápagos sin Contratiempos (Milo) */}
-            <div className="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-md hover:border-[#1E40AF] transition-all flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-6">
-                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wide">
-                    🏝️ Galápagos Bioseguridad
-                  </span>
-                  <div className="flex text-[#FBBF24] text-xs">{"★".repeat(5)}</div>
+                {/* Tarjeta inferior con estadísticas de satisfacción */}
+                <div className="relative bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 space-y-2 mt-4">
+                  <div className="flex items-center justify-between text-xs font-black text-amber-200">
+                    <span>+147 Clientes Satisfechos</span>
+                    <span className="text-[#FBBF24]">100% Retorno Seguro</span>
+                  </div>
+                  <div className="w-full bg-white/20 h-2 rounded-full overflow-hidden">
+                    <div className="bg-[#FBBF24] h-full w-full rounded-full"></div>
+                  </div>
+                  <p className="text-[11px] text-slate-200 leading-tight">
+                    Microchip subcutáneo biocompatible y PETCÉDULA física con QR dinámico en Villaflora y brigadas a domicilio.
+                  </p>
                 </div>
 
-                <div className="text-3xl text-[#1E40AF] font-serif leading-none mb-2">“</div>
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
-                  Para viajar a las islas la regulación de la ABG y Agrocalidad es súper rigurosa. El carnet oficial RUACE PET593 y la lectura instantánea del microchip permitieron que los inspectores validaran todo el historial de vacunas en 30 segundos. Viajar en cabina con Milo fue seguro, ágil y totalmente libre de contratiempos.
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-slate-100 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#FFFBEB] border border-[#FBBF24] text-[#1E40AF] flex items-center justify-center font-bold text-sm">
-                  🐾
-                </div>
-                <div>
-                  <h4 className="font-bold text-slate-900 text-xs">Sofía R. & Milo</h4>
-                  <p className="text-[11px] text-slate-500">Schnauzer · Control Zoosanitario Aprobado</p>
-                </div>
               </div>
             </div>
 
           </div>
 
-          {/* Banner CTA al pie de historias */}
+          {/* Banner CTA al pie de testimonios */}
           <div className="mt-12 text-center">
             <a
               href="#registro"
@@ -990,10 +1270,6 @@ export default function Home() {
 
       {/* =========================================================================
           BLOQUE 5: ACORDEÓN FAQ INTERACTIVO
-          Resolución directa de objeciones críticas del dataset:
-          - Dolor de la implantación (indoloro, rápido como una vacuna)
-          - Tarifas/cobros recurrentes (PAGO ÚNICO, sin mensualidades ni tarifas sorpresa)
-          - Homologación internacional ISO 11784/85 para Agrocalidad / IATA
           ========================================================================= */}
       <section id="faq" className="py-20 lg:py-28 bg-white border-b border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1058,12 +1334,12 @@ export default function Home() {
               ¿Tienes alguna duda específica sobre tu caso o viaje?
             </p>
             <a
-              href="https://wa.me/593964180420?text=Hola,%20tengo%20una%20consulta%20espec%C3%ADfica%20sobre%20el%20servicio%20RUACE%20PET593."
+              href="https://wa.me/593963050719?text=Hola,%20tengo%20una%20consulta%20espec%C3%ADfica%20sobre%20el%20servicio%20RUACE%20PET593."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-3 text-xs font-black text-[#1E40AF] hover:underline"
             >
-              <span>Hablar directamente con un asesor veterinario por WhatsApp</span>
+              <span>Hablar directamente con un asesor veterinario por WhatsApp (096 305 0719)</span>
               <span>→</span>
             </a>
           </div>
@@ -1117,52 +1393,261 @@ export default function Home() {
         </div>
       )}
 
-      {/* FOOTER */}
-      <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+      {/* =========================================================================
+          REQUERIMIENTO 3: FOOTER INSTITUCIONAL DE ALTA FIDELIDAD (4 COLUMNAS)
+          - Columna 1: Logo oficial PET 593 ID, dirección física Villaflora y teléfono 096 305 0719.
+          - Columna 2: Menú de navegación (Inicio, Nosotros, Servicios con dropdown Microchip, Contacto).
+          - Columna 3: Canales de soporte con Teléfono (096 305 0719), Correo (info@pet593.com), Correo (ventas@pet593.com).
+          - Columna 4: Boletín ("Suscripción a boletín" con botón amarillo "Suscríbete").
+          ========================================================================= */}
+      <footer className="bg-slate-950 text-slate-400 py-16 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div className="md:col-span-2 space-y-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-9 h-9 rounded-xl bg-[#1E40AF] flex items-center justify-center text-[#FBBF24] font-bold">
-                  🐾
-                </div>
-                <span className="font-black text-xl tracking-tight text-white">RUACE PET593</span>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-400 max-w-sm leading-relaxed">
-                Iniciativa especializada en identificación animal permanente, emisión de cédulas físicas con código QR médico y gestión técnica Pet Travel en Ecuador.
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
+            
+            {/* COLUMNA 1 (lg:col-span-4): MARCA Y DIRECCIÓN */}
+            <div className="lg:col-span-4 space-y-4">
+              <a href="#hero" className="inline-block group">
+                <img
+                  src="/pet593-logo.png"
+                  alt="PET 593 ID - Registro Oficial de Mascotas Ecuador"
+                  className="h-12 w-auto object-contain brightness-110"
+                />
+              </a>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Organismo especializado en la emisión de cédulas de identidad animal, implantación de microchips homologados ISO 11784/85 y asesoría técnica zoosanitaria en Ecuador.
               </p>
-              <div className="text-xs text-slate-500">
-                Sede oficial Villaflora (Quito Sur) y brigadas veterinarias a domicilio con cobertura en todo el país.
+              
+              <div className="space-y-2.5 pt-2 text-xs text-slate-300">
+                <div className="flex items-start gap-2.5">
+                  <span className="text-[#FBBF24] text-base shrink-0 mt-0.5">📍</span>
+                  <span className="leading-snug">
+                    <strong className="text-white block font-bold">Sede Central Villaflora:</strong>
+                    Calles Francisco Londoño OE-1224 Y Pedro de Alfaro (Villaflora), Quito, Ecuador
+                  </span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <span className="text-[#FBBF24] text-base shrink-0">📞</span>
+                  <a href="tel:0963050719" className="hover:text-[#FBBF24] transition-colors font-bold text-white">
+                    096 305 0719
+                  </a>
+                </div>
               </div>
             </div>
 
-            <div>
-              <h5 className="text-sm font-bold text-white uppercase tracking-wider mb-3">Navegación</h5>
-              <ul className="space-y-2 text-xs">
-                <li><a href="#pasos" className="hover:text-[#FBBF24] transition-colors">¿Cómo Funciona?</a></li>
-                <li><a href="#registro" className="hover:text-[#FBBF24] transition-colors">Expediente RUACE PET593</a></li>
-                <li><a href="#historias" className="hover:text-[#FBBF24] transition-colors">Historias Felices</a></li>
-                <li><a href="#faq" className="hover:text-[#FBBF24] transition-colors">Preguntas Frecuentes</a></li>
+            {/* COLUMNA 2 (lg:col-span-3): MENÚ DE NAVEGACIÓN Y SERVICIOS CON DROPDOWN */}
+            <div className="lg:col-span-3 space-y-3">
+              <h5 className="text-sm font-black text-white uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">
+                Menú de Navegación
+              </h5>
+              <ul className="space-y-2.5 text-xs">
+                <li>
+                  <a href="#hero" className="hover:text-[#FBBF24] transition-colors font-medium flex items-center gap-1.5">
+                    <span>›</span> Inicio
+                  </a>
+                </li>
+                <li>
+                  <a href="#bienestar" className="hover:text-[#FBBF24] transition-colors font-medium flex items-center gap-1.5">
+                    <span>›</span> Nosotros
+                  </a>
+                </li>
+                
+                {/* Servicios con Dropdown / Submenú Funcional */}
+                <li className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
+                    className="w-full text-left flex items-center justify-between text-xs font-bold text-white hover:text-[#FBBF24] transition-colors cursor-pointer py-1"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span>›</span> Servicios
+                    </span>
+                    <span className={`text-[10px] transition-transform ${servicesDropdownOpen ? 'rotate-180' : ''}`}>
+                      ▼
+                    </span>
+                  </button>
+                  
+                  {servicesDropdownOpen && (
+                    <ul className="pl-4 mt-1.5 space-y-2 border-l border-slate-800 text-slate-400 text-[11px] animate-fadeIn">
+                      <li>
+                        <a href="#bienestar" className="hover:text-[#FBBF24] transition-colors block">
+                          • Implantación Microchip ISO 11784/85
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pasos" className="hover:text-[#FBBF24] transition-colors block">
+                          • PETCÉDULA Física Plastificada QR
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pasos" className="hover:text-[#FBBF24] transition-colors block">
+                          • Cédulas para Perros (+120 registradas)
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pasos" className="hover:text-[#FBBF24] transition-colors block">
+                          • Cédulas para Gatos (+142 registradas)
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#registro" className="hover:text-[#FBBF24] transition-colors block">
+                          • Asesoría Pet Travel Agrocalidad / IATA
+                        </a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+
+                <li>
+                  <a href="#testimonios" className="hover:text-[#FBBF24] transition-colors font-medium flex items-center gap-1.5">
+                    <span>›</span> Testimonios
+                  </a>
+                </li>
+                <li>
+                  <a href="#faq" className="hover:text-[#FBBF24] transition-colors font-medium flex items-center gap-1.5">
+                    <span>›</span> Preguntas Frecuentes
+                  </a>
+                </li>
+                <li>
+                  <a href="#registro" className="hover:text-[#FBBF24] transition-colors font-bold text-[#FBBF24] flex items-center gap-1.5">
+                    <span>›</span> Contacto / Registro
+                  </a>
+                </li>
               </ul>
             </div>
 
-            <div>
-              <h5 className="text-sm font-bold text-white uppercase tracking-wider mb-3">Contacto Nacional</h5>
-              <ul className="space-y-2 text-xs">
-                <li>WhatsApp: +593 96 418 0420</li>
-                <li>Sede: Villaflora (Quito Sur)</li>
-                <li>Atención: Lunes a Sábado 8:30 AM - 6:30 PM</li>
-                <li>Ecuador (Cobertura Nacional)</li>
+            {/* COLUMNA 3 (lg:col-span-2): CANALES DE SOPORTE */}
+            <div className="lg:col-span-2 space-y-3">
+              <h5 className="text-sm font-black text-white uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">
+                Canales de Soporte
+              </h5>
+              <ul className="space-y-3 text-xs">
+                <li>
+                  <a
+                    href="tel:0963050719"
+                    className="flex items-center gap-2 hover:text-[#FBBF24] transition-colors group"
+                  >
+                    <span className="w-7 h-7 rounded-lg bg-slate-800 text-[#FBBF24] flex items-center justify-center shrink-0 group-hover:bg-[#1E40AF]">
+                      📱
+                    </span>
+                    <div>
+                      <span className="block text-[10px] text-slate-400">Teléfono</span>
+                      <strong className="text-white font-bold">096 305 0719</strong>
+                    </div>
+                  </a>
+                </li>
+
+                <li>
+                  <a
+                    href="mailto:info@pet593.com"
+                    className="flex items-center gap-2 hover:text-[#FBBF24] transition-colors group"
+                  >
+                    <span className="w-7 h-7 rounded-lg bg-slate-800 text-[#FBBF24] flex items-center justify-center shrink-0 group-hover:bg-[#1E40AF]">
+                      ✉️
+                    </span>
+                    <div>
+                      <span className="block text-[10px] text-slate-400">Correo General</span>
+                      <strong className="text-white font-bold">info@pet593.com</strong>
+                    </div>
+                  </a>
+                </li>
+
+                <li>
+                  <a
+                    href="mailto:ventas@pet593.com"
+                    className="flex items-center gap-2 hover:text-[#FBBF24] transition-colors group"
+                  >
+                    <span className="w-7 h-7 rounded-lg bg-slate-800 text-[#FBBF24] flex items-center justify-center shrink-0 group-hover:bg-[#1E40AF]">
+                      💼
+                    </span>
+                    <div>
+                      <span className="block text-[10px] text-slate-400">Ventas & Brigadas</span>
+                      <strong className="text-white font-bold">ventas@pet593.com</strong>
+                    </div>
+                  </a>
+                </li>
+
+                <li className="pt-1 text-[11px] text-slate-400">
+                  <span className="text-[#FBBF24] font-bold">Horario:</span> Lunes a Sábado 8:30 AM - 6:30 PM
+                </li>
               </ul>
             </div>
+
+            {/* COLUMNA 4 (lg:col-span-3): BOLETÍN INFORMATIVO */}
+            <div className="lg:col-span-3 space-y-3">
+              <h5 className="text-sm font-black text-white uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">
+                Suscripción a Boletín
+              </h5>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Recibe novedades de bioseguridad, convocatorias de brigadas veterinarias a domicilio en tu sector y recordatorios de vacunas.
+              </p>
+
+              {newsletterSubscribed ? (
+                <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center gap-2">
+                  <span>✓</span> ¡Gracias por suscribirte al boletín oficial de Pet 593!
+                </div>
+              ) : (
+                <form onSubmit={handleNewsletterSubmit} className="space-y-2.5">
+                  <div className="relative">
+                    <input
+                      type="email"
+                      required
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      placeholder="tu@correo.com"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-[#FBBF24] transition-colors"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 px-4 rounded-xl bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black text-xs shadow-md transition-all hover:scale-[1.02] cursor-pointer"
+                  >
+                    Suscríbete
+                  </button>
+                  <p className="text-[10px] text-slate-400 leading-tight">
+                    Cero spam. Tus datos están protegidos bajo la Ley LOPDP Ecuador 2026.
+                  </p>
+                </form>
+              )}
+            </div>
+
           </div>
 
-          <div className="pt-8 border-t border-slate-800 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p>© {new Date().getFullYear()} RUACE PET593 · Cumplimiento LOPDP Ecuador 2026. Todos los derechos reservados.</p>
+          {/* BARRA INFERIOR DEL FOOTER */}
+          <div className="pt-8 border-t border-slate-800 text-center text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>© {new Date().getFullYear()} RUACE PET593 · Sede Villaflora · Cumplimiento LOPDP Ecuador 2026. Todos los derechos reservados.</p>
             <p>Conectado directamente a Supabase · Tabla: <span className="font-mono text-[#FBBF24]">ruace_pet539_leads</span></p>
           </div>
         </div>
       </footer>
+
+      {/* =========================================================================
+          REQUERIMIENTO 3: BOTÓN FLOTANTE (FLOATING ACTION BUTTON) DE WHATSAPP
+          Esquina inferior derecha de la pantalla, conectado al número oficial 096 305 0719
+          ========================================================================= */}
+      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+        {/* Tooltip flotante */}
+        <div className="hidden md:flex items-center bg-slate-900 text-white text-xs font-bold py-1.5 px-3 rounded-full shadow-xl border border-slate-700 whitespace-nowrap animate-pulse">
+          <span>💬 ¿Consultas sobre la Petcédula? Chatea aquí</span>
+        </div>
+
+        {/* Botón Circular Oficial de WhatsApp */}
+        <a
+          href="https://wa.me/593963050719?text=Hola,%20deseo%20informaci%C3%B3n%20sobre%20la%20identificaci%C3%B3n%20y%20PETC%C3%89DULA%20para%20mi%20mascota."
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Contactar por WhatsApp al 096 305 0719"
+          className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white flex items-center justify-center shadow-2xl shadow-[#25D366]/50 hover:scale-110 active:scale-95 transition-all duration-300 relative group"
+        >
+          {/* Anillo de pulso sutil */}
+          <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-40 animate-ping pointer-events-none"></span>
+
+          {/* Ícono de WhatsApp SVG oficial */}
+          <svg className="w-8 h-8 sm:w-9 sm:h-9 fill-current relative z-10" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+          </svg>
+        </a>
+      </div>
+
     </div>
   );
 }
