@@ -413,16 +413,16 @@ export default function Home() {
 
               </div>
 
-              {/* CONTENEDOR ANCLADO AL PISO CON MOVIMIENTO SUTIL DE RESPIRACIÓN (SIN LEVANTAR LA BASE) */}
-              <div className="relative w-full h-full flex items-end justify-center animate-breathe origin-bottom will-change-transform">
+              {/* CONTENEDOR ANCLADO AL PISO CON MOVIMIENTO SUTIL DE FLOTADO ORGÁNICO */}
+              <div className="relative w-full h-full flex items-end justify-center animate-float origin-bottom will-change-transform">
                 <img
-                  src="https://perritosguayaquil.com/wp-content/uploads/2025/06/Perritos-Guayaquil-Hero-Section-02.webp"
-                  alt="Tutor y mascota protegidos con microchip y PETCÉDULA RUACE PET539"
+                  src="/hero-tutor-corgi.png"
+                  alt="Tutora sosteniendo al perro Corgi protegido con microchip y PETCÉDULA RUACE PET539"
                   priority="true"
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
-                  className="relative z-10 w-full max-h-[540px] sm:max-h-[600px] lg:max-h-[660px] lg:scale-110 object-contain object-bottom origin-bottom filter drop-shadow-[0_20px_35px_rgba(30,64,175,0.18)] block"
+                  className="relative z-10 w-full h-auto max-h-[580px] lg:scale-105 select-none saturate-110 brightness-100 contrast-102 filter drop-shadow-[0_25px_40px_rgba(30,64,175,0.15)] object-contain object-bottom origin-bottom block"
                 />
               </div>
 

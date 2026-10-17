@@ -14,7 +14,7 @@ module.exports = {
         },
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
+          '50%': { transform: 'translateY(-8px)' },
         },
         'pulse-subtle': {
           '0%, 100%': { opacity: '1', transform: 'scale(1)' },
