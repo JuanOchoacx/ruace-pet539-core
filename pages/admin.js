@@ -352,31 +352,39 @@ export default function AdminDashboard() {
       .sort((a, b) => b.lead_score - a.lead_score); // Reordenamiento estricto descendente
   }, [leads]);
 
-  // FILTRADO DINÁMICO POR SEGMENTOS (TODOS, PENDIENTES, CONTACTADOS, PERROS, GATOS) Y TEMPERATURA
+  // FILTRADO DINÁMICO POR SEGMENTOS (TODOS, PENDIENTES, CONTACTADOS, PERROS, GATOS) Y BÚSQUEDA PREDICTIVA
   const filteredLeads = useMemo(() => {
     return processedLeads.filter((lead) => {
-      // Búsqueda libre
+      // 1. Búsqueda predictiva en tiempo real insensible a mayúsculas/minúsculas
+      const q = (searchQuery || '').trim().toLowerCase();
       const matchesSearch =
-        (lead.owner_name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (lead.pet_name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (lead.owner_phone || '').includes(searchQuery);
+        !q ||
+        (lead.owner_name || '').toLowerCase().includes(q) ||
+        (lead.owner_phone || '').toLowerCase().includes(q) ||
+        (lead.pet_name || '').toLowerCase().includes(q);
 
-      // Filtro de temperatura
+      // Filtro complementario de temperatura
       const matchesTemp =
         filterTemperature === 'ALL' || lead.temperature.level === filterTemperature;
 
-      // Filtro interactivo por segmento
+      // 2. Filtro interactivo por segmento comercial y tipo de animal
       let matchesSegment = true;
       if (segmentFilter === 'PENDING') {
-        matchesSegment = lead.lead_status === 'Por contactar';
+        const st = (lead.lead_status || '').toLowerCase().trim();
+        // Aísla únicamente filas donde lead_status sea 'Por contactar' o nulo
+        matchesSegment = !st || st === 'por contactar' || st === 'pendiente';
       } else if (segmentFilter === 'CONTACTED') {
-        matchesSegment = lead.lead_status === 'Contactado';
+        const st = (lead.lead_status || '').toLowerCase().trim();
+        // Muestra únicamente las filas que el vendedor ya gestionó con lead_status: 'Contactado'
+        matchesSegment = st === 'contactado';
       } else if (segmentFilter === 'DOGS') {
-        const type = (lead.pet_type || '').toLowerCase();
-        matchesSegment = type.includes('perro') || type.includes('canino');
+        const type = (lead.pet_type || '').toLowerCase().trim();
+        // Filtra de inmediato por pet_type === 'Perro'
+        matchesSegment = type === 'perro' || type.includes('perro') || type.includes('canino');
       } else if (segmentFilter === 'CATS') {
-        const type = (lead.pet_type || '').toLowerCase();
-        matchesSegment = type.includes('gato') || type.includes('felino');
+        const type = (lead.pet_type || '').toLowerCase().trim();
+        // Filtra de inmediato por pet_type === 'Gato'
+        matchesSegment = type === 'gato' || type.includes('gato') || type.includes('felino');
       }
 
       return matchesSearch && matchesTemp && matchesSegment;
@@ -1042,18 +1050,18 @@ export default function AdminDashboard() {
         <section className="bg-white p-5 rounded-3xl border border-slate-200 space-y-4 shadow-sm">
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
             
-            {/* PESTAÑAS SEGMENTADAS DE 1-CLIC (TODOS, PENDIENTES, CONTACTADOS, PERROS, GATOS) */}
+            {/* PESTAÑAS SEGMENTADAS DE 1-CLIC (TODOS LOS LEADS, PENDIENTES, CONTACTADOS, PERROS, GATOS) */}
             <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
               <button
                 type="button"
                 onClick={() => setSegmentFilter('ALL')}
                 className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                   segmentFilter === 'ALL'
-                    ? 'bg-[#1E40AF] text-white shadow-md'
+                    ? 'bg-[#1E40AF] text-white shadow-md font-black'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                 }`}
               >
-                <span>Ver Todos</span>
+                <span>Todos los Leads</span>
                 <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'ALL' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
                   {sellerKpis.total}
                 </span>
@@ -1068,7 +1076,7 @@ export default function AdminDashboard() {
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                 }`}
               >
-                <span>⏳ Por Contactar</span>
+                <span>Pendientes</span>
                 <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'PENDING' ? 'bg-slate-900/20 text-slate-900' : 'bg-slate-200 text-slate-700'}`}>
                   {sellerKpis.pendingCount}
                 </span>
@@ -1083,7 +1091,7 @@ export default function AdminDashboard() {
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                 }`}
               >
-                <span>✓ Contactados</span>
+                <span>Contactados</span>
                 <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'CONTACTED' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
                   {sellerKpis.contactedCount}
                 </span>
@@ -1098,7 +1106,7 @@ export default function AdminDashboard() {
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                 }`}
               >
-                <span>🐶 Perros</span>
+                <span>Perros</span>
                 <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'DOGS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
                   {sellerKpis.dogCount}
                 </span>
@@ -1113,26 +1121,33 @@ export default function AdminDashboard() {
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                 }`}
               >
-                <span>🐱 Gatos</span>
+                <span>Gatos</span>
                 <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'CATS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
                   {sellerKpis.catCount}
                 </span>
               </button>
             </div>
 
-            {/* Búsqueda y Selector de Temperatura */}
+            {/* Búsqueda Predictiva Interactiva y Selector de Temperatura */}
             <div className="flex flex-1 items-center gap-3">
               <div className="relative flex-1">
-                <svg className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Buscar por tutor, teléfono o mascota..."
-                  className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-50 border border-slate-300 focus:border-[#1E40AF] text-xs text-slate-800 placeholder-slate-400 outline-none font-medium"
+                  placeholder="🔍 Buscar lead por nombre, teléfono o mascota..."
+                  className="w-full pl-4 pr-10 py-2 rounded-xl bg-slate-50 border border-slate-300 focus:border-[#1E40AF] text-xs text-slate-800 placeholder-slate-400 outline-none font-medium transition"
                 />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 text-xs font-bold"
+                    title="Limpiar búsqueda"
+                  >
+                    ✕
+                  </button>
+                )}
               </div>
 
               <select
