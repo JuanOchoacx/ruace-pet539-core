@@ -229,14 +229,26 @@ export default function AdminDashboard() {
     }
   }, []);
 
-  // CARGAR LEADS DESDE SUPABASE Y LOCALSTORAGE
-  const fetchLeads = async () => {
+  // CARGAR LEADS DESDE SUPABASE Y LOCALSTORAGE CON TIMEOUT Y RETRY MECANISMO
+  const fetchLeads = async (isRetry = false) => {
     setLoading(true);
+    let timeoutId = null;
+
     try {
-      const { data, error } = await supabase
+      // Promesa con timeout estricto de 2.5s para no congelar la UI ante Cold Starts
+      const fetchPromise = supabase
         .from('ruace_pet539_leads')
         .select('*')
         .order('created_at', { ascending: false });
+
+      const timeoutPromise = new Promise((_, reject) => {
+        timeoutId = setTimeout(() => {
+          reject(new Error('Supabase request timed out'));
+        }, 2500);
+      });
+
+      const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
+      if (timeoutId) clearTimeout(timeoutId);
 
       if (error) {
         throw error;
@@ -256,20 +268,30 @@ export default function AdminDashboard() {
         const leadId = lead.id || lead.owner_email;
         const key = `ruace_note_${leadId}`;
         const savedNote = typeof window !== 'undefined' ? localStorage.getItem(key) : null;
-        // Priorizar valor persistido en Supabase (lead_advice, lead_notes o notes)
         const dbNote = lead.lead_advice || lead.lead_notes || lead.notes;
         notesMap[leadId] = dbNote || (savedNote !== null ? savedNote : '');
       });
       setLeadNotes(notesMap);
       setLeads(loadedLeads);
 
-      // LLAMADA AUTOMÁTICA A /api/triage PARA REEMPLAZAR EL CONSEJO SIMULADO POR EL REAL
+      // LLAMADA AUTOMÁTICA EN SEGUNDO PLANO A /api/triage SIN BLOQUEAR LA TABLA
       fetchTriageForLeads(loadedLeads);
     } catch (err) {
-      console.warn('Fallo al conectar con Supabase, usando datos de respaldo:', err.message);
+      if (timeoutId) clearTimeout(timeoutId);
+      console.warn('Fallo o timeout al conectar con Supabase:', err.message);
+
+      // Si no es un reintento, programar un retry automático a los 1.5s
+      if (!isRetry) {
+        console.info('Programando reintento automático en 1.5s...');
+        setTimeout(() => {
+          fetchLeads(true);
+        }, 1500);
+      }
+
+      // Inyectar de inmediato el set seguro DEMO_LEADS para romper el Shimmer
       setLeads(DEMO_LEADS);
       setDbConnected(false);
-      
+
       const notesMap = {};
       DEMO_LEADS.forEach((lead) => {
         const leadId = lead.id || lead.owner_email;
@@ -280,9 +302,10 @@ export default function AdminDashboard() {
       });
       setLeadNotes(notesMap);
 
-      // LLAMADA AUTOMÁTICA A /api/triage PARA LEADS DE DEMOSTRACIÓN
+      // Consulta de triage en segundo plano para leads demo
       fetchTriageForLeads(DEMO_LEADS);
     } finally {
+      // Rompe el Shimmer Loader de forma inmediata y renderiza los datos en pantalla
       setLoading(false);
     }
   };
