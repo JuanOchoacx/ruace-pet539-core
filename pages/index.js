@@ -4,10 +4,24 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import { createClient } from '@supabase/supabase-js';
 
-// Inicialización del cliente Supabase con variables de entorno
+// Función de sanitización anti-XSS y anti-inyecciones en formularios
+const sanitizeInput = (val) => {
+  if (typeof val !== 'string') return '';
+  return val.replace(/[<>'"`;()&$]/g, '').trim();
+};
+
+// Inicialización del cliente Supabase con cabeceras de seguridad
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://supabase.co';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: { persistSession: false },
+  global: {
+    headers: {
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+    },
+  },
+});
 
 export default function Home() {
   // Estado del formulario con los campos exactos de la tabla 'ruace_pet539_leads'
@@ -70,25 +84,25 @@ export default function Home() {
     setStatusMessage(null);
 
     try {
-      // Inserción automática en la tabla 'ruace_pet539_leads'
-      const statusValue = formData.estado_identificacion || formData.current_status || 'ninguno';
+      // Inserción automática y sanitizada en la tabla 'ruace_pet539_leads'
+      const statusValue = sanitizeInput(formData.estado_identificacion || formData.current_status || 'ninguno');
 
       const travelValue = formData.service_type === 'Asesoría para Viajes'
         ? 'Viaje Internacional próximo (USA / Europa / LATAM)'
-        : formData.pet_travel_intent;
+        : sanitizeInput(formData.pet_travel_intent);
 
       const { data, error } = await supabase
         .from('ruace_pet539_leads')
         .insert([
           {
-            owner_name: formData.owner_name.trim(),
-            owner_phone: formData.owner_phone.trim(),
-            owner_email: formData.owner_email.trim().toLowerCase(),
-            pet_name: formData.pet_name.trim(),
-            pet_type: formData.tipo_mascota || formData.pet_type || 'perro',
+            owner_name: sanitizeInput(formData.owner_name),
+            owner_phone: sanitizeInput(formData.owner_phone),
+            owner_email: sanitizeInput(formData.owner_email).toLowerCase(),
+            pet_name: sanitizeInput(formData.pet_name),
+            pet_type: sanitizeInput(formData.tipo_mascota || formData.pet_type || 'perro'),
             current_status: statusValue,
             pet_travel_intent: travelValue,
-            contact_method: formData.contact_method,
+            contact_method: sanitizeInput(formData.contact_method),
             created_at: new Date().toISOString(),
           },
         ]);

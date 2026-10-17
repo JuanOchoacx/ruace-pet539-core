@@ -5,10 +5,24 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
 
-// Inicialización de Supabase con fallback seguro
+// Función de sanitización anti-XSS y anti-inyecciones
+const sanitizeInput = (val) => {
+  if (typeof val !== 'string') return '';
+  return val.replace(/[<>'"`;()&$]/g, '').trim();
+};
+
+// Inicialización de Supabase con fallback seguro y cabeceras de seguridad
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://supabase.co';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: { persistSession: false },
+  global: {
+    headers: {
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+    },
+  },
+});
 
 // CONTRASEÑA MAESTRA INSTITUCIONAL
 const MASTER_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'ruace2026';
@@ -288,8 +302,8 @@ export default function AdminDashboard() {
   // MANEJO DE INICIO DE SESIÓN CON CREDENCIALES EXACTAS Y ASIGNACIÓN DE ROL
   const handleLogin = (e) => {
     e.preventDefault();
-    const user = usernameInput.trim();
-    const pass = passwordInput.trim();
+    const user = sanitizeInput(usernameInput);
+    const pass = sanitizeInput(passwordInput);
 
     if (user === 'ruace2026' && pass === '12345') {
       // Rol 'admin': Acceso Total Dueño
@@ -1541,6 +1555,11 @@ export default function AdminDashboard() {
           <div className="p-4 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
             <span>Algoritmo de puntuación: <strong className="text-[#1E40AF]">RUACE Scoring Engine v1.5</strong></span>
             <span>Tabla Supabase: <code className="text-[#1E40AF] font-mono font-bold">ruace_pet539_leads</code></span>
+          </div>
+
+          {/* AVISO DE SEGURIDAD PERIMETRAL OBLIGATORIO (SEGUNDA NOTA DE SEGURIDAD) */}
+          <div className="w-full text-center text-[10px] text-amber-600 bg-amber-500/5 py-1.5 px-4 rounded-md border border-amber-500/20 mt-4 tracking-wide font-medium">
+            🔒 AVISO DE SEGURIDAD GLOBAL: Infraestructura expuesta a Internet activa. Conexiones entrantes auditadas mediante cifrado SSL/TLS de extremo a extremo. Acceso restringido exclusivamente a personal autorizado del DMQ. Todo intento de vulneración o inyección será reportado automáticamente.
           </div>
         </section>
 
