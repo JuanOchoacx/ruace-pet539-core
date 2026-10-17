@@ -528,8 +528,8 @@ export default function Home() {
 
               </div>
 
-              {/* CONTENEDOR ANCLADO AL PISO CON MOVIMIENTO SUTIL DE FLOTADO */}
-              <div className="relative w-full h-full flex items-end justify-center animate-float origin-bottom will-change-transform">
+              {/* CONTENEDOR ANCLADO AL PISO CON MOVIMIENTO ULTRA-DINÁMICO INFINITO (MEGA-FLOAT) */}
+              <div className="relative w-full h-full flex items-end justify-center self-end animate-[mega-float_4.5s_ease-in-out_infinite] origin-bottom will-change-transform">
                 <img
                   src="/hero-tutor-corgi.png"
                   alt="Tutora sosteniendo al perro Corgi protegido con microchip y PETCÉDULA RUACE PET593"
