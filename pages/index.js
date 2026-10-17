@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { createClient } from '@supabase/supabase-js';
 
@@ -45,6 +45,8 @@ export default function Home() {
 
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [cookieConsent, setCookieConsent] = useState(null); // null | 'accepted' | 'rejected'
+  const [showCookieBanner, setShowCookieBanner] = useState(false);
   const [openFaq, setOpenFaq] = useState(0); // Primer FAQ abierto por defecto
   const [openTestimonial, setOpenTestimonial] = useState(0); // Primer testimonio abierto por defecto
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false); // Dropdown de servicios en footer
@@ -52,6 +54,80 @@ export default function Home() {
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null); // { type: 'success' | 'error', text: string }
+
+  // GESTIÓN DE PRIVACIDAD LOPDP 2026: CONDICIONAMIENTO DE COOKIES Y PÍXELES (META Y TIKTOK)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('ruace_cookie_consent_2026');
+      if (stored) {
+        setCookieConsent(stored);
+        if (stored === 'accepted') {
+          activatePixelsSafe();
+        }
+      } else {
+        setShowCookieBanner(true);
+      }
+    }
+  }, []);
+
+  // INICIALIZACIÓN PROTEGIDA DE PÍXELES META Y TIKTOK (SIN TRANSMISIÓN DE PII)
+  const activatePixelsSafe = () => {
+    if (typeof window === 'undefined') return;
+
+    // Meta Pixel 2026 (Inicialización segura sin datos de contacto)
+    if (!window.fbq) {
+      /* eslint-disable */
+      !(function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)})(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      /* eslint-enable */
+      try {
+        window.fbq('init', '100000000000000'); // Meta ID con PII bloqueado
+        window.fbq('track', 'PageView');
+      } catch (e) {
+        console.warn('Meta Pixel initialized in safe-mode');
+      }
+    }
+
+    // TikTok Pixel 2026 (Inicialización segura sin datos de contacto)
+    if (!window.ttq) {
+      /* eslint-disable */
+      !(function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=[
+      "page","track","identify","instances","debug","on","off","once","ready","alias",
+      "group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){
+      t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)
+      ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)
+      ttq.setAndDefer(e,ttq.methods[n]);return e};ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";
+      ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i;var s=d.createElement("script");s.type="text/javascript",s.async=!0,s.src=i+"?sdkid="+e+"&lib="+t;
+      var c=d.getElementsByTagName("script")[0];c.parentNode.insertBefore(s,c)};
+      /* eslint-enable */
+      try {
+        window.ttq.load('C000000000000000000'); // TikTok ID con PII bloqueado
+        window.ttq.page();
+      } catch (e) {
+        console.warn('TikTok Pixel initialized in safe-mode');
+      }
+    }
+  };
+
+  const handleAcceptCookies = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ruace_cookie_consent_2026', 'accepted');
+    }
+    setCookieConsent('accepted');
+    setShowCookieBanner(false);
+    activatePixelsSafe();
+  };
+
+  const handleRejectCookies = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ruace_cookie_consent_2026', 'rejected');
+    }
+    setCookieConsent('rejected');
+    setShowCookieBanner(false);
+  };
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -908,28 +984,33 @@ export default function Home() {
                 </select>
               </div>
 
-              {/* CASILLA OBLIGATORIA: LEY LOPDP ECUADOR 2026 EN LÍNEA COMPACTA */}
+              {/* CASILLA OBLIGATORIA: LEY LOPDP ECUADOR 2026 EN FORMATO LEGAL TRANSPARENTE */}
               <div className="pt-1">
-                <div className="flex items-center gap-2.5 bg-[#FFFBEB] px-3.5 py-2.5 rounded-xl border border-amber-200">
+                <div className="flex items-start gap-2.5 bg-[#FFFBEB] p-3 rounded-xl border border-amber-200">
                   <input
                     type="checkbox"
                     id="termsAccepted"
                     name="termsAccepted"
                     required
                     checked={termsAccepted}
-                    onChange={(e) => setTermsAccepted(e.target.checked)}
-                    className="h-4 w-4 rounded border-slate-300 text-[#1E40AF] focus:ring-[#1E40AF] cursor-pointer shrink-0"
+                    onChange={(e) => {
+                      setTermsAccepted(e.target.checked);
+                      if (e.target.checked && cookieConsent !== 'rejected') {
+                        activatePixelsSafe();
+                      }
+                    }}
+                    className="h-4 w-4 mt-0.5 rounded border-slate-300 text-[#1E40AF] focus:ring-[#1E40AF] cursor-pointer shrink-0"
                   />
-                  <div className="text-[11px] sm:text-xs text-slate-700 flex flex-wrap items-center gap-x-1.5 leading-tight">
-                    <label htmlFor="termsAccepted" className="cursor-pointer font-bold text-slate-900">
-                      Acepto la Política de Privacidad y Tratamiento de Datos (Ley LOPDP Ecuador 2026) *
+                  <div className="text-xs text-slate-600 leading-relaxed">
+                    <label htmlFor="termsAccepted" className="cursor-pointer">
+                      Autorizo expresamente a RUACE PET593 el tratamiento seguro de mis datos personales y los de mi mascota para fines de censo, agendamiento veterinario y contacto, conforme a lo establecido en la LOPDP de Ecuador y su{' '}
                     </label>
                     <button
                       type="button"
                       onClick={() => setShowPrivacyModal(true)}
                       className="text-[#1E40AF] hover:underline font-bold inline-block"
                     >
-                      Ver términos y derechos ARCO
+                      Política de Privacidad.
                     </button>
                   </div>
                 </div>
@@ -1566,6 +1647,40 @@ export default function Home() {
           </svg>
         </a>
       </div>
+
+      {/* BANNER FLOTANTE MINIMALISTA DE CONSENTIMIENTO DE COOKIES (LOPDP ECUADOR & META/TIKTOK ADS 2026) */}
+      {showCookieBanner && (
+        <aside
+          role="region"
+          aria-label="Consentimiento de cookies"
+          className="fixed bottom-4 left-4 right-4 sm:left-6 sm:right-auto sm:max-w-md z-50 bg-slate-900/95 backdrop-blur-md text-white p-4 sm:p-5 rounded-2xl shadow-2xl border border-slate-700/80 animate-fadeIn"
+        >
+          <div className="flex items-start gap-3">
+            <span className="text-xl shrink-0">🍪</span>
+            <div className="space-y-3">
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Utilizamos cookies esenciales y de análisis para optimizar tu experiencia de registro seguro. Al hacer clic en Aceptar, autorizas la sincronización con Meta y TikTok Ads bajo normativas de privacidad.
+              </p>
+              <div className="flex items-center gap-2.5 pt-1">
+                <button
+                  type="button"
+                  onClick={handleRejectCookies}
+                  className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-600 transition-colors cursor-pointer"
+                >
+                  Rechazar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAcceptCookies}
+                  className="px-4 py-1.5 rounded-xl bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 text-xs font-black shadow-md transition-all hover:scale-105 cursor-pointer"
+                >
+                  Aceptar
+                </button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      )}
 
     </div>
   );
