@@ -24,11 +24,15 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 });
 
 export default function Home() {
-  // Estado del formulario con los campos exactos de la tabla 'ruace_pet539_leads'
+  // Estado del formulario con los campos exactos de la tabla 'ruace_pet539_leads' y Fase 2
   const [formData, setFormData] = useState({
+    nombre_completo: '',
     owner_name: '',
+    whatsapp: '',
     owner_phone: '',
     owner_email: '',
+    empresa_negocio: '',
+    presupuesto_estimado: 'basico',
     pet_name: '',
     pet_type: 'perro',
     tipo_mascota: 'perro',
@@ -62,6 +66,10 @@ export default function Home() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === 'nombre_completo' ? { owner_name: value } : {}),
+      ...(name === 'owner_name' ? { nombre_completo: value } : {}),
+      ...(name === 'whatsapp' ? { owner_phone: value } : {}),
+      ...(name === 'owner_phone' ? { whatsapp: value } : {}),
       ...(name === 'tipo_mascota' ? { pet_type: value } : {}),
       ...(name === 'pet_type' ? { tipo_mascota: value } : {}),
       ...(name === 'estado_identificacion' ? { current_status: value } : {}),
@@ -91,24 +99,53 @@ export default function Home() {
         ? 'Viaje Internacional próximo (USA / Europa / LATAM)'
         : sanitizeInput(formData.pet_travel_intent);
 
+      const fullNameValue = sanitizeInput(formData.nombre_completo || formData.owner_name);
+      const whatsappValue = sanitizeInput(formData.whatsapp || formData.owner_phone);
+      const businessValue = sanitizeInput(formData.empresa_negocio || '');
+      const budgetValue = sanitizeInput(formData.presupuesto_estimado || 'basico');
+
+      // Payload adaptado al backend con soporte dual de columnas
+      const leadPayload = {
+        // Nomenclatura oficial Fase 2
+        nombre_completo: fullNameValue,
+        whatsapp: whatsappValue,
+        empresa_negocio: businessValue,
+        presupuesto_estimado: budgetValue,
+        // Columnas base del esquema
+        owner_name: fullNameValue,
+        owner_phone: whatsappValue,
+        owner_email: sanitizeInput(formData.owner_email).toLowerCase(),
+        pet_name: sanitizeInput(formData.pet_name),
+        pet_type: sanitizeInput(formData.tipo_mascota || formData.pet_type || 'perro'),
+        current_status: statusValue,
+        pet_travel_intent: travelValue,
+        contact_method: sanitizeInput(formData.contact_method),
+        created_at: new Date().toISOString(),
+      };
+
       const { data, error } = await supabase
         .from('ruace_pet539_leads')
-        .insert([
-          {
-            owner_name: sanitizeInput(formData.owner_name),
-            owner_phone: sanitizeInput(formData.owner_phone),
-            owner_email: sanitizeInput(formData.owner_email).toLowerCase(),
-            pet_name: sanitizeInput(formData.pet_name),
-            pet_type: sanitizeInput(formData.tipo_mascota || formData.pet_type || 'perro'),
-            current_status: statusValue,
-            pet_travel_intent: travelValue,
-            contact_method: sanitizeInput(formData.contact_method),
-            created_at: new Date().toISOString(),
-          },
-        ]);
+        .insert([leadPayload]);
 
       if (error) {
-        throw error;
+        // Si el schema no tiene aún las columnas nuevas, reintentar con las columnas originales para garantizar persistencia
+        const fallbackPayload = {
+          owner_name: fullNameValue,
+          owner_phone: whatsappValue,
+          owner_email: sanitizeInput(formData.owner_email).toLowerCase(),
+          pet_name: sanitizeInput(formData.pet_name),
+          pet_type: sanitizeInput(formData.tipo_mascota || formData.pet_type || 'perro'),
+          current_status: statusValue,
+          pet_travel_intent: travelValue,
+          contact_method: sanitizeInput(formData.contact_method),
+          created_at: new Date().toISOString(),
+        };
+        const { error: fallbackError } = await supabase
+          .from('ruace_pet539_leads')
+          .insert([fallbackPayload]);
+        if (fallbackError) {
+          throw fallbackError;
+        }
       }
 
       setStatusMessage({
@@ -118,9 +155,13 @@ export default function Home() {
 
       // Limpiar formulario tras éxito
       setFormData({
+        nombre_completo: '',
         owner_name: '',
+        whatsapp: '',
         owner_phone: '',
         owner_email: '',
+        empresa_negocio: '',
+        presupuesto_estimado: 'basico',
         pet_name: '',
         pet_type: 'perro',
         tipo_mascota: 'perro',
@@ -679,18 +720,18 @@ export default function Home() {
             {/* Formulario conectado a Supabase con Grid de Alta Densidad */}
             <form onSubmit={handleSubmit} className="space-y-3.5">
               
-              {/* Fila 1: Datos del Tutor (grid grid-cols-1 md:grid-cols-2 gap-4) */}
+              {/* Fila 1: Datos del Tutor - Nomenclatura Fase 2 (grid grid-cols-1 md:grid-cols-2 gap-4) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="owner_name" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                  <label htmlFor="nombre_completo" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
                     Tutor (Nombres y Apellidos) *
                   </label>
                   <input
                     type="text"
-                    id="owner_name"
-                    name="owner_name"
+                    id="nombre_completo"
+                    name="nombre_completo"
                     required
-                    value={formData.owner_name}
+                    value={formData.nombre_completo || formData.owner_name}
                     onChange={handleChange}
                     placeholder="Ej. Carlos Mendoza"
                     className="w-full h-10 px-3.5 py-2 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 placeholder-slate-400 bg-white"
@@ -698,15 +739,15 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <label htmlFor="owner_phone" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                  <label htmlFor="whatsapp" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
                     WhatsApp / Teléfono *
                   </label>
                   <input
                     type="tel"
-                    id="owner_phone"
-                    name="owner_phone"
+                    id="whatsapp"
+                    name="whatsapp"
                     required
-                    value={formData.owner_phone}
+                    value={formData.whatsapp || formData.owner_phone}
                     onChange={handleChange}
                     placeholder="Ej. +593 99 594 3723"
                     className="w-full h-10 px-3.5 py-2 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 placeholder-slate-400 bg-white"
@@ -714,7 +755,43 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Fila 2: Contacto (full-width) */}
+              {/* Fila 2: Empresa/Negocio y Presupuesto Estimado - Nomenclatura Fase 2 (grid grid-cols-1 md:grid-cols-2 gap-4) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="empresa_negocio" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                    Clínica u Organización de Respaldo (Opcional)
+                  </label>
+                  <input
+                    type="text"
+                    id="empresa_negocio"
+                    name="empresa_negocio"
+                    value={formData.empresa_negocio}
+                    onChange={handleChange}
+                    placeholder="Clínica u Organización de Respaldo (Opcional)"
+                    className="w-full h-10 px-3.5 py-2 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 placeholder-slate-400 bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="presupuesto_estimado" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                    RANGO DE INVERSIÓN PLANIFICADO *
+                  </label>
+                  <select
+                    id="presupuesto_estimado"
+                    name="presupuesto_estimado"
+                    required
+                    value={formData.presupuesto_estimado}
+                    onChange={handleChange}
+                    className="w-full h-10 px-3 py-2 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 bg-white font-medium"
+                  >
+                    <option value="basico">Entre $25 y $45</option>
+                    <option value="completo">Entre $45 y $80</option>
+                    <option value="premium">Más de $80</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Fila 3: Contacto (full-width) */}
               <div>
                 <label htmlFor="owner_email" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
                   Correo Electrónico *

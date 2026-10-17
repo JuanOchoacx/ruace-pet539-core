@@ -43,7 +43,7 @@ export const calculateLeadScore = (lead) => {
   }
 
   // Evaluar Current Status (Hallazgos de riesgo / Apify)
-  const status = (lead.current_status || '').toLowerCase();
+  const status = (lead.current_status || lead.estado_identificacion || '').toLowerCase();
   if (status.includes('solo placa') || status.includes('solo_placa') || status.includes('placa')) {
     score += 40; // Alto riesgo: la placa se desprende con facilidad
   } else if (status === 'ninguno' || status.includes('ninguno') || status.includes('no tiene') || status.includes('sin microchip')) {
@@ -55,7 +55,7 @@ export const calculateLeadScore = (lead) => {
   }
 
   // Evaluar Contact Method
-  const method = (lead.contact_method || '').toLowerCase();
+  const method = (lead.contact_method || lead.whatsapp ? 'whatsapp' : '').toLowerCase();
   if (method.includes('whatsapp')) {
     score += 20;
   } else if (method.includes('llamada') || method.includes('teléfono')) {
@@ -438,7 +438,10 @@ export default function AdminDashboard() {
       const matchesSearch =
         !q ||
         (lead.owner_name || '').toLowerCase().includes(q) ||
+        (lead.nombre_completo || '').toLowerCase().includes(q) ||
         (lead.owner_phone || '').toLowerCase().includes(q) ||
+        (lead.whatsapp || '').toLowerCase().includes(q) ||
+        (lead.empresa_negocio || '').toLowerCase().includes(q) ||
         (lead.pet_name || '').toLowerCase().includes(q);
 
       // Filtro complementario de temperatura
@@ -1470,10 +1473,17 @@ export default function AdminDashboard() {
                         {/* Tutor y Mascota */}
                         <td className="py-4 px-4 align-top">
                           <div className="space-y-1">
-                            <p className="font-bold text-slate-900 text-sm">{lead.owner_name}</p>
-                            <p className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
-                              <span>📞 {lead.owner_phone}</span>
+                            <p className="font-bold text-slate-900 text-sm">
+                              {lead.nombre_completo || lead.owner_name}
                             </p>
+                            <p className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
+                              <span>📞 {lead.whatsapp || lead.owner_phone}</span>
+                            </p>
+                            {lead.empresa_negocio && (
+                              <p className="text-[10px] text-slate-400 font-medium truncate max-w-[170px]" title={lead.empresa_negocio}>
+                                🏢 {lead.empresa_negocio}
+                              </p>
+                            )}
                             <div className="pt-1 flex items-center gap-1.5">
                               <span className="px-2 py-0.5 rounded-md bg-[#FFFBEB] text-[#1E40AF] text-[11px] font-bold border border-amber-200">
                                 {(lead.pet_type || '').toLowerCase().includes('gato') ? '🐈' : (lead.pet_type || '').toLowerCase().includes('perro') ? '🐕' : '🐾'} {lead.pet_name}
