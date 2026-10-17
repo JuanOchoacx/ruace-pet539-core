@@ -303,89 +303,125 @@ export default function Home() {
               {/* Resplandor suave decorativo de fondo */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-white/60 rounded-full blur-3xl pointer-events-none"></div>
 
-              {/* PETCÉDULA FÍSICA OFICIAL PET 593 ID REUBICADA EN EL EXTREMO INFERIOR DERECHO CON FOTO UNIFICADA DEL CACHORRO */}
-              <div className="absolute bottom-4 right-0 z-20 md:right-4 w-72 sm:w-80 bg-white/95 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 border-2 border-[#1E40AF]/20 shadow-[0_20px_45px_-10px_rgba(15,23,42,0.30)] animate-float hover:scale-105 transition-all duration-300 select-none cursor-default group">
+              {/* PETCÉDULA FÍSICA OFICIAL - ESTILO REPÚBLICA DEL ECUADOR */}
+              <div className="absolute bottom-4 right-0 z-20 md:right-4 w-80 sm:w-[350px] bg-gradient-to-br from-white via-slate-50 to-sky-50/70 rounded-2xl p-3 sm:p-3.5 border-2 border-[#1E40AF]/25 shadow-[0_20px_50px_-10px_rgba(15,23,42,0.35)] animate-float hover:scale-105 transition-all duration-300 select-none cursor-default group overflow-hidden">
                 
                 {/* Reflejo brillante de plástico PVC plastificado */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent pointer-events-none rounded-2xl"></div>
 
-                {/* Cabecera de la Cédula: Logo Oficial + Indicador Activo EN VIVO */}
-                <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-                  <div className="flex items-center gap-1.5">
-                    <img
-                      src="/pet593-logo.png"
-                      alt="Logo Oficial PET 593 ID"
-                      className="h-6 w-auto object-contain"
-                    />
-                    <div>
-                      <p className="text-[9px] font-black uppercase text-[#1E40AF] tracking-wider leading-none">
-                        PET 593 ID · ECUADOR
+                {/* ENCABEZADO OFICIAL: REPÚBLICA DEL ECUADOR + BANDERA NACIONAL */}
+                <div className="flex items-center justify-between pb-2 border-b border-sky-200/80">
+                  <div className="flex items-center gap-2">
+                    {/* Bandera Nacional del Ecuador (Amarillo 50%, Azul 25%, Rojo 25%) */}
+                    <div className="flex flex-col h-4 w-5.5 rounded-xs overflow-hidden border border-slate-300 shadow-2xs flex-shrink-0">
+                      <div className="h-[50%] w-full bg-[#FFD100]"></div>
+                      <div className="h-[25%] w-full bg-[#0072CE]"></div>
+                      <div className="h-[25%] w-full bg-[#ED1C24]"></div>
+                    </div>
+                    <div className="text-left">
+                      <p className="text-[9.5px] font-black uppercase text-[#1E40AF] tracking-wider leading-none">
+                        REPÚBLICA DEL ECUADOR
                       </p>
-                      <p className="text-[7.5px] text-slate-500 font-bold leading-none mt-0.5">
-                        PETCÉDULA OFICIAL MASCOTA
+                      <p className="text-[6.8px] text-slate-600 font-extrabold uppercase tracking-tight leading-none mt-0.5">
+                        CÉDULA DE IDENTIDAD · RED NACIONAL DE IDENTIFICACIÓN
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 bg-emerald-50 border border-emerald-300 px-2 py-0.5 rounded-full">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    <span className="text-[8px] font-black text-emerald-700 uppercase tracking-tight">
-                      • EN VIVO 24/7
-                    </span>
-                  </div>
+                  <span className="flex items-center gap-1 bg-emerald-50 border border-emerald-300 text-emerald-700 text-[7px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-tighter flex-shrink-0">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    ACTIVO 24/7
+                  </span>
                 </div>
 
-                {/* Cuerpo con Foto Unificada del Cachorro Blanco, Chip Dorado y Datos */}
-                <div className="pt-2 flex items-center gap-2.5">
-                  {/* Foto Unificada del Mismo Cachorro Blanco de la Chica */}
-                  <div className="relative w-16 h-18 sm:w-18 sm:h-20 rounded-xl overflow-hidden border-2 border-[#1E40AF]/30 shadow-inner bg-amber-50 flex-shrink-0">
-                    <img
-                      src="/hero-pet.webp"
-                      alt="Foto oficial de MAX - Cachorro registrado"
-                      className="w-full h-full object-cover object-[52%_57%] scale-[2.7] transform pointer-events-none"
-                    />
-                    {/* Chip de Seguridad Microchip ISO Dorado */}
-                    <div className="absolute bottom-0 right-0 bg-amber-400 text-amber-950 text-[7px] font-black px-1.5 py-0.5 rounded-tl border-t border-l border-amber-500 shadow-xs">
-                      ISO
+                {/* CUERPO: PORTARRETRATO IZQUIERDO + DATOS INSTITUCIONALES + MICROCHIP ELECTRÓNICO */}
+                <div className="pt-2 flex items-start gap-2.5">
+                  
+                  {/* PORTARRETRATO CON FOTO EXCLUSIVA DEL CACHORRO POMERANIA BLANCO */}
+                  <div className="flex flex-col items-center flex-shrink-0">
+                    <div className="relative w-18 h-22 rounded-lg overflow-hidden border-2 border-slate-300/90 shadow-inner bg-gradient-to-b from-sky-100 to-sky-50 flex items-center justify-center p-0.5">
+                      <img
+                        src="/pomerania-blanco.png"
+                        alt="Foto oficial de MAX - Cachorro Pomerania Blanco"
+                        className="w-full h-full object-contain filter drop-shadow-sm pointer-events-none"
+                      />
                     </div>
-                  </div>
-
-                  {/* Datos Registrados */}
-                  <div className="text-left flex-1 space-y-0.5 min-w-0">
-                    <p className="text-xs sm:text-sm font-black text-slate-900 truncate">
-                      MAX · Pomerania Blanco
-                    </p>
-                    <p className="text-[8.5px] text-slate-600 font-bold leading-tight">
-                      ID: <span className="font-mono text-slate-900 font-black">593·092·841·029</span>
-                    </p>
-                    <p className="text-[8px] text-[#1E40AF] font-extrabold leading-tight">
-                      Chip Subdérmico ISO 11784/85
-                    </p>
-                    <div className="pt-1 flex items-center gap-1.5">
-                      <div className="w-6 h-6 bg-slate-900 rounded p-0.5 flex-shrink-0 flex items-center justify-center">
-                        {/* Micro QR Funcional */}
-                        <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3zm-2-2h2v2h-2v-2z" />
-                        </svg>
-                      </div>
-                      <span className="text-[7.5px] font-black text-slate-600 leading-tight">
-                        Escaneo QR Médico con cualquier smartphone
+                    {/* Etiqueta NUI Microchip debajo de la foto */}
+                    <div className="mt-1 text-center w-20">
+                      <span className="text-[6.5px] font-black text-slate-700 tracking-tight leading-none block">
+                        NUI. MICROCHIP:
+                      </span>
+                      <span className="font-mono text-[7px] font-black text-[#1E40AF] tracking-tight block mt-0.5">
+                        900215000123174
                       </span>
                     </div>
                   </div>
+
+                  {/* ESTRUCTURA DE DATOS INSTITUCIONALES */}
+                  <div className="text-left flex-1 space-y-1 min-w-0">
+                    <div>
+                      <span className="text-[6.5px] text-slate-400 font-bold uppercase block leading-none">NOMBRE / NAME</span>
+                      <p className="text-xs font-black text-slate-900 tracking-tight leading-none mt-0.5">MAX</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-1">
+                      <div>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase block leading-none">ESPECIE</span>
+                        <p className="text-[7.5px] font-black text-slate-800 leading-none mt-0.5">CANINA</p>
+                      </div>
+                      <div>
+                        <span className="text-[6.5px] text-slate-400 font-bold uppercase block leading-none">NACIMIENTO</span>
+                        <p className="text-[7.5px] font-black text-slate-800 leading-none mt-0.5">12/04/2024</p>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-[6.5px] text-slate-400 font-bold uppercase block leading-none">RAZA / BREED</span>
+                      <p className="text-[7.5px] font-black text-slate-900 truncate leading-none mt-0.5">POMERANIA BLANCO</p>
+                    </div>
+                    <div>
+                      <span className="text-[6.5px] text-slate-400 font-bold uppercase block leading-none">PROPIETARIO / TUTOR</span>
+                      <p className="text-[7.5px] font-extrabold text-[#1E40AF] truncate leading-none mt-0.5">TUTOR ACREDITADO (LOPDP)</p>
+                    </div>
+                  </div>
+
+                  {/* INTEGRACIÓN DEL MICROCHIP ELECTRÓNICO FÍSICO DORADO (SMART CARD CHIP) */}
+                  <div className="flex flex-col items-center justify-center flex-shrink-0 pl-1 border-l border-slate-200/80">
+                    <div className="w-9 h-7 rounded bg-gradient-to-br from-amber-200 via-amber-400 to-amber-500 border border-amber-600 shadow-xs relative overflow-hidden flex items-center justify-center flex-shrink-0">
+                      {/* Circuito interno grabado */}
+                      <div className="absolute inset-x-0 top-1/2 h-px bg-amber-700/60 -translate-y-1/2"></div>
+                      <div className="absolute inset-y-0 left-1/3 w-px bg-amber-700/60"></div>
+                      <div className="absolute inset-y-0 right-1/3 w-px bg-amber-700/60"></div>
+                      <div className="w-3.5 h-2.5 rounded-xs border border-amber-700/70 bg-amber-300/70 z-10 flex items-center justify-center">
+                        <span className="text-[5.5px] font-black text-amber-950 tracking-tighter">ISO</span>
+                      </div>
+                    </div>
+                    <span className="text-[5.5px] font-black text-slate-500 tracking-tight mt-1 leading-none text-center">
+                      ISO 11784/85
+                    </span>
+                    {/* Micro QR Funcional de Emergencia */}
+                    <div className="mt-1.5 w-5 h-5 bg-slate-900 rounded p-0.5 flex items-center justify-center shadow-xs">
+                      <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3zm-2-2h2v2h-2v-2z" />
+                      </svg>
+                    </div>
+                  </div>
+
                 </div>
 
-                {/* Pie de la Cédula: Homologación Agrocalidad */}
-                <div className="mt-2 pt-1.5 border-t border-slate-200/80 flex items-center justify-between text-[7.5px] text-slate-500 font-bold">
-                  <span className="flex items-center gap-1">
+                {/* PIE DE LA CÉDULA: HOMOLOGACIÓN Y SELLO OFICIAL RENIAC.EC / PET 593 ID */}
+                <div className="mt-2 pt-1.5 border-t border-slate-200/80 flex items-center justify-between">
+                  <div className="flex items-center gap-1 text-[7px] text-slate-500 font-bold">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
-                    Homologada Agrocalidad
-                  </span>
-                  <span className="font-mono tracking-wider text-[#1E40AF] font-black">
-                    PETCÉDULA FÍSICA PVC
-                  </span>
+                    <span>Homologada Agrocalidad EC</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <img
+                      src="/pet593-logo.png"
+                      alt="PET 593 ID"
+                      className="h-4 w-auto object-contain"
+                    />
+                    <span className="font-mono text-[7.5px] font-black text-[#1E40AF] tracking-tight">
+                      RENIAC.EC · PET 593 ID
+                    </span>
+                  </div>
                 </div>
 
               </div>
