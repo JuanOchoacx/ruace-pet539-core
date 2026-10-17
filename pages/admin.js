@@ -1213,9 +1213,36 @@ export default function AdminDashboard() {
           </div>
 
           {loading ? (
-            <div className="py-24 text-center space-y-4">
-              <div className="w-12 h-12 border-4 border-[#1E40AF] border-t-transparent rounded-full animate-spin mx-auto"></div>
-              <p className="text-sm font-bold text-slate-500">Cargando prospectos en tiempo real...</p>
+            <div className="p-6 space-y-3">
+              <div className="flex items-center justify-between mb-4">
+                <div className="h-4 bg-slate-200 rounded-md w-48 animate-pulse"></div>
+                <div className="h-4 bg-slate-200 rounded-md w-28 animate-pulse"></div>
+              </div>
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={`skeleton-row-${i}`}
+                  className="animate-pulse bg-slate-200 h-14 w-full rounded-2xl flex items-center px-4 justify-between gap-4"
+                >
+                  <div className="flex items-center gap-3 w-1/4">
+                    <div className="w-10 h-10 rounded-xl bg-slate-300"></div>
+                    <div className="space-y-1.5 flex-1">
+                      <div className="h-3.5 bg-slate-300 rounded w-20"></div>
+                      <div className="h-2.5 bg-slate-300 rounded w-14"></div>
+                    </div>
+                  </div>
+                  <div className="space-y-1.5 w-1/4 hidden md:block">
+                    <div className="h-3.5 bg-slate-300 rounded w-28"></div>
+                    <div className="h-2.5 bg-slate-300 rounded w-20"></div>
+                  </div>
+                  <div className="h-9 bg-slate-300 rounded-xl w-1/4 hidden lg:block"></div>
+                  <div className="h-9 bg-slate-300 rounded-xl w-24"></div>
+                </div>
+              ))}
+              <div className="pt-2 text-center">
+                <span className="text-[11px] font-bold text-slate-400">
+                  Sincronizando expedientes en tiempo real con Supabase...
+                </span>
+              </div>
             </div>
           ) : filteredLeads.length === 0 ? (
             <div className="py-20 text-center space-y-3">
