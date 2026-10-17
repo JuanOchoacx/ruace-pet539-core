@@ -196,8 +196,8 @@ export default function Home() {
       </header>
     </div>
 
-      {/* HERO SECTION ORIGINAL: LIENZO PASTEL #E0F2FE + DOODLES LINEALES + ILUSTRACIÓN SOBRESALIENTE SIN FONDO */}
-      <section className="relative overflow-hidden bg-[#E0F2FE] py-14 lg:py-20 border-b border-sky-200/70">
+      {/* HERO SECTION ORIGINAL: LIENZO PASTEL #E0F2FE + DOODLES LINEALES + ILUSTRACIÓN SOBRESALIENTE ALINEADA A LA BASE */}
+      <section className="relative overflow-hidden bg-[#E0F2FE] pt-12 lg:pt-16 pb-0 border-b border-sky-200/70">
         
         {/* DOODLES Y ELEMENTOS VECTORIALES LINEALES (POSICIONAMIENTO ABSOLUTO) */}
         {/* Doodle 1: Huella superior izquierda */}
@@ -245,10 +245,10 @@ export default function Home() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-end gap-10 lg:gap-12">
             
             {/* BLOQUE DE CONTENIDOS (lg:col-span-6): KICKER, COPY DE IMPACTO Y CTAs CON SMOOTH SCROLL */}
-            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
+            <div className="lg:col-span-6 space-y-6 text-center lg:text-left pb-12 lg:pb-16">
               
               {/* KICKER SUPERIOR: AUTORIDAD INMEDIATA FRENTE AL VACÍO INSTITUCIONAL */}
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#1E40AF]/30 text-[#1E40AF] text-xs sm:text-sm font-black shadow-sm tracking-wider uppercase">
@@ -304,14 +304,14 @@ export default function Home() {
 
             </div>
 
-            {/* BLOQUE VISUAL SOBRESALIENTE SIN FONDO (lg:col-span-6): IMAGEN TRANSPARENTE ASENTADA DIRECTAMENTE EN EL LIENZO */}
-            <div className="lg:col-span-6 flex justify-center items-end relative min-h-[440px] sm:min-h-[500px] lg:min-h-[540px]">
+            {/* BLOQUE VISUAL MULTIMEDIA DERECHO: ALINEACIÓN ESTRICTA A LA BASE (ITEMS-END + ALIGN-BOTTOM) */}
+            <div className="lg:col-span-6 flex justify-center items-end relative h-full min-h-[460px] sm:min-h-[520px] lg:min-h-[620px] self-end">
               
               {/* Resplandor suave decorativo de fondo */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-white/60 rounded-full blur-3xl pointer-events-none"></div>
 
-              {/* BADGE PREMIUM REDISEÑADO: VIDRIO ESMERILADO TRANSLÚCIDO + INDICADOR EN VIVO 24/7 (ESQUINA INFERIOR DERECHA) */}
-              <div className="absolute bottom-6 right-2 sm:right-6 lg:-right-2 z-20 bg-white/80 backdrop-blur-md border border-white/40 rounded-2xl p-3 sm:px-4 sm:py-3 shadow-2xl shadow-sky-950/15 flex items-center gap-3 transition-transform hover:scale-105">
+              {/* BADGE PREMIUM REDISEÑADO: VIDRIO ESMERILADO TRANSLÚCIDO + INDICADOR EN VIVO 24/7 (FLOTANDO A LA DERECHA) */}
+              <div className="absolute bottom-10 right-2 sm:right-6 lg:-right-2 z-20 bg-white/80 backdrop-blur-md border border-white/50 rounded-2xl p-3 sm:px-4 sm:py-3 shadow-2xl shadow-sky-950/15 flex items-center gap-3 transition-transform hover:scale-105">
                 <div className="w-10 h-10 rounded-xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center font-black text-lg shadow-xs flex-shrink-0">
                   🪪
                 </div>
@@ -334,8 +334,8 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* IMAGEN TRANSPARENTE REAL CON ANIMACIÓN FLUIDA ORGÁNICA (EFECTO FLOAT) */}
-              <div className="relative w-full h-full flex items-end justify-center animate-float will-change-transform">
+              {/* CONTENEDOR ANCLADO AL PISO CON MOVIMIENTO SUTIL DE RESPIRACIÓN (SIN LEVANTAR LA BASE) */}
+              <div className="relative w-full h-full flex items-end justify-center animate-breathe origin-bottom will-change-transform">
                 <img
                   src="https://perritosguayaquil.com/wp-content/uploads/2025/06/Perritos-Guayaquil-Hero-Section-02.webp"
                   alt="Tutor y mascota protegidos con microchip y PETCÉDULA RUACE PET539"
@@ -343,7 +343,7 @@ export default function Home() {
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
-                  className="relative z-10 w-full max-h-[500px] sm:max-h-[560px] lg:max-h-[580px] object-contain object-bottom filter drop-shadow-[0_20px_35px_rgba(30,64,175,0.20)] transform transition-transform duration-700 hover:scale-[1.02]"
+                  className="relative z-10 w-full max-h-[540px] sm:max-h-[600px] lg:max-h-[660px] lg:scale-110 object-contain object-bottom origin-bottom filter drop-shadow-[0_20px_35px_rgba(30,64,175,0.18)] block"
                 />
               </div>
 

@@ -6,6 +6,20 @@ html {
   scroll-behavior: smooth;
 }
 
+@keyframes heroBreathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.animate-breathe {
+  transform-origin: bottom center;
+  animation: heroBreathe 5s ease-in-out infinite;
+}
+
 @keyframes heroFloat {
   0%, 100% {
     transform: translateY(0px);
@@ -18,4 +32,5 @@ html {
 .animate-float {
   animation: heroFloat 5s ease-in-out infinite;
 }
+
 

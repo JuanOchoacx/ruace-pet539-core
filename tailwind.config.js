@@ -8,12 +8,17 @@ module.exports = {
   theme: {
     extend: {
       keyframes: {
+        breathe: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.02)' },
+        },
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-10px)' },
         },
       },
       animation: {
+        breathe: 'breathe 5s ease-in-out infinite',
         float: 'float 5s ease-in-out infinite',
       },
     },
