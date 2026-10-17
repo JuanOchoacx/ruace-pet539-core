@@ -196,386 +196,324 @@ export default function Home() {
       </header>
     </div>
 
-      {/* HERO SECTION ASIMÉTRICO (ESTILO MOTION - SPLIT SECTION) */}
-      <section id="registro" className="relative overflow-hidden pt-10 pb-20 lg:pt-16 lg:pb-24 bg-[#FFFBEB]">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FBBF24]/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#1E40AF]/5 rounded-full blur-3xl pointer-events-none"></div>
+      {/* HERO SECTION CENTRALIZADO (ANCHO COMPLETO - RUACE PET539 EXCLUSIVO) */}
+      <section id="registro" className="relative overflow-hidden pt-12 pb-24 bg-gradient-to-b from-[#1E40AF]/5 via-[#FFFBEB]/40 to-white">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#FBBF24]/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-40 right-10 w-96 h-96 bg-[#1E40AF]/5 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-            
-            {/* COLUMNA IZQUIERDA: TITULAR PERSUASIVO + 3 MINI-TARJETAS DE BENEFICIOS */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#FBBF24] text-[#1E40AF] text-xs sm:text-sm font-bold shadow-sm">
-                <span className="flex h-2.5 w-2.5 rounded-full bg-[#1E40AF] animate-pulse"></span>
-                Identificación Veterinaria Oficial a Nivel Nacional en Ecuador
-              </div>
-
-              <h1 className="text-4xl sm:text-5xl font-extrabold text-[#1E40AF] tracking-tight leading-none mb-4">
-                Dale a tu peludito una identidad indestructible y asegura su regreso a casa.
-              </h1>
-
-              <p className="text-lg sm:text-xl text-slate-600 max-w-2xl font-normal leading-relaxed">
-                El microchip permanente y su <strong className="text-[#1E40AF] font-bold">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Sin mensualidades. Protegido en Ecuador y el mundo entero.
-              </p>
-
-              {/* 3 BENEFICIOS EN MINI-TARJETAS INTERACTIVAS CON SOMBRAS SUAVES (MOTION STYLE) */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                {/* Mini Tarjeta 1 */}
-                <div className="group bg-white p-4 sm:p-5 rounded-2xl border-2 border-slate-200/80 hover:border-[#1E40AF] shadow-sm hover:shadow-md transition-all duration-300 text-left flex flex-col justify-between">
-                  <div>
-                    <div className="w-10 h-10 rounded-xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center mb-3 shadow-sm group-hover:scale-105 transition-transform">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                      </svg>
-                    </div>
-                    <h2 className="text-sm font-black text-[#1E40AF] mb-1.5">
-                      Identidad Inviolable
-                    </h2>
-                    <p className="text-xs text-slate-600 leading-snug">
-                      Un microchip del tamaño de un granito de arroz colocado de forma segura. No se borra ni se pierde jamás.
-                    </p>
-                  </div>
-                  <div className="mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold text-[#1E40AF]">
-                    Norma ISO 11784/85 →
-                  </div>
-                </div>
-
-                {/* Mini Tarjeta 2 */}
-                <div className="group bg-white p-4 sm:p-5 rounded-2xl border-2 border-slate-200/80 hover:border-[#1E40AF] shadow-sm hover:shadow-md transition-all duration-300 text-left flex flex-col justify-between">
-                  <div>
-                    <div className="w-10 h-10 rounded-xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center mb-3 shadow-sm group-hover:scale-105 transition-transform">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                      </svg>
-                    </div>
-                    <h2 className="text-sm font-black text-[#1E40AF] mb-1.5">
-                      Historial Médico QR
-                    </h2>
-                    <p className="text-xs text-slate-600 leading-snug">
-                      Escanea su PETCÉDULA física con cualquier smartphone para ver vacunas y contactos en emergencias.
-                    </p>
-                  </div>
-                  <div className="mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold text-[#1E40AF]">
-                    Lectura móvil 24/7 →
-                  </div>
-                </div>
-
-                {/* Mini Tarjeta 3 */}
-                <div className="group bg-white p-4 sm:p-5 rounded-2xl border-2 border-slate-200/80 hover:border-[#1E40AF] shadow-sm hover:shadow-md transition-all duration-300 text-left flex flex-col justify-between">
-                  <div>
-                    <div className="w-10 h-10 rounded-xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center mb-3 shadow-sm group-hover:scale-105 transition-transform">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <h2 className="text-sm font-black text-[#1E40AF] mb-1.5">
-                      Certificación Pet Travel
-                    </h2>
-                    <p className="text-xs text-slate-600 leading-snug">
-                      Microchips homologados bajo la norma internacional ISO. Asesoría y documentos listos para viajar.
-                    </p>
-                  </div>
-                  <div className="mt-3 pt-2 border-t border-slate-100 text-[11px] font-bold text-[#1E40AF]">
-                    Agrocalidad & IATA →
-                  </div>
-                </div>
-              </div>
-
-              {/* Indicadores de Respaldo Cuantitativo */}
-              <div className="pt-4 border-t border-amber-200/80 grid grid-cols-3 gap-4 text-center lg:text-left">
-                <div>
-                  <p className="text-2xl sm:text-3xl font-black text-[#1E40AF]">+15.000</p>
-                  <p className="text-xs text-slate-600 font-semibold">Registros a Nivel Nacional</p>
-                </div>
-                <div>
-                  <p className="text-2xl sm:text-3xl font-black text-slate-900">100%</p>
-                  <p className="text-xs text-slate-600 font-semibold">Estándar ISO 11784/85</p>
-                </div>
-                <div>
-                  <p className="text-2xl sm:text-3xl font-black text-[#1E40AF]">24/7</p>
-                  <p className="text-xs text-slate-600 font-semibold">Historial Médico QR</p>
-                </div>
-              </div>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          {/* BLOQUE SUPERIOR CENTRADO: TITULAR PERSUASIVO + SUBTÍTULO OFICIAL */}
+          <div className="text-center max-w-3xl mx-auto space-y-5">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#FBBF24] text-[#1E40AF] text-xs sm:text-sm font-bold shadow-sm">
+              <span className="flex h-2.5 w-2.5 rounded-full bg-[#1E40AF] animate-pulse"></span>
+              Identificación Veterinaria Oficial a Nivel Nacional en Ecuador
             </div>
 
-            {/* COLUMNA DERECHA: CONTENEDOR FLOTANTE DEL FORMULARIO FILTRO */}
-            <div className="lg:col-span-5">
-              <div className="bg-white rounded-2xl shadow-2xl border-2 border-slate-200/90 overflow-hidden relative transition-all duration-300 hover:shadow-[0_25px_50px_-12px_rgba(30,64,175,0.2)]">
-                
-                {/* Header del Formulario en Azul Primario PET593 */}
-                <div className="bg-[#1E40AF] p-5 sm:p-6 text-white">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#FBBF24] block">
-                        Formulario de Captación Oficial
-                      </span>
-                      <h2 className="text-lg sm:text-xl font-black text-white mt-0.5">
-                        Expediente RUACE PET539
-                      </h2>
-                    </div>
-                    <span className="bg-[#FFFBEB] text-[#1E40AF] text-[10px] font-black px-2.5 py-1 rounded-full border border-[#FBBF24] uppercase">
-                      Cobertura Nacional · Ecuador
-                    </span>
-                  </div>
-                  <p className="text-xs text-amber-100/90 mt-1.5 leading-relaxed">
-                    Completa los datos en 2 minutos para agendar la colocación o activar su PETCÉDULA.
-                  </p>
-                </div>
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#1E40AF] tracking-tight leading-tight">
+              Dale a tu peludito una identidad indestructible y asegura su regreso a casa.
+            </h1>
 
-                {/* Mensajes de Estado (Success / Error) */}
-                {statusMessage && (
-                  <div
-                    className={`m-5 p-4 rounded-xl border text-xs transition-all ${
-                      statusMessage.type === 'success'
-                        ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
-                        : 'bg-rose-50 border-rose-300 text-rose-900'
-                    }`}
-                  >
-                    <div className="flex items-start gap-2.5">
-                      <span className="text-base">{statusMessage.type === 'success' ? '✓' : '⚠️'}</span>
-                      <div>
-                        <p className="font-bold">{statusMessage.type === 'success' ? 'Registro Exitoso' : 'Atención'}</p>
-                        <p className="mt-0.5 leading-relaxed">{statusMessage.text}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
+            <p className="text-base sm:text-xl text-slate-600 font-normal leading-relaxed">
+              El microchip permanente y su <strong className="text-[#1E40AF] font-bold">PETCÉDULA física</strong> se vinculan a un perfil digital activo 24/7. Sin mensualidades. Protegido en Ecuador y el mundo entero.
+            </p>
+          </div>
 
-                {/* Formulario conectado a Supabase */}
-                <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
-                  
-                  {/* Fila: Propietario y Teléfono */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
-                      <label htmlFor="owner_name" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
-                        Tutor / Propietario *
-                      </label>
-                      <input
-                        type="text"
-                        id="owner_name"
-                        name="owner_name"
-                        required
-                        value={formData.owner_name}
-                        onChange={handleChange}
-                        placeholder="Ej. Carlos Mendoza"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
-                      />
-                    </div>
+          {/* BLOQUE DE CONFIANZA INMEDIATA (SOCIAL PROOF GRID HORIZONTAL) */}
+          <div className="max-w-4xl mx-auto my-10 py-5 px-6 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-slate-200/80 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-slate-200">
+            <div className="pt-2 sm:pt-0">
+              <p className="text-3xl sm:text-4xl font-black text-[#1E40AF]">+15.000</p>
+              <p className="text-xs sm:text-sm text-slate-600 font-bold mt-1">Registros a Nivel Nacional</p>
+              <span className="inline-block text-[11px] text-slate-400 font-medium">Familias protegidas en Ecuador</span>
+            </div>
+            <div className="pt-4 sm:pt-0 sm:px-4">
+              <p className="text-3xl sm:text-4xl font-black text-slate-900">100%</p>
+              <p className="text-xs sm:text-sm text-slate-600 font-bold mt-1">Norma ISO 11784/85</p>
+              <span className="inline-block text-[11px] text-slate-400 font-medium">Estándar veterinario mundial</span>
+            </div>
+            <div className="pt-4 sm:pt-0 sm:pl-4">
+              <p className="text-3xl sm:text-4xl font-black text-[#1E40AF]">24/7</p>
+              <p className="text-xs sm:text-sm text-slate-600 font-bold mt-1">Historial Médico QR & Soporte</p>
+              <span className="inline-block text-[11px] text-slate-400 font-medium">Lectura con cualquier smartphone</span>
+            </div>
+          </div>
 
-                    <div>
-                      <label htmlFor="owner_phone" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
-                        Teléfono / WhatsApp *
-                      </label>
-                      <input
-                        type="tel"
-                        id="owner_phone"
-                        name="owner_phone"
-                        required
-                        value={formData.owner_phone}
-                        onChange={handleChange}
-                        placeholder="Ej. +593 99 594 3723"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Correo */}
+          {/* CONTENEDOR FLOTANTE CENTRALIZADO DEL FORMULARIO FILTRO */}
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white rounded-3xl shadow-2xl border-2 border-[#1E40AF]/15 overflow-hidden relative transition-all duration-300 hover:shadow-[0_25px_60px_-15px_rgba(30,64,175,0.25)]">
+              
+              {/* Header del Formulario en Azul Primario PET593 */}
+              <div className="bg-[#1E40AF] p-6 sm:p-7 text-white text-center sm:text-left">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                   <div>
-                    <label htmlFor="owner_email" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
-                      Correo Electrónico *
+                    <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#FBBF24] block">
+                      Formulario de Captación Oficial
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                      Expediente RUACE PET539
+                    </h2>
+                  </div>
+                  <span className="bg-[#FFFBEB] text-[#1E40AF] text-[11px] font-black px-3 py-1 rounded-full border border-[#FBBF24] uppercase shadow-sm">
+                    Cobertura Nacional · Ecuador
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-amber-100/90 mt-2 leading-relaxed">
+                  Completa los datos en 2 minutos para agendar la colocación o activar su PETCÉDULA con respaldo veterinario oficial.
+                </p>
+              </div>
+
+              {/* Mensajes de Estado (Success / Error) */}
+              {statusMessage && (
+                <div
+                  className={`m-5 p-4 rounded-xl border text-xs transition-all ${
+                    statusMessage.type === 'success'
+                      ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                      : 'bg-rose-50 border-rose-300 text-rose-900'
+                  }`}
+                >
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-base">{statusMessage.type === 'success' ? '✓' : '⚠️'}</span>
+                    <div>
+                      <p className="font-bold">{statusMessage.type === 'success' ? 'Registro Exitoso' : 'Atención'}</p>
+                      <p className="mt-0.5 leading-relaxed">{statusMessage.text}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Formulario conectado a Supabase */}
+              <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-4">
+                
+                {/* Fila: Propietario y Teléfono */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="owner_name" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                      Tutor / Propietario *
                     </label>
                     <input
-                      type="email"
-                      id="owner_email"
-                      name="owner_email"
+                      type="text"
+                      id="owner_name"
+                      name="owner_name"
                       required
-                      value={formData.owner_email}
+                      value={formData.owner_name}
                       onChange={handleChange}
-                      placeholder="ejemplo@correo.com"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
+                      placeholder="Ej. Carlos Mendoza"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
                     />
                   </div>
 
-                  {/* Fila: Nombre Mascota y Tipo */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
-                      <label htmlFor="pet_name" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
-                        Nombre Mascota *
-                      </label>
-                      <input
-                        type="text"
-                        id="pet_name"
-                        name="pet_name"
-                        required
-                        value={formData.pet_name}
-                        onChange={handleChange}
-                        placeholder="Ej. Max, Luna, Toby"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="pet_type" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
-                        Tipo de Mascota *
-                      </label>
-                      <select
-                        id="pet_type"
-                        name="pet_type"
-                        required
-                        value={formData.pet_type}
-                        onChange={handleChange}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
-                      >
-                        <option value="Perro">🐶 Perro (Canino)</option>
-                        <option value="Gato">🐱 Gato (Felino)</option>
-                        <option value="Conejo">🐰 Conejo</option>
-                        <option value="Ave / Exótico">🦜 Ave o Exótico</option>
-                        <option value="Otro">🐾 Otro animal</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Estado Actual */}
                   <div>
-                    <label htmlFor="current_status" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
-                      Estado Actual de Identificación *
+                    <label htmlFor="owner_phone" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                      Teléfono / WhatsApp *
                     </label>
-                    <select
-                      id="current_status"
-                      name="current_status"
+                    <input
+                      type="tel"
+                      id="owner_phone"
+                      name="owner_phone"
                       required
-                      value={formData.current_status}
+                      value={formData.owner_phone}
                       onChange={handleChange}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
-                    >
-                      <option value="Sin microchip ni cédula">Sin microchip ni cédula (Deseo colocación en Ecuador)</option>
-                      <option value="Solo placa">Solo placa externa (Deseo microchip y cédula)</option>
-                      <option value="Tiene microchip, requiere Cédula RUACE">Ya tiene microchip, pero requiere Cédula Física y Placa QR</option>
-                      <option value="Requiere actualización de datos">Requiere actualización de tutor / cambio de domicilio</option>
-                      <option value="Mascota extraviada (Reporte Urgente)">Mascota extraviada (Reporte de urgencia en red nacional)</option>
-                    </select>
-                  </div>
-
-                  {/* Fila: Viaje y Canal */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
-                      <label htmlFor="pet_travel_intent" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
-                        Intención de Viaje *
-                      </label>
-                      <select
-                        id="pet_travel_intent"
-                        name="pet_travel_intent"
-                        required
-                        value={formData.pet_travel_intent}
-                        onChange={handleChange}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
-                      >
-                        <option value="No planeo viajar (Protección a nivel nacional)">Solo protección a nivel nacional</option>
-                        <option value="Viaje Internacional próximo (USA / Europa / LATAM)">Viaje Internacional (USA / Europa)</option>
-                        <option value="Viaje Nacional / Galápagos">Viaje a Galápagos o Nacional</option>
-                        <option value="Necesito asesoría completa Agrocalidad & IATA">Asesoría Agrocalidad & IATA</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="contact_method" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
-                        Canal de Contacto *
-                      </label>
-                      <select
-                        id="contact_method"
-                        name="contact_method"
-                        required
-                        value={formData.contact_method}
-                        onChange={handleChange}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
-                      >
-                        <option value="WhatsApp">💬 WhatsApp (Inmediato)</option>
-                        <option value="Llamada Telefónica">📞 Llamada Telefónica</option>
-                        <option value="Correo Electrónico">✉️ Correo Electrónico</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* CASILLA OBLIGATORIA: LEY LOPDP ECUADOR 2026 */}
-                  <div className="pt-2">
-                    <div className="flex items-start gap-2.5 bg-[#FFFBEB] p-3 rounded-xl border border-amber-200">
-                      <input
-                        type="checkbox"
-                        id="termsAccepted"
-                        name="termsAccepted"
-                        required
-                        checked={termsAccepted}
-                        onChange={(e) => setTermsAccepted(e.target.checked)}
-                        className="h-4 w-4 rounded border-slate-300 text-[#1E40AF] focus:ring-[#1E40AF] mt-0.5 cursor-pointer shrink-0"
-                      />
-                      <div className="text-[11px] text-slate-700 leading-snug">
-                        <label htmlFor="termsAccepted" className="cursor-pointer font-bold text-slate-900">
-                          Acepto la Política de Privacidad y Tratamiento de Datos (Ley LOPDP Ecuador) *
-                        </label>
-                        <div className="mt-0.5">
-                          <button
-                            type="button"
-                            onClick={() => setShowPrivacyModal(true)}
-                            className="text-[10px] text-[#1E40AF] hover:underline font-bold"
-                          >
-                            Ver términos legales y derechos ARCO (LOPDP 2026)
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* BOTÓN SUBMIT EN AMARILLO ACENTO #FBBF24 */}
-                  <div className="pt-1">
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full py-3.5 px-5 rounded-2xl bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black text-sm sm:text-base shadow-lg shadow-[#FBBF24]/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-amber-400"
-                    >
-                      {loading ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-slate-900" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          <span>Registrando en Supabase...</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>Enviar Solicitud de Registro Oficial</span>
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                          </svg>
-                        </>
-                      )}
-                    </button>
-                    <p className="text-center text-[10px] text-slate-400 mt-2">
-                      Sin suscripciones ocultas · Respaldo veterinario colegiado en todo el país
-                    </p>
-                  </div>
-
-                </form>
-
-                {/* BLOQUE HORIZONTAL DE INSIGNIAS DE CONFIANZA (TRUST BADGES) */}
-                <div className="bg-[#FFFBEB] border-t border-amber-200/90 px-4 sm:px-6 py-3.5">
-                  <div className="flex flex-wrap items-center justify-between gap-2 text-[10px] font-bold text-slate-700">
-                    <span className="inline-flex items-center gap-1">
-                      <span className="text-[#1E40AF] font-black">●</span> Norma ISO 11784/85
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <span className="text-emerald-600 font-black">●</span> Sin Mensualidades
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <span className="text-[#1E40AF] font-black">●</span> Red Nacional Ecuador
-                    </span>
+                      placeholder="Ej. +593 99 594 3723"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
+                    />
                   </div>
                 </div>
 
-              </div>
-            </div>
+                {/* Correo */}
+                <div>
+                  <label htmlFor="owner_email" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                    Correo Electrónico *
+                  </label>
+                  <input
+                    type="email"
+                    id="owner_email"
+                    name="owner_email"
+                    required
+                    value={formData.owner_email}
+                    onChange={handleChange}
+                    placeholder="ejemplo@correo.com"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
+                  />
+                </div>
 
+                {/* Fila: Nombre Mascota y Tipo */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="pet_name" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                      Nombre Mascota *
+                    </label>
+                    <input
+                      type="text"
+                      id="pet_name"
+                      name="pet_name"
+                      required
+                      value={formData.pet_name}
+                      onChange={handleChange}
+                      placeholder="Ej. Max, Luna, Toby"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 placeholder-slate-400 bg-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="pet_type" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                      Tipo de Mascota *
+                    </label>
+                    <select
+                      id="pet_type"
+                      name="pet_type"
+                      required
+                      value={formData.pet_type}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
+                    >
+                      <option value="Perro">🐶 Perro (Canino)</option>
+                      <option value="Gato">🐱 Gato (Felino)</option>
+                      <option value="Conejo">🐰 Conejo</option>
+                      <option value="Ave / Exótico">🦜 Ave o Exótico</option>
+                      <option value="Otro">🐾 Otro animal</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Estado Actual */}
+                <div>
+                  <label htmlFor="current_status" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                    Estado Actual de Identificación *
+                  </label>
+                  <select
+                    id="current_status"
+                    name="current_status"
+                    required
+                    value={formData.current_status}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
+                  >
+                    <option value="Sin microchip ni cédula">Sin microchip ni cédula (Deseo colocación en Ecuador)</option>
+                    <option value="Solo placa">Solo placa externa (Deseo microchip y cédula)</option>
+                    <option value="Tiene microchip, requiere Cédula RUACE">Ya tiene microchip, pero requiere Cédula Física y Placa QR</option>
+                    <option value="Requiere actualización de datos">Requiere actualización de tutor / cambio de domicilio</option>
+                    <option value="Mascota extraviada (Reporte Urgente)">Mascota extraviada (Reporte de urgencia en red nacional)</option>
+                  </select>
+                </div>
+
+                {/* Fila: Viaje y Canal */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="pet_travel_intent" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                      Intención de Viaje *
+                    </label>
+                    <select
+                      id="pet_travel_intent"
+                      name="pet_travel_intent"
+                      required
+                      value={formData.pet_travel_intent}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
+                    >
+                      <option value="No planeo viajar (Protección a nivel nacional)">Solo protección a nivel nacional</option>
+                      <option value="Viaje Internacional próximo (USA / Europa / LATAM)">Viaje Internacional (USA / Europa)</option>
+                      <option value="Viaje Nacional / Galápagos">Viaje a Galápagos o Nacional</option>
+                      <option value="Necesito asesoría completa Agrocalidad & IATA">Asesoría Agrocalidad & IATA</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="contact_method" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                      Canal de Contacto *
+                    </label>
+                    <select
+                      id="contact_method"
+                      name="contact_method"
+                      required
+                      value={formData.contact_method}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-xs text-slate-800 bg-white font-medium"
+                    >
+                      <option value="WhatsApp">💬 WhatsApp (Inmediato)</option>
+                      <option value="Llamada Telefónica">📞 Llamada Telefónica</option>
+                      <option value="Correo Electrónico">✉️ Correo Electrónico</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* CASILLA OBLIGATORIA: LEY LOPDP ECUADOR 2026 */}
+                <div className="pt-2">
+                  <div className="flex items-start gap-2.5 bg-[#FFFBEB] p-3 rounded-xl border border-amber-200">
+                    <input
+                      type="checkbox"
+                      id="termsAccepted"
+                      name="termsAccepted"
+                      required
+                      checked={termsAccepted}
+                      onChange={(e) => setTermsAccepted(e.target.checked)}
+                      className="h-4 w-4 rounded border-slate-300 text-[#1E40AF] focus:ring-[#1E40AF] mt-0.5 cursor-pointer shrink-0"
+                    />
+                    <div className="text-[11px] text-slate-700 leading-snug">
+                      <label htmlFor="termsAccepted" className="cursor-pointer font-bold text-slate-900">
+                        Acepto la Política de Privacidad y Tratamiento de Datos (Ley LOPDP Ecuador) *
+                      </label>
+                      <div className="mt-0.5">
+                        <button
+                          type="button"
+                          onClick={() => setShowPrivacyModal(true)}
+                          className="text-[10px] text-[#1E40AF] hover:underline font-bold"
+                        >
+                          Ver términos legales y derechos ARCO (LOPDP 2026)
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* BOTÓN SUBMIT EN AMARILLO ACENTO #FBBF24 */}
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-4 px-6 rounded-2xl bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 font-black text-sm sm:text-base shadow-xl shadow-[#FBBF24]/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-amber-400 cursor-pointer"
+                  >
+                    {loading ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-slate-900" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Registrando en Supabase...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Enviar Solicitud de Registro Oficial</span>
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                  <p className="text-center text-[10px] text-slate-400 mt-2.5">
+                    Sin suscripciones ocultas · Respaldo veterinario colegiado en todo el país
+                  </p>
+                </div>
+
+              </form>
+
+              {/* BLOQUE HORIZONTAL DE INSIGNIAS DE CONFIANZA (TRUST BADGES) */}
+              <div className="bg-[#FFFBEB] border-t border-amber-200/90 px-6 py-4">
+                <div className="flex flex-wrap items-center justify-around gap-2 text-xs font-bold text-slate-700">
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="text-[#1E40AF] font-black">●</span> Norma ISO 11784/85
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="text-emerald-600 font-black">●</span> Sin Mensualidades
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="text-[#1E40AF] font-black">●</span> Red Nacional Ecuador
+                  </span>
+                </div>
+              </div>
+
+            </div>
           </div>
+
         </div>
       </section>
 
