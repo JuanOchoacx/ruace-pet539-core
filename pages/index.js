@@ -506,7 +506,7 @@ export default function Home() {
               Protege a tu Mejor Amigo en 3 Simples Pasos
             </h2>
             <p className="text-slate-600 text-base sm:text-lg">
-              Diseñamos una experiencia ágil y libre de burocracia para que tu mascota quede identificada y protegida con respaldo veterinario oficial en todo el país.
+              Diseñamos una experiencia ágil y libre de complicaciones para que tu mascota quede identificada y protegida con respaldo veterinario oficial en todo el país.
             </p>
           </div>
 
