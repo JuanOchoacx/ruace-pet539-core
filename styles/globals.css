@@ -5,3 +5,17 @@
 html {
   scroll-behavior: smooth;
 }
+
+@keyframes heroFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: heroFloat 5s ease-in-out infinite;
+}
+

@@ -310,26 +310,32 @@ export default function Home() {
               {/* Resplandor suave decorativo de fondo */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-white/60 rounded-full blur-3xl pointer-events-none"></div>
 
-              {/* Badge de Credencial e Identificación Oficial Integrada */}
-              <div className="absolute top-4 right-2 sm:right-6 z-20 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-xl border border-sky-200/90 flex items-center gap-2.5 rotate-[3deg] transition-transform hover:rotate-0">
-                <div className="w-8 h-8 rounded-xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center font-black text-sm shadow-xs">
+              {/* BADGE PREMIUM REDISEÑADO: VIDRIO ESMERILADO TRANSLÚCIDO + INDICADOR EN VIVO 24/7 (ESQUINA INFERIOR DERECHA) */}
+              <div className="absolute bottom-6 right-2 sm:right-6 lg:-right-2 z-20 bg-white/80 backdrop-blur-md border border-white/40 rounded-2xl p-3 sm:px-4 sm:py-3 shadow-2xl shadow-sky-950/15 flex items-center gap-3 transition-transform hover:scale-105">
+                <div className="w-10 h-10 rounded-xl bg-[#1E40AF] text-[#FBBF24] flex items-center justify-center font-black text-lg shadow-xs flex-shrink-0">
                   🪪
                 </div>
                 <div className="text-left">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <p className="text-[11px] font-black text-[#1E40AF] uppercase tracking-wide">
-                      PETCÉDULA QR + CHIP ISO
-                    </p>
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                      • EN VIVO
+                    </span>
                   </div>
-                  <p className="text-[9px] text-slate-500 font-bold">
+                  <p className="text-xs sm:text-sm font-black text-[#1E40AF] tracking-tight leading-tight mt-0.5">
+                    PETCÉDULA QR + CHIP ISO
+                  </p>
+                  <p className="text-[10px] text-slate-500 font-bold leading-none mt-0.5">
                     Identidad Digital Vinculada 24/7
                   </p>
                 </div>
               </div>
 
-              {/* IMAGEN TRANSPARENTE REAL INTEGRADA DIRECTO SOBRE EL FONDO PASTEL (SIN RECUADROS NI MARCOS RÍGIDOS) */}
-              <div className="relative w-full h-full flex items-end justify-center">
+              {/* IMAGEN TRANSPARENTE REAL CON ANIMACIÓN FLUIDA ORGÁNICA (EFECTO FLOAT) */}
+              <div className="relative w-full h-full flex items-end justify-center animate-float will-change-transform">
                 <img
                   src="https://perritosguayaquil.com/wp-content/uploads/2025/06/Perritos-Guayaquil-Hero-Section-02.webp"
                   alt="Tutor y mascota protegidos con microchip y PETCÉDULA RUACE PET539"
