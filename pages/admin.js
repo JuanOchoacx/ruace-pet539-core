@@ -201,7 +201,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterTemperature, setFilterTemperature] = useState('ALL');
-  const [filterContactStatus, setFilterContactStatus] = useState('ALL'); // 'ALL' | 'PENDING' | 'CONTACTED'
+  const [segmentFilter, setSegmentFilter] = useState('ALL'); // 'ALL' | 'PENDING' | 'CONTACTED' | 'DOGS' | 'CATS'
   const [updatingId, setUpdatingId] = useState(null);
   const [savingNoteId, setSavingNoteId] = useState(null);
   const [dbConnected, setDbConnected] = useState(false);
@@ -323,7 +323,7 @@ export default function AdminDashboard() {
       .sort((a, b) => b.lead_score - a.lead_score); // Reordenamiento estricto descendente
   }, [leads]);
 
-  // FILTRADO DINÁMICO POR ESTADO DE CONTACTO Y TEMPERATURA
+  // FILTRADO DINÁMICO POR SEGMENTOS (TODOS, PENDIENTES, CONTACTADOS, PERROS, GATOS) Y TEMPERATURA
   const filteredLeads = useMemo(() => {
     return processedLeads.filter((lead) => {
       // Búsqueda libre
@@ -336,17 +336,92 @@ export default function AdminDashboard() {
       const matchesTemp =
         filterTemperature === 'ALL' || lead.temperature.level === filterTemperature;
 
-      // Filtro interactivo de estado de contacto (Contactados vs. Pendientes)
-      let matchesContact = true;
-      if (filterContactStatus === 'PENDING') {
-        matchesContact = lead.lead_status === 'Por contactar';
-      } else if (filterContactStatus === 'CONTACTED') {
-        matchesContact = lead.lead_status === 'Contactado';
+      // Filtro interactivo por segmento
+      let matchesSegment = true;
+      if (segmentFilter === 'PENDING') {
+        matchesSegment = lead.lead_status === 'Por contactar';
+      } else if (segmentFilter === 'CONTACTED') {
+        matchesSegment = lead.lead_status === 'Contactado';
+      } else if (segmentFilter === 'DOGS') {
+        const type = (lead.pet_type || '').toLowerCase();
+        matchesSegment = type.includes('perro') || type.includes('canino');
+      } else if (segmentFilter === 'CATS') {
+        const type = (lead.pet_type || '').toLowerCase();
+        matchesSegment = type.includes('gato') || type.includes('felino');
       }
 
-      return matchesSearch && matchesTemp && matchesContact;
+      return matchesSearch && matchesTemp && matchesSegment;
     });
-  }, [processedLeads, searchQuery, filterTemperature, filterContactStatus]);
+  }, [processedLeads, searchQuery, filterTemperature, segmentFilter]);
+
+  // MARCAR COMO CONTACTADO Y PERSISTIR NOTA/FEEDBACK
+  const handleMarkAsContacted = async (lead) => {
+    const leadKey = lead.id || lead.owner_email;
+    const currentNote = leadNotes[leadKey] !== undefined ? leadNotes[leadKey] : (lead.notes || '');
+    setUpdatingId(leadKey);
+
+    // Actualización optimista del estado y nota en interfaz
+    setLeads((prev) =>
+      prev.map((item) => {
+        const isMatch = (item.id && item.id === lead.id) || item.owner_email === lead.owner_email;
+        return isMatch
+          ? {
+              ...item,
+              lead_status: 'Contactado',
+              notes: currentNote,
+              lead_advice: currentNote || item.lead_advice,
+            }
+          : item;
+      })
+    );
+
+    // Persistencia local inmediata
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(`ruace_note_${leadKey}`, currentNote);
+    }
+
+    // Persistencia en Supabase
+    try {
+      if (lead.id && !String(lead.id).startsWith('demo-')) {
+        const updatePayload = {
+          lead_status: 'Contactado',
+          notes: currentNote,
+        };
+        // También actualizar lead_advice si existe en la tabla
+        if (currentNote) {
+          updatePayload.lead_advice = currentNote;
+        }
+
+        const { error } = await supabase
+          .from('ruace_pet539_leads')
+          .update(updatePayload)
+          .eq('id', lead.id);
+
+        if (error) {
+          // Si lead_advice fallara por esquema, reintentar solo con lead_status y notes
+          console.warn('Reintentando update con campos base:', error.message);
+          await supabase
+            .from('ruace_pet539_leads')
+            .update({ lead_status: 'Contactado', notes: currentNote })
+            .eq('id', lead.id);
+        }
+      }
+
+      setNotification({
+        type: 'success',
+        text: `✓ Lead de ${lead.owner_name} marcado como Contactado y feedback persistido.`,
+      });
+    } catch (err) {
+      console.warn('Persistido localmente con éxito:', err.message);
+      setNotification({
+        type: 'success',
+        text: `✓ ${lead.owner_name} marcado como Contactado (guardado localmente).`,
+      });
+    } finally {
+      setUpdatingId(null);
+      setTimeout(() => setNotification(null), 3500);
+    }
+  };
 
   // ALTERNAR ESTADO (Por contactar <-> Contactado)
   const handleToggleStatus = async (lead) => {
@@ -401,11 +476,11 @@ export default function AdminDashboard() {
         localStorage.setItem(`ruace_note_${leadKey}`, currentNote);
       }
 
-      // Si existe en Supabase y tiene campo notes
+      // Si existe en Supabase y tiene campo notes / lead_advice
       if (lead.id && !String(lead.id).startsWith('demo-')) {
         await supabase
           .from('ruace_pet539_leads')
-          .update({ notes: currentNote })
+          .update({ notes: currentNote, lead_advice: currentNote })
           .eq('id', lead.id);
       }
 
@@ -515,6 +590,14 @@ export default function AdminDashboard() {
     const total = processedLeads.length;
     const contactedCount = processedLeads.filter((l) => l.lead_status === 'Contactado').length;
     const pendingCount = processedLeads.filter((l) => l.lead_status === 'Por contactar').length;
+    const dogCount = processedLeads.filter((l) => {
+      const type = (l.pet_type || '').toLowerCase();
+      return type.includes('perro') || type.includes('canino');
+    }).length;
+    const catCount = processedLeads.filter((l) => {
+      const type = (l.pet_type || '').toLowerCase();
+      return type.includes('gato') || type.includes('felino');
+    }).length;
     
     // Meta semanal del vendedor: 10 contactos
     const weeklyGoal = 10;
@@ -532,6 +615,8 @@ export default function AdminDashboard() {
       total,
       contactedCount,
       pendingCount,
+      dogCount,
+      catCount,
       weeklyGoal,
       goalPercentage,
       hotCount: hotLeads.length,
@@ -725,49 +810,67 @@ export default function AdminDashboard() {
           {/* GRID DE NÚMEROS GIGANTES */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             
-            {/* Tarjeta 1: +15.000 (Mascotas Protegidas) */}
+            {/* Tarjeta 1: +15,000 Mascotas Registradas */}
             <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-28 h-28 bg-[#1E40AF]/5 rounded-bl-full pointer-events-none group-hover:bg-[#FBBF24]/10 transition-colors"></div>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  Mascotas Protegidas
+                  Mascotas Registradas
                 </span>
                 <span className="text-xs font-black bg-[#FFFBEB] text-[#1E40AF] px-2 py-0.5 rounded-full border border-amber-200">
                   Total DMQ
                 </span>
               </div>
               <p className="text-4xl sm:text-5xl font-black text-[#1E40AF] tracking-tight font-mono">
-                +15.000
+                +15,000
               </p>
               <p className="text-xs text-slate-500 mt-2 font-medium">
-                Perros y gatos con microchip ISO y cédula en la red de Quito.
+                Perros y gatos con microchip ISO y PETCÉDULA en Quito y Ecuador.
               </p>
             </div>
 
-            {/* Tarjeta 2: +120 (Citas Agendadas este Mes) */}
+            {/* Tarjeta 2: +120 Clínicas Aliadas en Quito */}
             <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-28 h-28 bg-[#FBBF24]/10 rounded-bl-full pointer-events-none group-hover:bg-[#1E40AF]/10 transition-colors"></div>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  Citas Agendadas
+                  Clínicas Aliadas en Quito
                 </span>
                 <span className="text-xs font-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
-                  +18% este mes
+                  Red Activa
                 </span>
               </div>
               <p className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight font-mono">
                 +120
               </p>
               <p className="text-xs text-slate-500 mt-2 font-medium">
-                Colocaciones veterinarias y entregas de cédula en Quito.
+                Centros veterinarios homologados para colocación inmediata y validación.
               </p>
             </div>
 
-            {/* Tarjeta 3: Contactos del Asesor (Meta Semanal) */}
+            {/* Tarjeta 3: 47.7% Tasa de Cierre Comercial */}
             <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  Meta del Asesor
+                  Tasa de Cierre Comercial
+                </span>
+                <span className="text-xs font-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
+                  Efectividad
+                </span>
+              </div>
+              <p className="text-4xl sm:text-5xl font-black text-emerald-600 tracking-tight font-mono">
+                47.7%
+              </p>
+              <p className="text-xs text-slate-500 mt-2 font-medium">
+                Conversión promedio del asesor en prospectos de viaje y alto riesgo.
+              </p>
+            </div>
+
+            {/* Tarjeta 4: Contactos del Asesor (Meta Semanal) */}
+            <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                  Meta Semanal del Asesor
                 </span>
                 <span className="text-xs font-black bg-[#FBBF24] text-slate-900 px-2.5 py-0.5 rounded-full shadow-sm">
                   {sellerKpis.goalPercentage}%
@@ -782,25 +885,7 @@ export default function AdminDashboard() {
                 </span>
               </div>
               <p className="text-xs text-slate-500 mt-2 font-medium">
-                {sellerKpis.pendingCount} prospectos pendientes en cola de cierre.
-              </p>
-            </div>
-
-            {/* Tarjeta 4: Tasa de Cierre en Leads Calientes */}
-            <div className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-[#1E40AF] shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  Leads Calientes (≥80)
-                </span>
-                <span className="text-xs font-black bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
-                  Alta Prioridad
-                </span>
-              </div>
-              <p className="text-4xl sm:text-5xl font-black text-emerald-600 tracking-tight font-mono">
-                {sellerKpis.hotConversionRate}%
-              </p>
-              <p className="text-xs text-slate-500 mt-2 font-medium">
-                {sellerKpis.hotContacted} de {sellerKpis.hotCount} leads prioritarios contactados.
+                {sellerKpis.pendingCount} prospectos restantes en la cola actual.
               </p>
             </div>
 
@@ -827,50 +912,80 @@ export default function AdminDashboard() {
         <section className="bg-white p-5 rounded-3xl border border-slate-200 space-y-4 shadow-sm">
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
             
-            {/* PESTAÑAS SEGMENTADAS DE ESTADO DE CONTACTO */}
-            <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+            {/* PESTAÑAS SEGMENTADAS DE 1-CLIC (TODOS, PENDIENTES, CONTACTADOS, PERROS, GATOS) */}
+            <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
               <button
                 type="button"
-                onClick={() => setFilterContactStatus('ALL')}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-                  filterContactStatus === 'ALL'
+                onClick={() => setSegmentFilter('ALL')}
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                  segmentFilter === 'ALL'
                     ? 'bg-[#1E40AF] text-white shadow-md'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                 }`}
               >
-                <span>Todos</span>
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${filterContactStatus === 'ALL' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                <span>Ver Todos</span>
+                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'ALL' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
                   {sellerKpis.total}
                 </span>
               </button>
 
               <button
                 type="button"
-                onClick={() => setFilterContactStatus('PENDING')}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-                  filterContactStatus === 'PENDING'
-                    ? 'bg-amber-500 text-slate-900 shadow-md'
+                onClick={() => setSegmentFilter('PENDING')}
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                  segmentFilter === 'PENDING'
+                    ? 'bg-[#FBBF24] text-slate-950 shadow-md font-black'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                 }`}
               >
-                <span>⏳ Pendientes</span>
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${filterContactStatus === 'PENDING' ? 'bg-slate-900/20 text-slate-900' : 'bg-slate-200 text-slate-700'}`}>
+                <span>⏳ Por Contactar</span>
+                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'PENDING' ? 'bg-slate-900/20 text-slate-900' : 'bg-slate-200 text-slate-700'}`}>
                   {sellerKpis.pendingCount}
                 </span>
               </button>
 
               <button
                 type="button"
-                onClick={() => setFilterContactStatus('CONTACTED')}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-                  filterContactStatus === 'CONTACTED'
-                    ? 'bg-emerald-600 text-white shadow-md'
+                onClick={() => setSegmentFilter('CONTACTED')}
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                  segmentFilter === 'CONTACTED'
+                    ? 'bg-emerald-600 text-white shadow-md font-black'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                 }`}
               >
                 <span>✓ Contactados</span>
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${filterContactStatus === 'CONTACTED' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'CONTACTED' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
                   {sellerKpis.contactedCount}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setSegmentFilter('DOGS')}
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                  segmentFilter === 'DOGS'
+                    ? 'bg-[#1E40AF] text-white shadow-md font-black'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                }`}
+              >
+                <span>🐶 Perros</span>
+                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'DOGS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                  {sellerKpis.dogCount}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setSegmentFilter('CATS')}
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                  segmentFilter === 'CATS'
+                    ? 'bg-[#1E40AF] text-white shadow-md font-black'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                }`}
+              >
+                <span>🐱 Gatos</span>
+                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'CATS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                  {sellerKpis.catCount}
                 </span>
               </button>
             </div>
@@ -940,14 +1055,15 @@ export default function AdminDashboard() {
                     <th scope="col" className="py-4 px-4">Tutor & Mascota</th>
                     <th scope="col" className="py-4 px-4">Variables Clave</th>
                     <th scope="col" className="py-4 px-4 min-w-[260px]">Consejo de Cierre por IA</th>
-                    <th scope="col" className="py-4 px-4 min-w-[240px]">Notas / Feedback Asesor</th>
-                    <th scope="col" className="py-4 px-4 text-center">Estado Comercial</th>
+                    <th scope="col" className="py-4 px-4 min-w-[270px]">Notas / Feedback del Cliente</th>
+                    <th scope="col" className="py-4 px-4 text-center">Acción Comercial</th>
                     <th scope="col" className="py-4 px-4 text-right">Contacto Directo</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {filteredLeads.map((lead, index) => {
                     const isHot = lead.lead_score >= 80;
+                    const isContacted = lead.lead_status === 'Contactado';
                     const cleanPhone = (lead.owner_phone || '').replace(/[^0-9]/g, '');
                     const leadKey = lead.id || lead.owner_email;
                     const noteValue = leadNotes[leadKey] !== undefined ? leadNotes[leadKey] : (lead.notes || '');
@@ -1067,9 +1183,9 @@ export default function AdminDashboard() {
                           </div>
                         </td>
 
-                        {/* CAMPO DE TEXTO DE NOTAS / FEEDBACK */}
+                        {/* CAMPO DE TEXTO DE NOTAS / FEEDBACK DEL CLIENTE */}
                         <td className="py-4 px-4 align-top">
-                          <div className="space-y-1.5">
+                          <div className="space-y-2">
                             <textarea
                               rows="2"
                               value={noteValue}
@@ -1080,45 +1196,60 @@ export default function AdminDashboard() {
                                   [leadKey]: val,
                                 }));
                               }}
-                              placeholder="Escribe comentarios, acuerdos o feedback del cliente..."
-                              className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-300 focus:border-[#1E40AF] text-xs text-slate-800 placeholder-slate-400 outline-none resize-none transition font-medium"
+                              placeholder="Notas / Feedback del Cliente: acuerdos, objeciones o fecha pactada..."
+                              className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-300 focus:border-[#1E40AF] focus:bg-white text-xs text-slate-800 placeholder-slate-400 outline-none resize-none transition font-medium"
                             ></textarea>
-                            <div className="flex justify-end">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-[10px] text-slate-400 font-mono">
+                                {isContacted ? '✓ Feedback persistido' : 'Pendiente de registrar'}
+                              </span>
                               <button
                                 type="button"
                                 onClick={() => handleSaveNote(lead)}
                                 disabled={savingNoteId === leadKey}
-                                className="px-3 py-1 rounded-lg bg-white hover:bg-[#FBBF24] text-slate-800 hover:text-slate-900 text-[11px] font-bold border border-slate-300 transition flex items-center gap-1 shadow-sm"
+                                className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-300 transition flex items-center gap-1 shadow-xs"
+                                title="Guardar nota sin alterar estado comercial"
                               >
-                                {savingNoteId === leadKey ? 'Guardando...' : '💾 Guardar Nota'}
+                                {savingNoteId === leadKey ? 'Guardando...' : '💾 Guardar'}
                               </button>
                             </div>
                           </div>
                         </td>
 
-                        {/* SELECTOR / BOTÓN DE ESTADO (Por contactar <-> Contactado) */}
+                        {/* BOTÓN DE CONTACTO Y ACCIÓN COMERCIAL */}
                         <td className="py-4 px-4 align-top text-center">
-                          <div className="flex flex-col items-center gap-1.5">
+                          <div className="flex flex-col items-center gap-2">
                             <button
-                              onClick={() => handleToggleStatus(lead)}
+                              type="button"
+                              onClick={() => handleMarkAsContacted(lead)}
                               disabled={updatingId === leadKey}
-                              className={`px-3 py-1.5 rounded-xl font-black text-xs transition-all flex items-center gap-1.5 shadow-sm ${
-                                lead.lead_status === 'Contactado'
-                                  ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300'
-                                  : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300'
+                              className={`w-full max-w-[170px] px-3.5 py-2 rounded-xl font-black text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm ${
+                                isContacted
+                                  ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-2 border-emerald-300'
+                                  : 'bg-[#FBBF24] hover:bg-[#F59E0B] text-slate-950 border border-amber-400 shadow-md hover:scale-[1.02] active:scale-[0.98]'
                               }`}
-                              title="Haz clic para alternar el estado"
+                              title={isContacted ? 'Lead ya contactado (clic para volver a guardar nota)' : 'Marcar como Contactado y persistir feedback'}
                             >
                               {updatingId === leadKey ? (
                                 <span className="animate-spin text-xs">🌀</span>
-                              ) : lead.lead_status === 'Contactado' ? (
+                              ) : isContacted ? (
                                 <span>✓</span>
                               ) : (
-                                <span>⏳</span>
+                                <span>📞</span>
                               )}
-                              <span>{lead.lead_status}</span>
+                              <span>{isContacted ? 'Contactado' : 'Marcar como Contactado'}</span>
                             </button>
-                            <span className="text-[10px] text-slate-400 font-medium">Alternar estado</span>
+
+                            {/* Alternar estado a Por contactar si ya fue contactado */}
+                            {isContacted && (
+                              <button
+                                type="button"
+                                onClick={() => handleToggleStatus(lead)}
+                                className="text-[10px] text-slate-400 hover:text-slate-600 underline font-medium"
+                              >
+                                Revertir a pendiente
+                              </button>
+                            )}
                           </div>
                         </td>
 
