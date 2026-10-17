@@ -528,8 +528,8 @@ export default function Home() {
 
               </div>
 
-              {/* CONTENEDOR ANCLADO AL PISO CON ZOOM TRIDIMENSIONAL Y PULSO SUAVE (PREMIUM-PULSE) */}
-              <div className="relative w-full h-full flex items-end justify-center self-end animate-[premium-pulse_6s_ease-in-out_infinite] origin-bottom will-change-transform">
+              {/* CONTENEDOR ANCLADO AL PISO CON ANIMACIÓN ULTRA-VIVA Y ZOOM ACELERADO (FAST-PREMIUM-PULSE) */}
+              <div className="relative w-full h-full flex items-end justify-center self-end animate-[fast-premium-pulse_3s_ease-in-out_infinite] origin-bottom will-change-transform">
                 <img
                   src="/hero-tutor-corgi.png"
                   alt="Tutora sosteniendo al perro Corgi protegido con microchip y PETCÉDULA RUACE PET593"
