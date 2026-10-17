@@ -214,6 +214,12 @@ export default function AdminDashboard() {
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
 
+  // RECUPERACIÓN ROBUSTA DE CONTRASEÑA (SUPABASE AUTH)
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetMessage, setResetMessage] = useState(null); // { type: 'success' | 'error', text: string }
+
   // ESTADOS DEL DASHBOARD (INICIALIZADOS CON DATOS LISTOS PARA RENDERIZADO INMEDIATO)
   const [leads, setLeads] = useState(DEMO_LEADS);
   const [loading, setLoading] = useState(false);
@@ -353,6 +359,55 @@ export default function AdminDashboard() {
         ? '👑 Modo Dueño (Admin Total) activado: Acceso completo a KPIs, Triage IA y analítica.'
         : '👤 Modo Operador (Empleado) activado: Vista simplificada para contactabilidad y gestión de leads.',
     });
+  };
+
+  // RECUPERACIÓN ROBUSTA DE CONTRASEÑAS MEDIANTE SUPABASE AUTH
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    const cleanEmail = sanitizeInput(resetEmail).toLowerCase();
+    
+    // Validación estricta de formato email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cleanEmail)) {
+      setResetMessage({
+        type: 'error',
+        text: 'Por favor, ingresa un correo electrónico institucional válido.',
+      });
+      return;
+    }
+
+    setResetLoading(true);
+    setResetMessage(null);
+
+    try {
+      const redirectTo = typeof window !== 'undefined' 
+        ? `${window.location.origin}/admin` 
+        : 'https://ruace-pet539.vercel.app/admin';
+
+      const { data, error } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
+        redirectTo,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      setResetMessage({
+        type: 'success',
+        text: `Enlace de restauración y código OTP enviado de forma encriptada a ${cleanEmail}. Revisa tu bandeja de entrada o spam.`,
+      });
+      setResetEmail('');
+    } catch (err) {
+      console.warn('Fallo en Supabase Auth resetPasswordForEmail:', err.message);
+      // Respuesta de seguridad genérica para prevenir enumeración de usuarios
+      setResetMessage({
+        type: 'success',
+        text: `Si el correo ${cleanEmail} está registrado en el sistema, se ha transmitido un enlace seguro de recuperación.`,
+      });
+      setResetEmail('');
+    } finally {
+      setResetLoading(false);
+    }
   };
 
   // PROCESAMIENTO Y REORDENAMIENTO ESTRICTO POR SCORE (MAYOR A MENOR)
@@ -850,11 +905,94 @@ export default function AdminDashboard() {
             </button>
           </form>
 
-          <div className="pt-3 border-t border-slate-100 text-center">
-            <Link href="/" className="text-xs text-[#1E40AF] hover:underline transition font-bold">
+          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+            <Link href="/" className="text-[#1E40AF] hover:underline transition font-bold">
               ← Volver a la Landing Page
             </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setShowResetModal(true);
+                setResetMessage(null);
+                setResetEmail('');
+              }}
+              className="text-slate-500 hover:text-[#1E40AF] transition font-bold underline"
+            >
+              ¿Olvidaste tu clave?
+            </button>
           </div>
+
+          {/* MODAL DE RECUPERACIÓN DE CONTRASEÑA VÍA SUPABASE AUTH */}
+          {showResetModal && (
+            <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="max-w-md w-full bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">🔐</span>
+                    <h3 className="text-lg font-black text-[#1E40AF]">Recuperación Segura</h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowResetModal(false)}
+                    className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-black text-xs transition"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Ingresa tu correo institucional registrado. Supabase Auth transmitirá un enlace encriptado de un solo uso (OTP) para restablecer tus credenciales de acceso perimetral.
+                </p>
+
+                {resetMessage && (
+                  <div
+                    className={`p-3.5 rounded-xl text-xs font-semibold flex items-start gap-2 border ${
+                      resetMessage.type === 'success'
+                        ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                        : 'bg-rose-50 border-rose-300 text-rose-900'
+                    }`}
+                  >
+                    <span>{resetMessage.type === 'success' ? '✓' : '⚠️'}</span>
+                    <span>{resetMessage.text}</span>
+                  </div>
+                )}
+
+                <form onSubmit={handleResetPassword} className="space-y-3.5">
+                  <div>
+                    <label htmlFor="resetEmailInput" className="block text-[11px] font-bold text-[#1E40AF] uppercase tracking-wide mb-1">
+                      Correo Institucional *
+                    </label>
+                    <input
+                      type="email"
+                      id="resetEmailInput"
+                      required
+                      value={resetEmail}
+                      onChange={(e) => setResetEmail(e.target.value)}
+                      placeholder="admin@ruace593.ec"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 focus:border-[#1E40AF] text-xs text-slate-900 outline-none transition font-medium"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowResetModal(false)}
+                      className="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={resetLoading}
+                      className="flex-1 py-2.5 rounded-xl bg-[#1E40AF] hover:bg-blue-800 text-white font-black text-xs transition shadow-md disabled:opacity-50"
+                    >
+                      {resetLoading ? 'Enviando OTP...' : 'Enviar Enlace Seguro'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
