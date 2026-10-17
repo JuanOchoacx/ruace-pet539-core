@@ -19,7 +19,8 @@ export default function Home() {
     pet_type: 'perro',
     tipo_mascota: 'perro',
     service_type: 'Combo Completo',
-    current_status: 'Sin microchip ni cédula',
+    current_status: 'ninguno',
+    estado_identificacion: 'ninguno',
     pet_travel_intent: 'No planeo viajar (Protección a nivel nacional)',
     contact_method: 'WhatsApp',
   });
@@ -49,6 +50,8 @@ export default function Home() {
       [name]: value,
       ...(name === 'tipo_mascota' ? { pet_type: value } : {}),
       ...(name === 'pet_type' ? { tipo_mascota: value } : {}),
+      ...(name === 'estado_identificacion' ? { current_status: value } : {}),
+      ...(name === 'current_status' ? { estado_identificacion: value } : {}),
     }));
   };
 
@@ -68,11 +71,9 @@ export default function Home() {
 
     try {
       // Inserción automática en la tabla 'ruace_pet539_leads'
-      const statusValue = formData.service_type 
-        ? `${formData.service_type} · ${formData.current_status || 'Sin microchip ni cédula'}`
-        : (formData.current_status || 'Sin microchip ni cédula');
+      const statusValue = formData.estado_identificacion || formData.current_status || 'ninguno';
 
-      const travelValue = formData.service_type === 'Asesoría para Viajes' || (formData.current_status || '').includes('Viaje')
+      const travelValue = formData.service_type === 'Asesoría para Viajes'
         ? 'Viaje Internacional próximo (USA / Europa / LATAM)'
         : formData.pet_travel_intent;
 
@@ -110,7 +111,8 @@ export default function Home() {
         pet_type: 'perro',
         tipo_mascota: 'perro',
         service_type: 'Combo Completo',
-        current_status: 'Sin microchip ni cédula',
+        current_status: 'ninguno',
+        estado_identificacion: 'ninguno',
         pet_travel_intent: 'No planeo viajar (Protección a nivel nacional)',
         contact_method: 'WhatsApp',
       });
@@ -778,21 +780,20 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <label htmlFor="current_status" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
-                    Estado Actual de Identificación *
+                  <label htmlFor="estado_identificacion" className="block text-[11px] font-bold text-slate-700 uppercase tracking-wide mb-1">
+                    ESTADO ACTUAL DE IDENTIFICACIÓN *
                   </label>
                   <select
-                    id="current_status"
-                    name="current_status"
+                    id="estado_identificacion"
+                    name="estado_identificacion"
                     required
-                    value={formData.current_status}
+                    value={formData.estado_identificacion || formData.current_status || 'ninguno'}
                     onChange={handleChange}
                     className="w-full h-10 px-3 py-2 rounded-xl border border-slate-300 focus:border-[#1E40AF] focus:ring-2 focus:ring-[#1E40AF]/20 outline-none transition text-sm text-slate-800 bg-white font-medium"
                   >
-                    <option value="Sin microchip ni cédula">Sin microchip ni cédula</option>
-                    <option value="Solo placa externa">Solo placa externa</option>
-                    <option value="Ya tiene microchip, requiere Cédula RUACE">Ya tiene microchip, requiere Cédula RUACE</option>
-                    <option value="Trámite de Viaje Internacional / Pet Travel">Trámite de Viaje Internacional / Pet Travel</option>
+                    <option value="ninguno">Sin Microchip</option>
+                    <option value="solo_placa">Solo Placa Externa</option>
+                    <option value="ya_identificado">Ya tiene Microchip</option>
                   </select>
                 </div>
               </div>

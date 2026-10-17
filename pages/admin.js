@@ -30,11 +30,11 @@ export const calculateLeadScore = (lead) => {
 
   // Evaluar Current Status (Hallazgos de riesgo / Apify)
   const status = (lead.current_status || '').toLowerCase();
-  if (status.includes('solo placa') || status.includes('placa')) {
+  if (status.includes('solo placa') || status.includes('solo_placa') || status.includes('placa')) {
     score += 40; // Alto riesgo: la placa se desprende con facilidad
-  } else if (status.includes('no tiene') || status.includes('sin microchip')) {
+  } else if (status === 'ninguno' || status.includes('ninguno') || status.includes('no tiene') || status.includes('sin microchip')) {
     score += 30; // Mascota desprotegida
-  } else if (status.includes('chip sin perfil') || status.includes('requiere cédula') || status.includes('tiene microchip')) {
+  } else if (status === 'ya_identificado' || status.includes('identificado') || status.includes('chip sin perfil') || status.includes('requiere cédula') || status.includes('tiene microchip')) {
     score += 15; // Ya tiene chip pero falta cédula o perfil activo
   } else if (status.includes('viaje') || status.includes('internacional') || status.includes('travel')) {
     score += 40; // Trámite de Viaje Internacional / Pet Travel
@@ -1283,7 +1283,13 @@ export default function AdminDashboard() {
                             <div className="flex items-center justify-between gap-2">
                               <span className="text-slate-400 text-[11px]">Estado:</span>
                               <span className="font-semibold text-slate-800 text-right">
-                                {lead.current_status}
+                                {lead.current_status === 'solo_placa'
+                                  ? 'Solo Placa Externa'
+                                  : lead.current_status === 'ya_identificado'
+                                  ? 'Ya tiene Microchip'
+                                  : lead.current_status === 'ninguno'
+                                  ? 'Sin Microchip'
+                                  : lead.current_status}
                               </span>
                             </div>
                             <div className="flex items-center justify-between gap-2">
