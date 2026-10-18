@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
@@ -225,6 +225,8 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterTemperature, setFilterTemperature] = useState('ALL');
+  const [isTempDropdownOpen, setIsTempDropdownOpen] = useState(false);
+  const tempDropdownRef = useRef(null);
   const [segmentFilter, setSegmentFilter] = useState('ALL'); // 'ALL' | 'PENDING' | 'CONTACTED' | 'DOGS' | 'CATS' | 'OTHERS'
   const [updatingId, setUpdatingId] = useState(null);
   const [savingNoteId, setSavingNoteId] = useState(null);
@@ -236,6 +238,17 @@ export default function AdminDashboard() {
   const [liveAiAdvice, setLiveAiAdvice] = useState({});
   const [loadingAiLead, setLoadingAiLead] = useState(null);
   const [triageLoading, setTriageLoading] = useState(false);
+
+  // CERRAR DROPDOWN DE TEMPERATURA AL HACER CLIC FUERA
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tempDropdownRef.current && !tempDropdownRef.current.contains(event.target)) {
+        setIsTempDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // VERIFICAR AUTENTICACIÓN Y ROL EN SESIÓN
   useEffect(() => {
@@ -1352,16 +1365,126 @@ export default function AdminDashboard() {
                 )}
               </div>
 
-              <select
-                value={filterTemperature}
-                onChange={(e) => setFilterTemperature(e.target.value)}
-                className="bg-slate-50 border border-slate-300 text-xs font-bold text-slate-700 py-2 px-3 rounded-xl focus:border-[#1E40AF] outline-none"
-              >
-                <option value="ALL">Todas las Temperaturas</option>
-                <option value="Caliente">🟢 Calientes (≥ 80)</option>
-                <option value="Media">🟡 Medias (40 - 79)</option>
-                <option value="Baja">🔴 Bajas (&lt; 40)</option>
-              </select>
+              {/* SELECTOR INTERACTIVO DE TEMPERATURAS CON BADGES DE SEMÁFORO */}
+              <div className="relative flex-shrink-0" ref={tempDropdownRef}>
+                <button
+                  type="button"
+                  id="temperature-filter-button"
+                  onClick={() => setIsTempDropdownOpen((prev) => !prev)}
+                  className="rounded-xl border border-blue-900 px-4 py-2 text-sm font-medium flex items-center justify-between bg-white text-slate-800 hover:bg-slate-50 transition shadow-xs cursor-pointer min-w-[215px]"
+                >
+                  <div className="flex items-center">
+                    {filterTemperature === 'ALL' && (
+                      <span className="text-slate-800">Todas las Temperaturas</span>
+                    )}
+                    {filterTemperature === 'Caliente' && (
+                      <>
+                        <div className="bg-emerald-400 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
+                        <span className="text-slate-900 font-semibold">Calientes (≥ 80)</span>
+                      </>
+                    )}
+                    {filterTemperature === 'Media' && (
+                      <>
+                        <div className="bg-amber-400 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
+                        <span className="text-slate-900 font-semibold">Medias (40 - 79)</span>
+                      </>
+                    )}
+                    {filterTemperature === 'Baja' && (
+                      <>
+                        <div className="bg-red-500 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
+                        <span className="text-slate-900 font-semibold">Bajas (&lt; 40)</span>
+                      </>
+                    )}
+                  </div>
+                  <svg
+                    className={`w-4 h-4 ml-3 text-blue-900 transition-transform duration-200 ${
+                      isTempDropdownOpen ? 'rotate-180' : ''
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {isTempDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-full min-w-[215px] bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFilterTemperature('ALL');
+                        setIsTempDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 text-sm font-medium flex items-center justify-between transition ${
+                        filterTemperature === 'ALL'
+                          ? 'bg-blue-50 text-blue-900 font-bold'
+                          : 'text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      <span>Todas las Temperaturas</span>
+                      {filterTemperature === 'ALL' && <span className="text-blue-900 font-bold text-xs">✓</span>}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFilterTemperature('Caliente');
+                        setIsTempDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 text-sm font-medium flex items-center justify-between transition ${
+                        filterTemperature === 'Caliente'
+                          ? 'bg-emerald-50 text-emerald-900 font-bold'
+                          : 'text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <div className="bg-emerald-400 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
+                        <span>Calientes (≥ 80)</span>
+                      </div>
+                      {filterTemperature === 'Caliente' && <span className="text-emerald-700 font-bold text-xs">✓</span>}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFilterTemperature('Media');
+                        setIsTempDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 text-sm font-medium flex items-center justify-between transition ${
+                        filterTemperature === 'Media'
+                          ? 'bg-amber-50 text-amber-900 font-bold'
+                          : 'text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <div className="bg-amber-400 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
+                        <span>Medias (40 - 79)</span>
+                      </div>
+                      {filterTemperature === 'Media' && <span className="text-amber-700 font-bold text-xs">✓</span>}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFilterTemperature('Baja');
+                        setIsTempDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 text-sm font-medium flex items-center justify-between transition ${
+                        filterTemperature === 'Baja'
+                          ? 'bg-rose-50 text-rose-900 font-bold'
+                          : 'text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <div className="bg-red-500 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
+                        <span>Bajas (&lt; 40)</span>
+                      </div>
+                      {filterTemperature === 'Baja' && <span className="text-rose-700 font-bold text-xs">✓</span>}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
           </div>
