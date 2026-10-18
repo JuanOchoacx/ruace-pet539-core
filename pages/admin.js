@@ -1005,20 +1005,22 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-[#FBBF24] selection:text-slate-900">
       <Head>
-        <title>Panel de Gestión de Leads & KPIs | RUACE PET539</title>
-        <meta name="description" content="Dashboard interno de priorización y conversión de leads RUACE PET539 Quito." />
+        <title>Panel de Gestión de Leads & KPIs | RUACE PET593</title>
+        <meta name="description" content="Dashboard interno de priorización y conversión de leads RUACE PET593 Quito." />
       </Head>
 
       {/* TOPBAR CORPORATIVA EN MODO CLARO */}
       <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-11 h-11 rounded-2xl bg-[#1E40AF] flex items-center justify-center text-[#FBBF24] shadow-md shadow-[#1E40AF]/20 font-black text-xl">
-              🛡️
-            </div>
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <img
+              src="/image_-eJgov.png"
+              alt="Logo Oficial RUACE PET593"
+              className="h-12 w-auto object-contain mr-3 drop-shadow-sm transition-transform hover:scale-105 duration-200"
+            />
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-black text-xl text-[#1E40AF] tracking-tight">RUACE PET539</span>
+                <span className="font-black text-xl text-[#1E40AF] tracking-tight">RUACE PET593</span>
                 <span className="bg-[#FFFBEB] text-[#1E40AF] text-[10px] font-mono px-2 py-0.5 rounded-full border border-[#FBBF24] uppercase font-bold">
                   CRM Interno
                 </span>
