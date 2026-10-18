@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
@@ -225,8 +225,6 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterTemperature, setFilterTemperature] = useState('ALL');
-  const [isTempDropdownOpen, setIsTempDropdownOpen] = useState(false);
-  const tempDropdownRef = useRef(null);
   const [segmentFilter, setSegmentFilter] = useState('ALL'); // 'ALL' | 'PENDING' | 'CONTACTED' | 'DOGS' | 'CATS' | 'OTHERS'
   const [updatingId, setUpdatingId] = useState(null);
   const [savingNoteId, setSavingNoteId] = useState(null);
@@ -238,17 +236,6 @@ export default function AdminDashboard() {
   const [liveAiAdvice, setLiveAiAdvice] = useState({});
   const [loadingAiLead, setLoadingAiLead] = useState(null);
   const [triageLoading, setTriageLoading] = useState(false);
-
-  // CERRAR DROPDOWN DE TEMPERATURA AL HACER CLIC FUERA
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (tempDropdownRef.current && !tempDropdownRef.current.contains(event.target)) {
-        setIsTempDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   // VERIFICAR AUTENTICACIÓN Y ROL EN SESIÓN
   useEffect(() => {
@@ -457,9 +444,15 @@ export default function AdminDashboard() {
         (lead.empresa_negocio || '').toLowerCase().includes(q) ||
         (lead.pet_name || '').toLowerCase().includes(q);
 
-      // Filtro complementario de temperatura
-      const matchesTemp =
-        filterTemperature === 'ALL' || lead.temperature.level === filterTemperature;
+      // Filtro reactivo de temperatura en tiempo real sobre la columna 'lead_score'
+      let matchesTemp = true;
+      if (filterTemperature === 'Caliente') {
+        matchesTemp = lead.lead_score >= 80;
+      } else if (filterTemperature === 'Media') {
+        matchesTemp = lead.lead_score >= 40 && lead.lead_score < 80;
+      } else if (filterTemperature === 'Baja') {
+        matchesTemp = lead.lead_score < 40;
+      }
 
       // 2. Filtro interactivo por segmento comercial y tipo de animal
       let matchesSegment = true;
@@ -1248,243 +1241,176 @@ export default function AdminDashboard() {
 
         {/* FILTROS INTERACTIVOS: SEGMENTACIÓN CONTACTADOS VS PENDIENTES */}
         <section className="bg-white p-5 rounded-3xl border border-slate-200 space-y-4 shadow-sm">
-          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+          <div className="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-4">
             
-            {/* PESTAÑAS SEGMENTADAS DE 1-CLIC (TODOS LOS LEADS, PENDIENTES, CONTACTADOS, PERROS, GATOS) */}
-            <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
-              <button
-                type="button"
-                onClick={() => setSegmentFilter('ALL')}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                  segmentFilter === 'ALL'
-                    ? 'bg-[#1E40AF] text-white shadow-md font-black'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                }`}
-              >
-                <span>Todos los Leads</span>
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'ALL' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
-                  {sellerKpis.total}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSegmentFilter('PENDING')}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                  segmentFilter === 'PENDING'
-                    ? 'bg-[#FBBF24] text-slate-950 shadow-md font-black'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                }`}
-              >
-                <span>Pendientes</span>
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'PENDING' ? 'bg-slate-900/20 text-slate-900' : 'bg-slate-200 text-slate-700'}`}>
-                  {sellerKpis.pendingCount}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSegmentFilter('CONTACTED')}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                  segmentFilter === 'CONTACTED'
-                    ? 'bg-emerald-600 text-white shadow-md font-black'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                }`}
-              >
-                <span>Contactados</span>
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'CONTACTED' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
-                  {sellerKpis.contactedCount}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSegmentFilter('DOGS')}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                  segmentFilter === 'DOGS'
-                    ? 'bg-[#1E40AF] text-white shadow-md font-black'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                }`}
-              >
-                <span>Perros</span>
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'DOGS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
-                  {sellerKpis.dogCount}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSegmentFilter('CATS')}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                  segmentFilter === 'CATS'
-                    ? 'bg-[#1E40AF] text-white shadow-md font-black'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                }`}
-              >
-                <span>Gatos</span>
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'CATS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
-                  {sellerKpis.catCount}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSegmentFilter('OTHERS')}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                  segmentFilter === 'OTHERS'
-                    ? 'bg-[#1E40AF] text-white shadow-md font-black'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
-                }`}
-              >
-                <span>Otros</span>
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'OTHERS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
-                  {sellerKpis.otherCount}
-                </span>
-              </button>
-            </div>
-
-            {/* Búsqueda Predictiva Interactiva y Selector de Temperatura */}
-            <div className="flex flex-1 items-center gap-3">
-              <div className="relative flex-1">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="🔍 Buscar lead por nombre, teléfono o mascota..."
-                  className="w-full pl-4 pr-10 py-2 rounded-xl bg-slate-50 border border-slate-300 focus:border-[#1E40AF] text-xs text-slate-800 placeholder-slate-400 outline-none font-medium transition"
-                />
-                {searchQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 text-xs font-bold"
-                    title="Limpiar búsqueda"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
-
-              {/* SELECTOR INTERACTIVO DE TEMPERATURAS CON BADGES DE SEMÁFORO */}
-              <div className="relative flex-shrink-0" ref={tempDropdownRef}>
+            <div className="flex flex-wrap items-center gap-3">
+              {/* PESTAÑAS SEGMENTADAS DE 1-CLIC (TODOS LOS LEADS, PENDIENTES, CONTACTADOS, PERROS, GATOS, OTROS) */}
+              <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
                 <button
                   type="button"
-                  id="temperature-filter-button"
-                  onClick={() => setIsTempDropdownOpen((prev) => !prev)}
-                  className="rounded-xl border border-blue-900 px-4 py-2 text-sm font-medium flex items-center justify-between bg-white text-slate-800 hover:bg-slate-50 transition shadow-xs cursor-pointer min-w-[215px]"
+                  onClick={() => setSegmentFilter('ALL')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                    segmentFilter === 'ALL'
+                      ? 'bg-[#1E40AF] text-white shadow-md font-black'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                  }`}
                 >
-                  <div className="flex items-center">
-                    {filterTemperature === 'ALL' && (
-                      <span className="text-slate-800">Todas las Temperaturas</span>
-                    )}
-                    {filterTemperature === 'Caliente' && (
-                      <>
-                        <div className="bg-emerald-400 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
-                        <span className="text-slate-900 font-semibold">Calientes (≥ 80)</span>
-                      </>
-                    )}
-                    {filterTemperature === 'Media' && (
-                      <>
-                        <div className="bg-amber-400 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
-                        <span className="text-slate-900 font-semibold">Medias (40 - 79)</span>
-                      </>
-                    )}
-                    {filterTemperature === 'Baja' && (
-                      <>
-                        <div className="bg-red-500 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
-                        <span className="text-slate-900 font-semibold">Bajas (&lt; 40)</span>
-                      </>
-                    )}
-                  </div>
-                  <svg
-                    className={`w-4 h-4 ml-3 text-blue-900 transition-transform duration-200 ${
-                      isTempDropdownOpen ? 'rotate-180' : ''
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
-                  </svg>
+                  <span>Todos los Leads</span>
+                  <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'ALL' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                    {sellerKpis.total}
+                  </span>
                 </button>
 
-                {isTempDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-full min-w-[215px] bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFilterTemperature('ALL');
-                        setIsTempDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-2.5 text-sm font-medium flex items-center justify-between transition ${
-                        filterTemperature === 'ALL'
-                          ? 'bg-blue-50 text-blue-900 font-bold'
-                          : 'text-slate-700 hover:bg-slate-50'
-                      }`}
-                    >
-                      <span>Todas las Temperaturas</span>
-                      {filterTemperature === 'ALL' && <span className="text-blue-900 font-bold text-xs">✓</span>}
-                    </button>
+                <button
+                  type="button"
+                  onClick={() => setSegmentFilter('PENDING')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                    segmentFilter === 'PENDING'
+                      ? 'bg-[#FBBF24] text-slate-950 shadow-md font-black'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                  }`}
+                >
+                  <span>Pendientes</span>
+                  <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'PENDING' ? 'bg-slate-900/20 text-slate-900' : 'bg-slate-200 text-slate-700'}`}>
+                    {sellerKpis.pendingCount}
+                  </span>
+                </button>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFilterTemperature('Caliente');
-                        setIsTempDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-2.5 text-sm font-medium flex items-center justify-between transition ${
-                        filterTemperature === 'Caliente'
-                          ? 'bg-emerald-50 text-emerald-900 font-bold'
-                          : 'text-slate-700 hover:bg-slate-50'
-                      }`}
-                    >
-                      <div className="flex items-center">
-                        <div className="bg-emerald-400 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
-                        <span>Calientes (≥ 80)</span>
-                      </div>
-                      {filterTemperature === 'Caliente' && <span className="text-emerald-700 font-bold text-xs">✓</span>}
-                    </button>
+                <button
+                  type="button"
+                  onClick={() => setSegmentFilter('CONTACTED')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                    segmentFilter === 'CONTACTED'
+                      ? 'bg-emerald-600 text-white shadow-md font-black'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                  }`}
+                >
+                  <span>Contactados</span>
+                  <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'CONTACTED' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                    {sellerKpis.contactedCount}
+                  </span>
+                </button>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFilterTemperature('Media');
-                        setIsTempDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-2.5 text-sm font-medium flex items-center justify-between transition ${
-                        filterTemperature === 'Media'
-                          ? 'bg-amber-50 text-amber-900 font-bold'
-                          : 'text-slate-700 hover:bg-slate-50'
-                      }`}
-                    >
-                      <div className="flex items-center">
-                        <div className="bg-amber-400 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
-                        <span>Medias (40 - 79)</span>
-                      </div>
-                      {filterTemperature === 'Media' && <span className="text-amber-700 font-bold text-xs">✓</span>}
-                    </button>
+                <button
+                  type="button"
+                  onClick={() => setSegmentFilter('DOGS')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                    segmentFilter === 'DOGS'
+                      ? 'bg-[#1E40AF] text-white shadow-md font-black'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                  }`}
+                >
+                  <span>Perros</span>
+                  <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'DOGS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                    {sellerKpis.dogCount}
+                  </span>
+                </button>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFilterTemperature('Baja');
-                        setIsTempDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-2.5 text-sm font-medium flex items-center justify-between transition ${
-                        filterTemperature === 'Baja'
-                          ? 'bg-rose-50 text-rose-900 font-bold'
-                          : 'text-slate-700 hover:bg-slate-50'
-                      }`}
-                    >
-                      <div className="flex items-center">
-                        <div className="bg-red-500 w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0" />
-                        <span>Bajas (&lt; 40)</span>
-                      </div>
-                      {filterTemperature === 'Baja' && <span className="text-rose-700 font-bold text-xs">✓</span>}
-                    </button>
-                  </div>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setSegmentFilter('CATS')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                    segmentFilter === 'CATS'
+                      ? 'bg-[#1E40AF] text-white shadow-md font-black'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                  }`}
+                >
+                  <span>Gatos</span>
+                  <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'CATS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                    {sellerKpis.catCount}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSegmentFilter('OTHERS')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                    segmentFilter === 'OTHERS'
+                      ? 'bg-[#1E40AF] text-white shadow-md font-black'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                  }`}
+                >
+                  <span>Otros</span>
+                  <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${segmentFilter === 'OTHERS' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                    {sellerKpis.otherCount}
+                  </span>
+                </button>
               </div>
+
+              {/* FILTROS DE TEMPERATURA DIRECTOS E INLINE */}
+              <div className="flex flex-wrap items-center gap-1.5 bg-slate-50 p-1.5 rounded-2xl border border-gray-200">
+                <button
+                  type="button"
+                  onClick={() => setFilterTemperature('ALL')}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold transition flex items-center border ${
+                    filterTemperature === 'ALL'
+                      ? 'bg-[#1E40AF] text-white border-[#1E40AF] shadow-sm font-black'
+                      : 'bg-transparent text-slate-700 hover:text-slate-900 hover:bg-white border-gray-200'
+                  }`}
+                >
+                  Todas
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setFilterTemperature('Caliente')}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold transition flex items-center border ${
+                    filterTemperature === 'Caliente'
+                      ? 'bg-emerald-50 text-emerald-900 border-emerald-400 shadow-sm font-black'
+                      : 'bg-transparent text-slate-700 hover:text-slate-900 hover:bg-white border-gray-200'
+                  }`}
+                >
+                  <span className="bg-emerald-500 w-2.5 h-2.5 rounded-full mr-1.5 inline-block" />
+                  <span>Calientes</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setFilterTemperature('Media')}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold transition flex items-center border ${
+                    filterTemperature === 'Media'
+                      ? 'bg-amber-50 text-amber-900 border-amber-400 shadow-sm font-black'
+                      : 'bg-transparent text-slate-700 hover:text-slate-900 hover:bg-white border-gray-200'
+                  }`}
+                >
+                  <span className="bg-amber-500 w-2.5 h-2.5 rounded-full mr-1.5 inline-block" />
+                  <span>Medias</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setFilterTemperature('Baja')}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold transition flex items-center border ${
+                    filterTemperature === 'Baja'
+                      ? 'bg-rose-50 text-rose-900 border-rose-400 shadow-sm font-black'
+                      : 'bg-transparent text-slate-700 hover:text-slate-900 hover:bg-white border-gray-200'
+                  }`}
+                >
+                  <span className="bg-red-500 w-2.5 h-2.5 rounded-full mr-1.5 inline-block" />
+                  <span>Bajas</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Búsqueda Predictiva Interactiva */}
+            <div className="relative w-full xl:w-72">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="🔍 Buscar lead por nombre, teléfono o mascota..."
+                className="w-full pl-4 pr-10 py-2.5 rounded-xl bg-slate-50 border border-slate-300 focus:border-[#1E40AF] text-xs text-slate-800 placeholder-slate-400 outline-none font-medium transition"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 text-xs font-bold"
+                  title="Limpiar búsqueda"
+                >
+                  ✕
+                </button>
+              )}
             </div>
 
           </div>
@@ -1551,7 +1477,7 @@ export default function AdminDashboard() {
                     <th scope="col" className="py-4 px-4 sm:px-6">Puesto & Score</th>
                     <th scope="col" className="py-4 px-4">Tutor & Mascota</th>
                     <th scope="col" className="py-4 px-4">Variables Clave</th>
-                    <th scope="col" className="py-4 px-4 min-w-[260px]">Consejo de Cierre por IA</th>
+                    <th scope="col" className="py-4 px-4 max-w-[200px] lg:max-w-xs">Consejo de Cierre por IA</th>
                     <th scope="col" className="py-4 px-4 min-w-[270px]">Notas / Feedback del Cliente</th>
                     <th scope="col" className="py-4 px-4 text-center">Acción Comercial</th>
                     <th scope="col" className="py-4 px-4 text-right">Contacto Directo</th>
@@ -1649,51 +1575,36 @@ export default function AdminDashboard() {
                         </td>
 
                         {/* CONSEJO DE CIERRE POR IA */}
-                        <td className="py-4 px-4 align-top">
-                          <div className="bg-[#FFFBEB] p-3.5 rounded-2xl border border-amber-200 text-xs text-slate-700 leading-relaxed shadow-sm">
-                            <div className="flex items-center justify-between gap-1 mb-1.5">
-                              <div className="flex items-center gap-1.5 text-[11px] font-black text-[#1E40AF] uppercase tracking-wider">
-                                <svg className="w-3.5 h-3.5 text-[#1E40AF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                                <span>Consejo IA Real (/api/triage)</span>
-                              </div>
-                              {userRole === 'admin' ? (
+                        <td className="py-4 px-4 align-top max-w-[200px] lg:max-w-xs">
+                          <div className="space-y-1">
+                            <div className="flex items-center justify-between gap-1">
+                              <span className="text-[10px] font-bold text-[#1E40AF] uppercase tracking-wider flex items-center gap-1">
+                                <span>✨</span>
+                                <span>Consejo IA</span>
+                              </span>
+                              {userRole === 'admin' && (
                                 <button
                                   type="button"
                                   onClick={() => fetchPredictiveAdvice(lead)}
                                   disabled={loadingAiLead === leadKey}
-                                  className="text-[10px] font-bold text-[#1E40AF] hover:text-blue-900 bg-white hover:bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200 transition-colors inline-flex items-center gap-1 shadow-xs disabled:opacity-50"
-                                  title="Re-consultar /api/triage para este lead (Acción Admin)"
+                                  className="text-[10px] font-semibold text-slate-500 hover:text-[#1E40AF] transition-colors inline-flex items-center gap-0.5 disabled:opacity-50"
+                                  title="Re-consultar /api/triage para este lead"
                                 >
                                   {loadingAiLead === leadKey ? (
-                                    <>
-                                      <span className="animate-spin text-[10px]">⚙️</span>
-                                      <span>Triage...</span>
-                                    </>
+                                    <span className="animate-spin text-[10px]">⚙️</span>
                                   ) : (
-                                    <>
-                                      <span>✨</span>
-                                      <span>Triage IA</span>
-                                    </>
+                                    <span>🔄 Triage</span>
                                   )}
                                 </button>
-                              ) : (
-                                <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200" title="Configuración de IA reservada para Administrador">
-                                  🔒 Solo Lectura
-                                </span>
                               )}
                             </div>
-                            <div className="text-slate-800 text-[11px] leading-relaxed font-semibold">
+                            <div className="text-xs leading-relaxed text-gray-600 font-normal">
                               {liveAiAdvice[leadKey] ? (
-                                <p className="text-slate-900">{liveAiAdvice[leadKey]}</p>
+                                <p>{liveAiAdvice[leadKey]}</p>
                               ) : triageLoading ? (
-                                <p className="text-amber-800 italic flex items-center gap-1 animate-pulse">
-                                  <span>🤖</span>
-                                  <span>Procesando variables con IA (/api/triage)...</span>
-                                </p>
+                                <p className="text-gray-400 italic">Generando consejo...</p>
                               ) : (
-                                <p className="text-slate-700 font-medium">{lead.ai_counsel}</p>
+                                <p>{lead.ai_counsel}</p>
                               )}
                             </div>
                           </div>
