@@ -30,6 +30,8 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: { persistSession: false },
   global: {
     headers: {
+      'apikey': supabaseAnonKey,
+      'Authorization': `Bearer ${supabaseAnonKey}`,
       'Content-Type': 'application/json',
       'Prefer': 'return=minimal',
     },
