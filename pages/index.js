@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { createClient } from '@supabase/supabase-js';
 
 // Función de sanitización anti-XSS y anti-inyecciones en formularios
 const sanitizeInput = (val) => {
@@ -10,64 +9,9 @@ const sanitizeInput = (val) => {
   return val.replace(/[<>'"`;()&$]/g, '').trim();
 };
 
-// CORRECCIÓN ESTRICTA DE LA ENDPOINT URL (REST API):
-// Normalización para erradicar cualquier barra diagonal final '/' que dispare redirecciones HTTP 307
-const TARGET_SUPABASE_URL = 'https://supabase.co';
-const TARGET_ANON_KEY = 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
-
-const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const envAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-// Limpieza estricta: asegurar que termine limpio sin '/' al final para evitar redirección en preflight
-const rawUrl = (envUrl && typeof envUrl === 'string' && envUrl !== 'undefined' && envUrl.trim() !== '')
-  ? envUrl.trim()
-  : TARGET_SUPABASE_URL;
-
-const supabaseUrl = rawUrl.replace(/\/+$/, '');
-
-const supabaseAnonKey = (envAnonKey && typeof envAnonKey === 'string' && envAnonKey !== 'undefined' && envAnonKey.trim() !== '')
-  ? envAnonKey.trim()
-  : TARGET_ANON_KEY;
-
-// Inicialización de Supabase con cabeceras explícitas de autenticación REST y formato JSON
-const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: { persistSession: false },
-  global: {
-    headers: {
-      'apikey': supabaseAnonKey,
-      'Authorization': `Bearer ${supabaseAnonKey}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=minimal',
-    },
-  },
-});
-
-// Resiliencia asíncrona: Manejo de reintentos nativos para mitigar 'TypeError: Failed to fetch', micro-cortes y cold-starts
-const executeWithRetry = async (fn, maxRetries = 3, delayMs = 1200) => {
-  let lastError;
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      return await fn();
-    } catch (err) {
-      lastError = err;
-      const isNetworkOrFetchError =
-        err?.message?.includes('Failed to fetch') ||
-        err?.name === 'TypeError' ||
-        err?.message?.includes('NetworkError') ||
-        err?.message?.includes('network') ||
-        err?.message?.includes('timeout') ||
-        err?.message?.includes('fetch');
-
-      console.warn(`[RUACE Resiliencia] Intento ${attempt}/${maxRetries} interrumpido (${err?.message || 'Fallo de red'}). Reintentando en ${delayMs * attempt}ms...`);
-
-      if (attempt < maxRetries) {
-        await new Promise((resolve) => setTimeout(resolve, delayMs * attempt));
-      } else {
-        throw lastError;
-      }
-    }
-  }
-};
+// Configuración directa y limpia hacia la API REST de Supabase (Bypass absoluto de CORS)
+const SUPABASE_BASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://supabase.co').replace(/\/+$/, '');
+const SUPABASE_ANON_KEY = 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
 
 export default function Home() {
   // Estado del formulario con los campos exactos de la tabla 'ruace_pet539_leads' y Fase 2
@@ -100,44 +44,6 @@ export default function Home() {
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null); // { type: 'success' | 'error', text: string }
-
-  // DESPERTADOR ANTICIPADO DE SUPABASE (ANTI-COLD START PARA EL EVALUADOR CON FETCH NATIVO)
-  // Lanza una micro-consulta asíncrona de select id limitado a 1 vía fetch nativo en el render inicial
-  useEffect(() => {
-    let isMounted = true;
-    const wakeUpSupabase = async () => {
-      try {
-        const baseClean = supabaseUrl.replace(/\/+$/, '');
-        const pingEndpoint = baseClean.includes('/rest/v1')
-          ? `${baseClean.replace(/\/ruace_pet539_leads\/?$/, '')}/ruace_pet539_leads/?select=id&limit=1`
-          : `${baseClean}/rest/v1/ruace_pet539_leads/?select=id&limit=1`;
-        const activeKey = supabaseAnonKey || 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
-
-        await executeWithRetry(async () => {
-          return await fetch(pingEndpoint, {
-            method: 'GET',
-            headers: {
-              'apikey': activeKey,
-              'Authorization': `Bearer ${activeKey}`,
-            },
-          });
-        }, 3, 1200);
-        if (isMounted) {
-          console.debug('[RUACE Cloud] Contenedor Supabase activo y pre-calentado vía fetch nativo.');
-        }
-      } catch (err) {
-        // Ejecución silenciosa: no interrumpe la experiencia del usuario ni arroja alertas
-        if (isMounted) {
-          console.debug('[RUACE Cloud] Micro-consulta de calentamiento iniciada.');
-        }
-      }
-    };
-
-    wakeUpSupabase();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   // GESTIÓN DE PRIVACIDAD LOPDP 2026: CONDICIONAMIENTO DE COOKIES Y PÍXELES (META Y TIKTOK)
   useEffect(() => {
@@ -254,6 +160,7 @@ export default function Home() {
     e.preventDefault();
 
     if (!termsAccepted) {
+      alert('Debes aceptar la Política de Privacidad y el Tratamiento de Datos Personales en Ecuador (Ley LOPDP) para continuar.');
       setStatusMessage({
         type: 'error',
         text: 'Debes aceptar la Política de Privacidad y el Tratamiento de Datos Personales en Ecuador (Ley LOPDP) para continuar.',
@@ -265,55 +172,16 @@ export default function Home() {
     setStatusMessage(null);
 
     try {
-      // Mapeo idéntico al esquema de base de datos de Supabase ('ruace_pet539_leads')
-      const ownerName = sanitizeInput(formData.nombre_completo || formData.owner_name);
-      const ownerPhone = sanitizeInput(formData.whatsapp || formData.owner_phone);
+      const ownerName = sanitizeInput(formData.owner_name || formData.nombre_completo);
+      const ownerPhone = sanitizeInput(formData.owner_phone || formData.whatsapp);
       const ownerEmail = sanitizeInput(formData.owner_email).toLowerCase();
       const petName = sanitizeInput(formData.pet_name);
-      const petType = sanitizeInput(formData.tipo_mascota || formData.pet_type || 'perro');
-      
-      // El valor del Servicio que requiere contratar debe asignarse a 'current_status'
-      const currentStatus = sanitizeInput(formData.service_type || 'Combo Completo');
-      
-      // El valor del Rango de Inversión planificado debe asignarse a 'pet_travel_intent'
-      const petTravelIntent = formData.presupuesto_estimado === 'premium'
-        ? 'Más de $80'
-        : formData.presupuesto_estimado === 'completo'
-        ? 'Entre $45 y $80'
-        : 'Entre $25 y $45';
-        
-      // El valor del Canal de contacto preferido debe asignarse a 'contact_method'
+      const petType = sanitizeInput(formData.pet_type || formData.tipo_mascota || 'perro');
+      const currentStatus = sanitizeInput(formData.current_status || formData.service_type || 'Combo Completo');
+      const petTravelIntent = sanitizeInput(formData.pet_travel_intent || (formData.presupuesto_estimado === 'premium' ? 'Más de $80' : formData.presupuesto_estimado === 'completo' ? 'Entre $45 y $80' : 'Entre $25 y $45'));
       const contactMethod = sanitizeInput(formData.contact_method || 'WhatsApp');
 
-      // Algoritmo matemático de Triage RUACE PET539 (Cálculo de puntaje 0 a 100 para lead_score)
-      let score = 0;
-      // 1. Rango de Inversión (pet_travel_intent)
-      if (formData.presupuesto_estimado === 'premium') {
-        score += 40;
-      } else if (formData.presupuesto_estimado === 'completo') {
-        score += 20;
-      } else {
-        score += 10;
-      }
-      // 2. Servicio solicitado (current_status)
-      const serviceLower = currentStatus.toLowerCase();
-      if (serviceLower.includes('combo') || serviceLower.includes('implantación') || serviceLower.includes('viaje')) {
-        score += 40;
-      } else if (serviceLower.includes('física') || serviceLower.includes('cédula')) {
-        score += 30;
-      } else {
-        score += 20;
-      }
-      // 3. Canal de contacto (contact_method)
-      if (contactMethod.toLowerCase().includes('whatsapp')) {
-        score += 20;
-      } else if (contactMethod.toLowerCase().includes('llamada')) {
-        score += 10;
-      }
-      const leadScore = Math.min(Math.max(score, 0), 100);
-
-      // Payload estricto con las columnas reales verificadas de 'ruace_pet539_leads'
-      const leadPayload = {
+      const payload = {
         owner_name: ownerName,
         owner_phone: ownerPhone,
         owner_email: ownerEmail,
@@ -322,120 +190,62 @@ export default function Home() {
         current_status: currentStatus,
         pet_travel_intent: petTravelIntent,
         contact_method: contactMethod,
-        lead_score: leadScore,
-        lead_status: 'Por contactar',
-        created_at: new Date().toISOString(),
       };
 
-      // CORRECCIÓN DE LA BARRA DIAGONAL DE CIERRE (TRAILING SLASH OBLIGATORIO):
-      // Añade una barra diagonal '/' al final del nombre de la tabla para eliminar la redirección HTTP 307 de preflight
-      const HARDCODED_ANON_KEY = 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
-      const activeAnonKey = supabaseAnonKey || HARDCODED_ANON_KEY;
+      // Petición nativa directa y limpia hacia la tabla 'leads' de Supabase REST API
+      const leadsEndpoint = `${SUPABASE_BASE_URL}/rest/v1/leads`;
 
-      const baseClean = supabaseUrl.replace(/\/+$/, '');
-      const restEndpoint = baseClean.includes('/rest/v1')
-        ? `${baseClean.replace(/\/ruace_pet539_leads\/?$/, '')}/ruace_pet539_leads/`
-        : `${baseClean}/rest/v1/ruace_pet539_leads/`;
-
-      await executeWithRetry(async () => {
-        // Petición HTTP POST nativa directa al endpoint REST
-        const response = await fetch(restEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': activeAnonKey,
-            'Authorization': `Bearer ${activeAnonKey}`,
-            'Prefer': 'return=minimal',
-          },
-          body: JSON.stringify({
-            owner_name: ownerName,
-            owner_phone: ownerPhone,
-            owner_email: ownerEmail,
-            pet_name: petName,
-            pet_type: petType,
-            current_status: currentStatus,
-            pet_travel_intent: petTravelIntent,
-            contact_method: contactMethod,
-            lead_score: leadScore,
-            lead_status: 'Por contactar',
-          }),
-        });
-
-        if (response.ok || response.status === 201 || response.status === 200 || response.status === 204) {
-          return true;
-        }
-
-        // Fallback inmediato con las columnas base si el schema tuviera alguna variación
-        const fallbackResponse = await fetch(restEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': activeAnonKey,
-            'Authorization': `Bearer ${activeAnonKey}`,
-            'Prefer': 'return=minimal',
-          },
-          body: JSON.stringify({
-            owner_name: ownerName,
-            owner_phone: ownerPhone,
-            owner_email: ownerEmail,
-            pet_name: petName,
-            pet_type: petType,
-            current_status: currentStatus,
-            pet_travel_intent: petTravelIntent,
-            contact_method: contactMethod,
-          }),
-        });
-
-        if (fallbackResponse.ok || fallbackResponse.status === 201 || fallbackResponse.status === 200 || fallbackResponse.status === 204) {
-          return true;
-        }
-
-        throw new Error(`Error en servidor (Código HTTP ${fallbackResponse.status})`);
-      }, 3, 1200);
-
-      setStatusMessage({
-        type: 'success',
-        text: `¡Excelente noticia! Los datos de ${formData.pet_name} han sido registrados con éxito en el sistema RUACE PET593. Un asesor veterinario se comunicará contigo vía ${formData.contact_method}.`,
+      const res = await fetch(leadsEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL',
+          'Authorization': 'Bearer sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL',
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify(payload),
       });
 
-      // Limpiar formulario tras éxito
-      setFormData({
-        nombre_completo: '',
-        owner_name: '',
-        whatsapp: '',
-        owner_phone: '',
-        owner_email: '',
-        empresa_negocio: '',
-        presupuesto_estimado: 'basico',
-        pet_name: '',
-        pet_type: 'perro',
-        tipo_mascota: 'perro',
-        service_type: 'Combo Completo',
-        current_status: 'ninguno',
-        estado_identificacion: 'ninguno',
-        pet_travel_intent: 'No planeo viajar (Protección a nivel nacional)',
-        contact_method: 'WhatsApp',
-      });
-      setTermsAccepted(false);
+      if (res.ok || res.status === 201 || res.status === 200 || res.status === 204) {
+        setFormData({
+          nombre_completo: '',
+          owner_name: '',
+          whatsapp: '',
+          owner_phone: '',
+          owner_email: '',
+          empresa_negocio: '',
+          presupuesto_estimado: 'basico',
+          pet_name: '',
+          pet_type: 'perro',
+          tipo_mascota: 'perro',
+          service_type: 'Combo Completo',
+          current_status: 'ninguno',
+          estado_identificacion: 'ninguno',
+          pet_travel_intent: 'No planeo viajar (Protección a nivel nacional)',
+          contact_method: 'WhatsApp',
+        });
+        setTermsAccepted(false);
+        setStatusMessage({
+          type: 'success',
+          text: '¡Registro Oficial Exitoso! Tu expediente ha sido sincronizado.',
+        });
+        alert('¡Registro Oficial Exitoso! Tu expediente ha sido sincronizado.');
+      } else {
+        const errorText = await res.text();
+        console.error('Error al insertar en tabla leads:', res.status, errorText);
+        setStatusMessage({
+          type: 'error',
+          text: `Error de sincronización (${res.status}): ${errorText || res.statusText}`,
+        });
+        alert(`Error al registrar (${res.status}): ${errorText || res.statusText}`);
+      }
     } catch (err) {
-      const statusCode = err?.status || err?.statusCode || err?.code || 'CORS / Redirección 307 Bloqueada';
-      const errorMsg = err?.message || 'TypeError: Failed to fetch';
-
-      // Registro técnico en consola para auditoría completa de red y preflight
-      console.error('[RUACE Network Diagnostic] Detalle de petición hacia Supabase REST:', {
-        name: err?.name,
-        message: errorMsg,
-        status: statusCode,
-        details: err?.details || null,
-        hint: err?.hint || null,
-        targetUrl: supabaseUrl,
-        errorRaw: err,
-      });
-
+      console.error('Error de red al conectar con Supabase:', err);
       setStatusMessage({
         type: 'error',
-        text: 'Sincronizando con la Red Nacional de Identificación Animal. Si la conexión tarda, por favor presiona el botón nuevamente.',
+        text: `Error de red: ${err.message}`,
       });
+      alert(`Error de red al conectar: ${err.message}`);
     } finally {
       setLoading(false);
     }
