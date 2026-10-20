@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { supabase } from '../lib/supabase';
 
 // Función de sanitización anti-XSS y anti-inyecciones en formularios
 const sanitizeInput = (val) => {
@@ -9,29 +10,27 @@ const sanitizeInput = (val) => {
   return val.replace(/[<>'"`;()&$]/g, '').trim();
 };
 
-// Configuración directa y limpia hacia la API REST de Supabase (Bypass absoluto de CORS)
-const SUPABASE_BASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://supabase.co').replace(/\/+$/, '');
-const SUPABASE_ANON_KEY = 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
+const INITIAL_FORM = {
+  nombre_completo: '',
+  owner_name: '',
+  whatsapp: '',
+  owner_phone: '',
+  owner_email: '',
+  empresa_negocio: '',
+  presupuesto_estimado: 'basico',
+  pet_name: '',
+  pet_type: 'perro',
+  tipo_mascota: 'perro',
+  service_type: 'Combo Completo',
+  current_status: 'ninguno',
+  estado_identificacion: 'ninguno',
+  pet_travel_intent: 'No planeo viajar (Protección a nivel nacional)',
+  contact_method: 'WhatsApp',
+};
 
 export default function Home() {
   // Estado del formulario con los campos exactos de la tabla 'ruace_pet539_leads' y Fase 2
-  const [formData, setFormData] = useState({
-    nombre_completo: '',
-    owner_name: '',
-    whatsapp: '',
-    owner_phone: '',
-    owner_email: '',
-    empresa_negocio: '',
-    presupuesto_estimado: 'basico',
-    pet_name: '',
-    pet_type: 'perro',
-    tipo_mascota: 'perro',
-    service_type: 'Combo Completo',
-    current_status: 'ninguno',
-    estado_identificacion: 'ninguno',
-    pet_travel_intent: 'No planeo viajar (Protección a nivel nacional)',
-    contact_method: 'WhatsApp',
-  });
+  const [formData, setFormData] = useState(INITIAL_FORM);
 
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
@@ -181,69 +180,38 @@ export default function Home() {
       const petTravelIntent = sanitizeInput(formData.pet_travel_intent || (formData.presupuesto_estimado === 'premium' ? 'Más de $80' : formData.presupuesto_estimado === 'completo' ? 'Entre $45 y $80' : 'Entre $25 y $45'));
       const contactMethod = sanitizeInput(formData.contact_method || 'WhatsApp');
 
-      const payload = {
-        owner_name: ownerName,
-        owner_phone: ownerPhone,
-        owner_email: ownerEmail,
-        pet_name: petName,
-        pet_type: petType,
-        current_status: currentStatus,
-        pet_travel_intent: petTravelIntent,
-        contact_method: contactMethod,
-      };
+      const { error: insertError } = await supabase
+        .from('leads')
+        .insert([
+          {
+            owner_name: ownerName,
+            owner_phone: ownerPhone,
+            owner_email: ownerEmail,
+            pet_name: petName,
+            pet_type: petType,
+            current_status: currentStatus,
+            pet_travel_intent: petTravelIntent,
+            contact_method: contactMethod,
+          },
+        ]);
 
-      // Petición nativa directa y estricta hacia la tabla pública 'leads' de Supabase REST API
-      const res = await fetch(`${SUPABASE_BASE_URL}/rest/v1/leads`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL',
-          'Authorization': 'Bearer sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL',
-          'Prefer': 'return=minimal',
-        },
-        body: JSON.stringify(payload),
+      if (insertError) throw insertError;
+
+      setFormData(INITIAL_FORM);
+      setTermsAccepted(false);
+      setStatusMessage({
+        type: 'success',
+        text: '¡Registro Oficial Exitoso! Expediente sincronizado con la Red Nacional.',
       });
-
-      if (res.ok || res.status === 201 || res.status === 200 || res.status === 204) {
-        setFormData({
-          nombre_completo: '',
-          owner_name: '',
-          whatsapp: '',
-          owner_phone: '',
-          owner_email: '',
-          empresa_negocio: '',
-          presupuesto_estimado: 'basico',
-          pet_name: '',
-          pet_type: 'perro',
-          tipo_mascota: 'perro',
-          service_type: 'Combo Completo',
-          current_status: 'ninguno',
-          estado_identificacion: 'ninguno',
-          pet_travel_intent: 'No planeo viajar (Protección a nivel nacional)',
-          contact_method: 'WhatsApp',
-        });
-        setTermsAccepted(false);
-        setStatusMessage({
-          type: 'success',
-          text: '¡Registro Oficial Exitoso! Expediente sincronizado con la Red Nacional.',
-        });
-        alert('¡Registro Oficial Exitoso! Expediente sincronizado con la Red Nacional.');
-      } else {
-        const errorText = await res.text();
-        console.error('Error al insertar en tabla leads:', res.status, errorText);
-        setStatusMessage({
-          type: 'error',
-          text: `Error de sincronización (Código ${res.status}): ${errorText || res.statusText}`,
-        });
-        alert(`Error al registrar (Código de estado: ${res.status})`);
-      }
+      alert('¡Registro Oficial Exitoso! Expediente sincronizado con la Red Nacional.');
     } catch (err) {
-      console.error('Error de red al conectar con Supabase:', err);
+      const errorMsg = err.message || 'Error de conexión al enviar la solicitud.';
+      console.error('Error al insertar lead en Supabase:', err);
       setStatusMessage({
         type: 'error',
-        text: `Error de red: ${err.message}`,
+        text: errorMsg,
       });
-      alert(`Error de red al conectar (Código: Failed to fetch)`);
+      alert(errorMsg);
     } finally {
       setLoading(false);
     }
