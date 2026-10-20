@@ -23,6 +23,33 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
 });
 
+// Resiliencia asíncrona: Manejo de reintentos nativos para mitigar 'TypeError: Failed to fetch', micro-cortes y cold-starts
+const executeWithRetry = async (fn, maxRetries = 3, delayMs = 1000) => {
+  let lastError;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastError = err;
+      const isNetworkOrFetchError =
+        err?.message?.includes('Failed to fetch') ||
+        err?.name === 'TypeError' ||
+        err?.message?.includes('NetworkError') ||
+        err?.message?.includes('network') ||
+        err?.message?.includes('timeout') ||
+        err?.message?.includes('fetch');
+
+      console.warn(`[RUACE Resiliencia] Intento ${attempt}/${maxRetries} interrumpido (${err?.message || 'Fallo de red'}). Reintentando en ${delayMs * attempt}ms...`);
+
+      if (attempt < maxRetries) {
+        await new Promise((resolve) => setTimeout(resolve, delayMs * attempt));
+      } else {
+        throw lastError;
+      }
+    }
+  }
+};
+
 export default function Home() {
   // Estado del formulario con los campos exactos de la tabla 'ruace_pet539_leads' y Fase 2
   const [formData, setFormData] = useState({
@@ -212,30 +239,34 @@ export default function Home() {
         created_at: new Date().toISOString(),
       };
 
-      const { data, error } = await supabase
-        .from('ruace_pet539_leads')
-        .insert([leadPayload]);
-
-      if (error) {
-        // Si el schema no tiene aún las columnas nuevas, reintentar con las columnas originales para garantizar persistencia
-        const fallbackPayload = {
-          owner_name: fullNameValue,
-          owner_phone: whatsappValue,
-          owner_email: sanitizeInput(formData.owner_email).toLowerCase(),
-          pet_name: sanitizeInput(formData.pet_name),
-          pet_type: sanitizeInput(formData.tipo_mascota || formData.pet_type || 'perro'),
-          current_status: statusValue,
-          pet_travel_intent: travelValue,
-          contact_method: sanitizeInput(formData.contact_method),
-          created_at: new Date().toISOString(),
-        };
-        const { error: fallbackError } = await supabase
+      // Inserción con 3 reintentos nativos ante 'TypeError: Failed to fetch' o micro-cortes de red
+      await executeWithRetry(async () => {
+        const { data, error } = await supabase
           .from('ruace_pet539_leads')
-          .insert([fallbackPayload]);
-        if (fallbackError) {
-          throw fallbackError;
+          .insert([leadPayload]);
+
+        if (error) {
+          // Si el schema no tiene aún las columnas nuevas, reintentar con las columnas originales para garantizar persistencia
+          const fallbackPayload = {
+            owner_name: fullNameValue,
+            owner_phone: whatsappValue,
+            owner_email: sanitizeInput(formData.owner_email).toLowerCase(),
+            pet_name: sanitizeInput(formData.pet_name),
+            pet_type: sanitizeInput(formData.tipo_mascota || formData.pet_type || 'perro'),
+            current_status: statusValue,
+            pet_travel_intent: travelValue,
+            contact_method: sanitizeInput(formData.contact_method),
+            created_at: new Date().toISOString(),
+          };
+          const { error: fallbackError } = await supabase
+            .from('ruace_pet539_leads')
+            .insert([fallbackPayload]);
+          if (fallbackError) {
+            throw fallbackError;
+          }
         }
-      }
+        return data;
+      }, 3, 1000);
 
       setStatusMessage({
         type: 'success',
