@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { supabase } from '../lib/supabase';
 
 // Función de sanitización anti-XSS y anti-inyecciones en formularios
 const sanitizeInput = (val) => {
@@ -180,22 +179,34 @@ export default function Home() {
       const petTravelIntent = formData.presupuesto_estimado === 'premium' ? 'Más de $80' : formData.presupuesto_estimado === 'completo' ? 'Entre $45 y $80' : 'Entre $25 y $45';
       const contactMethod = sanitizeInput(formData.contact_method || 'WhatsApp');
 
-      const { error: insertError } = await supabase
-        .from('leads')
-        .insert([
-          {
-            owner_name: ownerName,
-            owner_phone: ownerPhone,
-            owner_email: ownerEmail,
-            pet_name: petName,
-            pet_type: petType,
-            current_status: currentStatus,
-            pet_travel_intent: petTravelIntent,
-            contact_method: contactMethod,
-          },
-        ]);
+      const HARDCODED_ANON_KEY = 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
+      const baseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://supabase.co').replace(/\/+$/, '');
+      const endpoint = `${baseUrl}/rest/v1/ruace_pet539_leads/`;
 
-      if (insertError) throw insertError;
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': HARDCODED_ANON_KEY,
+          'Authorization': `Bearer ${HARDCODED_ANON_KEY}`,
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({
+          owner_name: ownerName,
+          owner_phone: ownerPhone,
+          owner_email: ownerEmail,
+          pet_name: petName,
+          pet_type: petType,
+          current_status: currentStatus,
+          pet_travel_intent: petTravelIntent,
+          contact_method: contactMethod,
+        }),
+      });
+
+      if (!res.ok && res.status !== 201 && res.status !== 200 && res.status !== 204) {
+        const errorText = await res.text();
+        throw new Error(errorText || `Error en el servidor (Código ${res.status})`);
+      }
 
       setFormData(INITIAL_FORM);
       setTermsAccepted(false);
@@ -1583,7 +1594,7 @@ export default function Home() {
           {/* BARRA INFERIOR DEL FOOTER */}
           <div className="pt-8 border-t border-slate-800 text-center text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p>© {new Date().getFullYear()} RUACE PET593 · Sede Villaflora · Cumplimiento LOPDP Ecuador 2026. Todos los derechos reservados.</p>
-            <p>Conectado directamente a Supabase · Tabla: <span className="font-mono text-[#FBBF24]">leads</span></p>
+            <p>Conectado directamente a Supabase · Tabla: <span className="font-mono text-[#FBBF24]">ruace_pet539_leads</span></p>
           </div>
         </div>
       </footer>
