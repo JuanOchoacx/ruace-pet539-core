@@ -107,9 +107,10 @@ export default function Home() {
     let isMounted = true;
     const wakeUpSupabase = async () => {
       try {
-        const pingEndpoint = supabaseUrl.includes('/rest/v1')
-          ? (supabaseUrl.endsWith('/ruace_pet539_leads') ? `${supabaseUrl}?select=id&limit=1` : `${supabaseUrl}/ruace_pet539_leads?select=id&limit=1`)
-          : `${supabaseUrl}/rest/v1/ruace_pet539_leads?select=id&limit=1`;
+        const baseClean = supabaseUrl.replace(/\/+$/, '');
+        const pingEndpoint = baseClean.includes('/rest/v1')
+          ? `${baseClean.replace(/\/ruace_pet539_leads\/?$/, '')}/ruace_pet539_leads/?select=id&limit=1`
+          : `${baseClean}/rest/v1/ruace_pet539_leads/?select=id&limit=1`;
         const activeKey = supabaseAnonKey || 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
 
         await executeWithRetry(async () => {
@@ -326,13 +327,15 @@ export default function Home() {
         created_at: new Date().toISOString(),
       };
 
-      // Inserción vía fetch() nativo de JavaScript con cabeceras explícitas (Bypass completo del SDK y preflight redirect)
+      // CORRECCIÓN DE LA BARRA DIAGONAL DE CIERRE (TRAILING SLASH OBLIGATORIO):
+      // Añade una barra diagonal '/' al final del nombre de la tabla para eliminar la redirección HTTP 307 de preflight
       const HARDCODED_ANON_KEY = 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
       const activeAnonKey = supabaseAnonKey || HARDCODED_ANON_KEY;
 
-      const restEndpoint = supabaseUrl.includes('/rest/v1')
-        ? (supabaseUrl.endsWith('/ruace_pet539_leads') ? supabaseUrl : `${supabaseUrl}/ruace_pet539_leads`)
-        : `${supabaseUrl}/rest/v1/ruace_pet539_leads`;
+      const baseClean = supabaseUrl.replace(/\/+$/, '');
+      const restEndpoint = baseClean.includes('/rest/v1')
+        ? `${baseClean.replace(/\/ruace_pet539_leads\/?$/, '')}/ruace_pet539_leads/`
+        : `${baseClean}/rest/v1/ruace_pet539_leads/`;
 
       await executeWithRetry(async () => {
         // Petición HTTP POST nativa directa al endpoint REST
