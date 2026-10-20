@@ -1,0 +1,52 @@
+name: Supabase Keep-Alive Cron
+
+on:
+  schedule:
+    # Se ejecuta cada 4 horas (00:00, 04:00, 08:00, 12:00, 16:00, 20:00 UTC) para erradicar Cold Starts
+    - cron: '0 */4 * * *'
+  workflow_dispatch: # Permite ejecución manual desde la consola de GitHub Actions para pruebas de conectividad
+
+jobs:
+  keep-alive:
+    name: Ping Supabase REST Endpoint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Keep-Alive HTTP Ping
+        env:
+          PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          # Construir endpoint REST de forma dinámica según los secretos disponibles
+          if [ -n "$SUPABASE_URL" ]; then
+            ENDPOINT="${SUPABASE_URL}/rest/v1/ruace_pet539_leads?select=id&limit=1"
+          elif [ -n "$PROJECT_REF" ]; then
+            ENDPOINT="https://${PROJECT_REF}.supabase.co/rest/v1/ruace_pet539_leads?select=id&limit=1"
+          else
+            echo "::warning::Ni SUPABASE_URL ni SUPABASE_PROJECT_REF están configurados. Utilizando URL de respaldo."
+            ENDPOINT="https://supabase.co/rest/v1/ruace_pet539_leads?select=id&limit=1"
+          fi
+
+          echo "Pinging endpoint: $ENDPOINT"
+
+          # Ejecutar petición con curl inyectando apikey y Authorization Bearer
+          HTTP_STATUS=$(curl -s -o ping_response.json -w "%{http_code}" \
+            --request GET "$ENDPOINT" \
+            --header "apikey: $ANON_KEY" \
+            --header "Authorization: Bearer $ANON_KEY" \
+            --header "Content-Type: application/json" \
+            --max-time 30)
+
+          echo "Código HTTP recibido: $HTTP_STATUS"
+          if [ -f ping_response.json ]; then
+            echo "Cuerpo de la respuesta:"
+            cat ping_response.json
+            echo ""
+          fi
+
+          # Validar respuesta exitosa (200 OK o 2xx)
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            echo "✅ Conexión Keep-Alive confirmada. Contenedor de Supabase activo y operativo."
+          else
+            echo "⚠️ Advertencia: Código HTTP $HTTP_STATUS recibido. Si el contenedor estaba en suspensión profunda, esta solicitud ha disparado el proceso de despertar (cold start)."
+          fi
