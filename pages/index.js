@@ -227,17 +227,17 @@ export default function Home() {
         setTermsAccepted(false);
         setStatusMessage({
           type: 'success',
-          text: '¡Registro Oficial Exitoso! Tu expediente ha sido sincronizado.',
+          text: '¡Registro Oficial Exitoso! Expediente sincronizado con la Red Nacional.',
         });
-        alert('¡Registro Oficial Exitoso! Tu expediente ha sido sincronizado.');
+        alert('¡Registro Oficial Exitoso! Expediente sincronizado con la Red Nacional.');
       } else {
         const errorText = await res.text();
         console.error('Error al insertar en tabla leads:', res.status, errorText);
         setStatusMessage({
           type: 'error',
-          text: `Error de sincronización (${res.status}): ${errorText || res.statusText}`,
+          text: `Error de sincronización (Código ${res.status}): ${errorText || res.statusText}`,
         });
-        alert(`Error al registrar (${res.status}): ${errorText || res.statusText}`);
+        alert(`Error al registrar (Código de estado: ${res.status})`);
       }
     } catch (err) {
       console.error('Error de red al conectar con Supabase:', err);
@@ -245,7 +245,7 @@ export default function Home() {
         type: 'error',
         text: `Error de red: ${err.message}`,
       });
-      alert(`Error de red al conectar: ${err.message}`);
+      alert(`Error de red al conectar (Código: Failed to fetch)`);
     } finally {
       setLoading(false);
     }
