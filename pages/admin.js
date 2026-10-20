@@ -11,12 +11,20 @@ const sanitizeInput = (val) => {
   return val.replace(/[<>'"`;()&$]/g, '').trim();
 };
 
-// Inicialización de Supabase con sanitización estricta de URL/Keys y cabeceras compatibles con CORS
-const rawAdminSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://supabase.co';
-const rawAdminSupabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
+// Validación explícita de variables de entorno y bypass directo con credenciales reales para pruebas
+const HARDCODED_SUPABASE_URL = 'https://supabase.co';
+const HARDCODED_SUPABASE_ANON_KEY = 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
 
-const supabaseUrl = rawAdminSupabaseUrl.toString().trim().replace(/\/+$/, '');
-const supabaseAnonKey = rawAdminSupabaseAnonKey.toString().trim();
+const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const envAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+const supabaseUrl = (envUrl && typeof envUrl === 'string' && envUrl !== 'undefined' && envUrl.trim() !== '')
+  ? envUrl.trim().replace(/\/+$/, '')
+  : HARDCODED_SUPABASE_URL;
+
+const supabaseAnonKey = (envAnonKey && typeof envAnonKey === 'string' && envAnonKey !== 'undefined' && envAnonKey.trim() !== '')
+  ? envAnonKey.trim()
+  : HARDCODED_SUPABASE_ANON_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: { persistSession: false },

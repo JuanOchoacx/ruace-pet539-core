@@ -10,12 +10,21 @@ const sanitizeInput = (val) => {
   return val.replace(/[<>'"`;()&$]/g, '').trim();
 };
 
-// Inicialización del cliente Supabase con sanitización estricta de URL/Keys y cabeceras compatibles con CORS
-const rawSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://supabase.co';
-const rawSupabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
+// Validación explícita de variables de entorno y bypass directo con credenciales reales para pruebas
+const HARDCODED_SUPABASE_URL = 'https://supabase.co';
+const HARDCODED_SUPABASE_ANON_KEY = 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
 
-const supabaseUrl = rawSupabaseUrl.toString().trim().replace(/\/+$/, '');
-const supabaseAnonKey = rawSupabaseAnonKey.toString().trim();
+const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const envAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+// Si por caché o desajuste de Vercel las variables llegan como undefined o vacías, inyectar el fallback directo
+const supabaseUrl = (envUrl && typeof envUrl === 'string' && envUrl !== 'undefined' && envUrl.trim() !== '')
+  ? envUrl.trim().replace(/\/+$/, '')
+  : HARDCODED_SUPABASE_URL;
+
+const supabaseAnonKey = (envAnonKey && typeof envAnonKey === 'string' && envAnonKey !== 'undefined' && envAnonKey.trim() !== '')
+  ? envAnonKey.trim()
+  : HARDCODED_SUPABASE_ANON_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: { persistSession: false },
@@ -357,29 +366,29 @@ export default function Home() {
       });
       setTermsAccepted(false);
     } catch (err) {
-      // Diagnóstico consolidado de red en consola para auditoría de CORS / HTTP Status (401, 403, Failed to fetch)
+      const statusCode = err?.status || err?.statusCode || err?.code || 'CORS / Bloqueo de Red';
+      const errorMsg = err?.message || 'TypeError: Failed to fetch';
+
+      // Diagnóstico consolidado de red en consola para auditoría de CORS / HTTP Status (401, 403, 404, Failed to fetch)
       console.error('[RUACE Network Diagnostic] Detalle de interrupción en petición hacia Supabase:', {
         name: err?.name,
-        message: err?.message,
-        status: err?.status || err?.statusCode || err?.code || 'N/A',
+        message: errorMsg,
+        status: statusCode,
         details: err?.details || null,
         hint: err?.hint || null,
+        targetUrl: supabaseUrl,
         errorRaw: err,
       });
 
-      // Detección estricta de fallas por CORS / Failed to fetch / micro-cortes
-      const isFetchInterruption =
-        !err?.status &&
-        (err?.message?.includes('Failed to fetch') ||
-         err?.name === 'TypeError' ||
-         err?.message?.includes('NetworkError') ||
-         err?.message?.includes('network'));
+      // Alerta emergente en pantalla requerida para diagnóstico forzado en evaluación
+      const diagnosticAlert = `[DIAGNÓSTICO DE RED RUACE]\nEndpoint: ${supabaseUrl}\nCódigo de Estado: ${statusCode}\nDetalle: ${errorMsg}\nRevisa la consola (F12) para ver la traza completa.`;
+      if (typeof window !== 'undefined') {
+        alert(diagnosticAlert);
+      }
 
       setStatusMessage({
-        type: isFetchInterruption ? 'neutral' : 'error',
-        text: isFetchInterruption
-          ? 'Sincronizando con la Red Nacional de Identificación Animal. Si la conexión tarda, por favor presiona el botón nuevamente.'
-          : (err?.message || 'Sincronizando con la Red Nacional de Identificación Animal. Si la conexión tarda, por favor presiona el botón nuevamente.'),
+        type: 'error',
+        text: `Diagnóstico de Red [${statusCode}]: ${errorMsg}. Endpoint: ${supabaseUrl}. Si la conexión tarda, por favor presiona el botón nuevamente.`,
       });
     } finally {
       setLoading(false);
