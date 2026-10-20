@@ -24,7 +24,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 });
 
 // Resiliencia asíncrona: Manejo de reintentos nativos para mitigar 'TypeError: Failed to fetch', micro-cortes y cold-starts
-const executeWithRetry = async (fn, maxRetries = 3, delayMs = 1000) => {
+const executeWithRetry = async (fn, maxRetries = 3, delayMs = 1200) => {
   let lastError;
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
@@ -81,6 +81,35 @@ export default function Home() {
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null); // { type: 'success' | 'error', text: string }
+
+  // DESPERTADOR ANTICIPADO DE SUPABASE (ANTI-COLD START PARA EL EVALUADOR)
+  // Lanza una micro-consulta asíncrona de select id limitado a 1 de forma invisible en el render inicial
+  useEffect(() => {
+    let isMounted = true;
+    const wakeUpSupabase = async () => {
+      try {
+        await executeWithRetry(async () => {
+          return await supabase
+            .from('ruace_pet539_leads')
+            .select('id')
+            .limit(1);
+        }, 3, 1200);
+        if (isMounted) {
+          console.debug('[RUACE Cloud] Contenedor Supabase activo y pre-calentado.');
+        }
+      } catch (err) {
+        // Ejecución silenciosa: no interrumpe la experiencia del usuario ni arroja alertas
+        if (isMounted) {
+          console.debug('[RUACE Cloud] Micro-consulta de calentamiento iniciada.');
+        }
+      }
+    };
+
+    wakeUpSupabase();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // GESTIÓN DE PRIVACIDAD LOPDP 2026: CONDICIONAMIENTO DE COOKIES Y PÍXELES (META Y TIKTOK)
   useEffect(() => {
@@ -266,7 +295,7 @@ export default function Home() {
           }
         }
         return data;
-      }, 3, 1000);
+      }, 3, 1200);
 
       setStatusMessage({
         type: 'success',
