@@ -192,10 +192,8 @@ export default function Home() {
         contact_method: contactMethod,
       };
 
-      // Petición nativa directa y limpia hacia la tabla pública real 'ruace_pet539_leads' de Supabase REST API
-      const leadsEndpoint = `${SUPABASE_BASE_URL}/rest/v1/ruace_pet539_leads`;
-
-      const res = await fetch(leadsEndpoint, {
+      // Petición nativa directa y estricta hacia la tabla pública 'leads' de Supabase REST API
+      const res = await fetch(`${SUPABASE_BASE_URL}/rest/v1/leads`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
