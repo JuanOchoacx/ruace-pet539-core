@@ -171,13 +171,13 @@ export default function Home() {
     setStatusMessage(null);
 
     try {
-      const ownerName = sanitizeInput(formData.owner_name || formData.nombre_completo);
-      const ownerPhone = sanitizeInput(formData.owner_phone || formData.whatsapp);
+      const ownerName = sanitizeInput(formData.nombre_completo || formData.owner_name);
+      const ownerPhone = sanitizeInput(formData.whatsapp || formData.owner_phone);
       const ownerEmail = sanitizeInput(formData.owner_email).toLowerCase();
       const petName = sanitizeInput(formData.pet_name);
-      const petType = sanitizeInput(formData.pet_type || formData.tipo_mascota || 'perro');
-      const currentStatus = sanitizeInput(formData.current_status || formData.service_type || 'Combo Completo');
-      const petTravelIntent = sanitizeInput(formData.pet_travel_intent || (formData.presupuesto_estimado === 'premium' ? 'Más de $80' : formData.presupuesto_estimado === 'completo' ? 'Entre $45 y $80' : 'Entre $25 y $45'));
+      const petType = sanitizeInput(formData.tipo_mascota || formData.pet_type || 'perro');
+      const currentStatus = sanitizeInput(formData.estado_identificacion || formData.current_status || 'ninguno');
+      const petTravelIntent = formData.presupuesto_estimado === 'premium' ? 'Más de $80' : formData.presupuesto_estimado === 'completo' ? 'Entre $45 y $80' : 'Entre $25 y $45';
       const contactMethod = sanitizeInput(formData.contact_method || 'WhatsApp');
 
       const { error: insertError } = await supabase

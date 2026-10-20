@@ -36,10 +36,19 @@ export default async function handler(req, res) {
     const adviceText = aiResponse.response.text().trim();
 
     // SKILL ACTIVO 2: Persistencia y Sincronización en Base de Datos (Supabase)
-    if (lead_id && !String(lead_id).startsWith('demo-')) {
+    if (req.body?.owner_email) {
       const { error } = await supabase
-        .from('ruace_pet539_leads')
-        .update({ lead_advice: adviceText })
+        .from('leads')
+        .update({ pet_travel_intent: adviceText }) // Sincronizado con la columna visible de destino
+        .eq('owner_email', req.body.owner_email);
+
+      if (error) {
+        console.warn('Advertencia al actualizar en Supabase:', error.message);
+      }
+    } else if (lead_id && !String(lead_id).startsWith('demo-')) {
+      const { error } = await supabase
+        .from('leads')
+        .update({ pet_travel_intent: adviceText })
         .eq('id', lead_id);
 
       if (error) {
@@ -67,14 +76,23 @@ export default async function handler(req, res) {
     }
 
     // Persistencia de fallback en Supabase si aplica
-    if (lead_id && !String(lead_id).startsWith('demo-')) {
+    if (req.body?.owner_email) {
       try {
         await supabase
-          .from('ruace_pet539_leads')
-          .update({ lead_advice: fallbackAdvice })
+          .from('leads')
+          .update({ pet_travel_intent: fallbackAdvice })
+          .eq('owner_email', req.body.owner_email);
+      } catch (err) {
+        console.warn('Fallback sync warning by email:', err.message);
+      }
+    } else if (lead_id && !String(lead_id).startsWith('demo-')) {
+      try {
+        await supabase
+          .from('leads')
+          .update({ pet_travel_intent: fallbackAdvice })
           .eq('id', lead_id);
       } catch (err) {
-        console.warn('Fallback sync warning:', err.message);
+        console.warn('Fallback sync warning by id:', err.message);
       }
     }
 
