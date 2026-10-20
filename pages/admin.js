@@ -11,15 +11,19 @@ const sanitizeInput = (val) => {
   return val.replace(/[<>'"`;()&$]/g, '').trim();
 };
 
-// Inicialización de Supabase con fallback seguro y cabeceras de seguridad
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
+// Inicialización de Supabase con sanitización estricta de URL/Keys y cabeceras compatibles con CORS
+const rawAdminSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://supabase.co';
+const rawAdminSupabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_Abm7RRtKLhITutAvDjkViw_PPh1w5XL';
+
+const supabaseUrl = rawAdminSupabaseUrl.toString().trim().replace(/\/+$/, '');
+const supabaseAnonKey = rawAdminSupabaseAnonKey.toString().trim();
+
 const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: { persistSession: false },
   global: {
     headers: {
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal',
     },
   },
 });
