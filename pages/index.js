@@ -29,7 +29,7 @@ const INITIAL_FORM = {
 };
 
 export default function Home() {
-  // Estado del formulario con los campos exactos de la tabla 'ruace_pet539_leads' y Fase 2
+  // Estado del formulario con los campos exactos de la tabla 'leads' y Fase 2
   const [formData, setFormData] = useState(INITIAL_FORM);
 
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -690,7 +690,7 @@ export default function Home() {
 
       {/* =========================================================================
           BLOQUE 3: FORMULARIO FILTRO (EXPEDIENTE RUACE PET593) - COMPACTADO
-          Conexión asíncrona a Supabase (ruace_pet539_leads), cualificación de leads,
+          Conexión asíncrona a Supabase (leads), cualificación de leads,
           casilla obligatoria Ley LOPDP Ecuador 2026 y feedback en tiempo real.
           ========================================================================= */}
       <section id="registro" className="relative py-12 lg:py-16 bg-gradient-to-b from-[#FFFBEB] via-white to-[#FFFBEB]/50 border-b border-slate-200">
@@ -1583,7 +1583,7 @@ export default function Home() {
           {/* BARRA INFERIOR DEL FOOTER */}
           <div className="pt-8 border-t border-slate-800 text-center text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p>© {new Date().getFullYear()} RUACE PET593 · Sede Villaflora · Cumplimiento LOPDP Ecuador 2026. Todos los derechos reservados.</p>
-            <p>Conectado directamente a Supabase · Tabla: <span className="font-mono text-[#FBBF24]">ruace_pet539_leads</span></p>
+            <p>Conectado directamente a Supabase · Tabla: <span className="font-mono text-[#FBBF24]">leads</span></p>
           </div>
         </div>
       </footer>
