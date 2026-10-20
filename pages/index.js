@@ -241,34 +241,65 @@ export default function Home() {
     setStatusMessage(null);
 
     try {
-      // Inserción automática y sanitizada en la tabla 'ruace_pet539_leads'
-      const statusValue = sanitizeInput(formData.estado_identificacion || formData.current_status || 'ninguno');
+      // Mapeo idéntico al esquema de base de datos de Supabase ('ruace_pet539_leads')
+      const ownerName = sanitizeInput(formData.nombre_completo || formData.owner_name);
+      const ownerPhone = sanitizeInput(formData.whatsapp || formData.owner_phone);
+      const ownerEmail = sanitizeInput(formData.owner_email).toLowerCase();
+      const petName = sanitizeInput(formData.pet_name);
+      const petType = sanitizeInput(formData.tipo_mascota || formData.pet_type || 'perro');
+      
+      // El valor del Servicio que requiere contratar debe asignarse a 'current_status'
+      const currentStatus = sanitizeInput(formData.service_type || 'Combo Completo');
+      
+      // El valor del Rango de Inversión planificado debe asignarse a 'pet_travel_intent'
+      const petTravelIntent = formData.presupuesto_estimado === 'premium'
+        ? 'Más de $80'
+        : formData.presupuesto_estimado === 'completo'
+        ? 'Entre $45 y $80'
+        : 'Entre $25 y $45';
+        
+      // El valor del Canal de contacto preferido debe asignarse a 'contact_method'
+      const contactMethod = sanitizeInput(formData.contact_method || 'WhatsApp');
 
-      const travelValue = formData.service_type === 'Asesoría para Viajes'
-        ? 'Viaje Internacional próximo (USA / Europa / LATAM)'
-        : sanitizeInput(formData.pet_travel_intent);
+      // Algoritmo matemático de Triage RUACE PET539 (Cálculo de puntaje 0 a 100 para lead_score)
+      let score = 0;
+      // 1. Rango de Inversión (pet_travel_intent)
+      if (formData.presupuesto_estimado === 'premium') {
+        score += 40;
+      } else if (formData.presupuesto_estimado === 'completo') {
+        score += 20;
+      } else {
+        score += 10;
+      }
+      // 2. Servicio solicitado (current_status)
+      const serviceLower = currentStatus.toLowerCase();
+      if (serviceLower.includes('combo') || serviceLower.includes('implantación') || serviceLower.includes('viaje')) {
+        score += 40;
+      } else if (serviceLower.includes('física') || serviceLower.includes('cédula')) {
+        score += 30;
+      } else {
+        score += 20;
+      }
+      // 3. Canal de contacto (contact_method)
+      if (contactMethod.toLowerCase().includes('whatsapp')) {
+        score += 20;
+      } else if (contactMethod.toLowerCase().includes('llamada')) {
+        score += 10;
+      }
+      const leadScore = Math.min(Math.max(score, 0), 100);
 
-      const fullNameValue = sanitizeInput(formData.nombre_completo || formData.owner_name);
-      const whatsappValue = sanitizeInput(formData.whatsapp || formData.owner_phone);
-      const businessValue = sanitizeInput(formData.empresa_negocio || '');
-      const budgetValue = sanitizeInput(formData.presupuesto_estimado || 'basico');
-
-      // Payload adaptado al backend con soporte dual de columnas
+      // Payload estricto con las columnas reales verificadas de 'ruace_pet539_leads'
       const leadPayload = {
-        // Nomenclatura oficial Fase 2
-        nombre_completo: fullNameValue,
-        whatsapp: whatsappValue,
-        empresa_negocio: businessValue,
-        presupuesto_estimado: budgetValue,
-        // Columnas base del esquema
-        owner_name: fullNameValue,
-        owner_phone: whatsappValue,
-        owner_email: sanitizeInput(formData.owner_email).toLowerCase(),
-        pet_name: sanitizeInput(formData.pet_name),
-        pet_type: sanitizeInput(formData.tipo_mascota || formData.pet_type || 'perro'),
-        current_status: statusValue,
-        pet_travel_intent: travelValue,
-        contact_method: sanitizeInput(formData.contact_method),
+        owner_name: ownerName,
+        owner_phone: ownerPhone,
+        owner_email: ownerEmail,
+        pet_name: petName,
+        pet_type: petType,
+        current_status: currentStatus,
+        pet_travel_intent: petTravelIntent,
+        contact_method: contactMethod,
+        lead_score: leadScore,
+        lead_status: 'Por contactar',
         created_at: new Date().toISOString(),
       };
 
@@ -279,16 +310,16 @@ export default function Home() {
           .insert([leadPayload], { returning: 'minimal' });
 
         if (error) {
-          // Si el schema no tiene aún las columnas nuevas, reintentar con las columnas originales para garantizar persistencia
+          // Si el schema en Supabase no tiene aún las columnas de triage, reintentar con el subset base para garantizar persistencia
           const fallbackPayload = {
-            owner_name: fullNameValue,
-            owner_phone: whatsappValue,
-            owner_email: sanitizeInput(formData.owner_email).toLowerCase(),
-            pet_name: sanitizeInput(formData.pet_name),
-            pet_type: sanitizeInput(formData.tipo_mascota || formData.pet_type || 'perro'),
-            current_status: statusValue,
-            pet_travel_intent: travelValue,
-            contact_method: sanitizeInput(formData.contact_method),
+            owner_name: ownerName,
+            owner_phone: ownerPhone,
+            owner_email: ownerEmail,
+            pet_name: petName,
+            pet_type: petType,
+            current_status: currentStatus,
+            pet_travel_intent: petTravelIntent,
+            contact_method: contactMethod,
             created_at: new Date().toISOString(),
           };
           const { error: fallbackError } = await supabase
